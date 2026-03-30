@@ -33,6 +33,7 @@
 
         .tabs {
             display: flex;
+            align-items: center;
             gap: 12px;
             margin-bottom: 2rem;
             border-bottom: 2px solid #ffd9aa;
@@ -204,6 +205,8 @@
         @media (max-width: 550px) {
             .offer h2 { font-size: 1.3rem; }
             .link-box { flex-direction: column; }
+            .tabs { gap: 6px; }
+            .tab { font-size: 1rem; padding: 0.3rem 0.8rem; }
         }
     </style>
 </head>
@@ -212,6 +215,7 @@
 <div class="card">
     <div class="tabs">
         <div class="tab active" data-tab="sub">Подписка ✅</div>
+        <span style="color:#ff8c42; font-weight:bold; font-size:1.4rem;">|</span>
         <div class="tab" data-tab="support">Поддержка 🗨️</div>
     </div>
 
@@ -264,7 +268,6 @@
 </div>
 
 <script>
-    // Переключение вкладок
     document.querySelectorAll('.tab').forEach(tab => {
         tab.addEventListener('click', () => {
             const target = tab.dataset.tab;
@@ -272,14 +275,11 @@
             tab.classList.add('active');
             document.querySelectorAll('.tab-content').forEach(content => {
                 content.classList.remove('active-content');
-                if (content.id === target) {
-                    content.classList.add('active-content');
-                }
+                if (content.id === target) content.classList.add('active-content');
             });
         });
     });
 
-    // Копирование ссылки
     const copyBtn = document.getElementById('copyBtn');
     const linkSpan = document.getElementById('vpnLink');
     const linkToCopy = linkSpan.innerText;

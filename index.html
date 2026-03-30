@@ -30,27 +30,99 @@
             box-shadow: 0 25px 45px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 165, 0, 0.2);
             padding: 2rem 1.8rem 2.5rem;
             transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
         }
 
-        .bunny-deco {
+        /* анимированные зайцы (iOS-стиль) */
+        .bunny-runner {
+            position: absolute;
+            bottom: 10px;
+            left: -50px;
+            font-size: 2rem;
+            animation: runBunny 12s linear infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .bunny-runner2 {
+            animation-duration: 15s;
+            animation-delay: -5s;
+            bottom: 40px;
+            left: -60px;
+        }
+
+        .bunny-runner3 {
+            animation-duration: 18s;
+            animation-delay: -2s;
+            bottom: 70px;
+            left: -40px;
+        }
+
+        @keyframes runBunny {
+            0% {
+                left: -60px;
+                transform: scaleX(1);
+            }
+            49% {
+                transform: scaleX(1);
+            }
+            50% {
+                left: calc(100% + 60px);
+                transform: scaleX(-1);
+            }
+            100% {
+                left: -60px;
+                transform: scaleX(1);
+            }
+        }
+
+        /* вкладки */
+        .tabs {
             display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #ffd9aa;
+            padding-bottom: 0.5rem;
         }
 
-        .bunny {
-            font-size: 2.6rem;
-            filter: drop-shadow(2px 4px 12px rgba(255, 100, 0, 0.4));
-            transition: transform 0.2s ease;
-            display: inline-block;
+        .tab {
+            font-size: 1.2rem;
+            font-weight: 600;
+            padding: 0.5rem 1.2rem;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: 0.2s;
+            background: transparent;
+            color: #b45a1a;
         }
 
-        .bunny:hover {
-            transform: scale(1.08) rotate(2deg);
+        .tab.active {
+            background: #ff8c42;
+            color: white;
+            box-shadow: 0 4px 10px rgba(255, 140, 66, 0.3);
         }
 
+        .tab:not(.active):hover {
+            background: #ffe0c0;
+        }
+
+        /* контент вкладок */
+        .tab-content {
+            display: none;
+            animation: fade 0.3s ease;
+        }
+
+        .tab-content.active-content {
+            display: block;
+        }
+
+        @keyframes fade {
+            from { opacity: 0; transform: translateY(5px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+
+        /* старые стили (адаптированы) */
         .offer {
             text-align: center;
             margin-bottom: 2rem;
@@ -112,13 +184,12 @@
         .copy-btn:hover {
             background: #e5741e;
             transform: scale(0.97);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
         .telegram-btn {
             display: flex;
             justify-content: center;
-            margin: 2rem 0 2rem;
+            margin: 2rem 0 1rem;
         }
 
         .tg-button {
@@ -140,12 +211,6 @@
         .tg-button:hover {
             background: #1f8bc9;
             transform: translateY(-2px);
-            box-shadow: 0 12px 22px rgba(42, 171, 238, 0.35);
-        }
-
-        .tg-logo {
-            font-size: 1.6rem;
-            filter: drop-shadow(0 1px 1px rgba(0,0,0,0.1));
         }
 
         .rules-frame {
@@ -154,8 +219,7 @@
             border-radius: 36px;
             background: #fffaf2;
             padding: 1.6rem 1.8rem;
-            box-shadow: 0 12px 22px -10px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255,255,240,0.8);
-            transition: 0.1s;
+            box-shadow: 0 12px 22px -10px rgba(0, 0, 0, 0.08);
         }
 
         .rules-title {
@@ -164,7 +228,6 @@
             text-align: center;
             margin-bottom: 1.2rem;
             color: #b65100;
-            letter-spacing: -0.2px;
         }
 
         .rules-text {
@@ -173,13 +236,9 @@
             color: #2e241d;
         }
 
-        .rules-text p {
-            margin-bottom: 0.75rem;
-        }
-
         .rules-text ol {
             padding-left: 1.5rem;
-            margin: 1rem 0 0.5rem;
+            margin: 1rem 0;
         }
 
         .rules-text li {
@@ -187,10 +246,22 @@
         }
 
         hr {
-            margin: 0.5rem 0 1rem;
+            margin: 0.5rem 0;
             border: none;
             height: 1px;
             background: radial-gradient(circle, #ffb469, transparent);
+        }
+
+        .support-text {
+            background: #fff7ef;
+            border-radius: 28px;
+            padding: 1.2rem;
+            margin: 1rem 0;
+            text-align: center;
+            font-size: 1rem;
+            line-height: 1.4;
+            color: #5a2e0a;
+            border: 1px solid #ffd9aa;
         }
 
         footer {
@@ -210,8 +281,6 @@
             .link-box {
                 flex-direction: column;
                 align-items: stretch;
-                border-radius: 32px;
-                padding: 1rem;
             }
             .link-url {
                 text-align: center;
@@ -219,8 +288,9 @@
             .copy-btn {
                 justify-content: center;
             }
-            .rules-frame {
-                padding: 1.2rem;
+            .tab {
+                font-size: 1rem;
+                padding: 0.4rem 1rem;
             }
         }
     </style>
@@ -228,37 +298,57 @@
 <body>
 
 <div class="card">
-    <div class="bunny-deco">
-        <span class="bunny">🐇🧡</span>
-        <span class="bunny">🐰✨</span>
-        <span class="bunny">🧡🐇</span>
+    <!-- анимированные зайцы iOS-стиля -->
+    <div class="bunny-runner">🐇</div>
+    <div class="bunny-runner bunny-runner2">🐰</div>
+    <div class="bunny-runner bunny-runner3">🐇</div>
+
+    <!-- вкладки -->
+    <div class="tabs">
+        <div class="tab active" data-tab="sub">Подписка ✅</div>
+        <div class="tab" data-tab="support">Поддержка 🗨️</div>
     </div>
 
-    <div class="offer">
-        <h2>⬇️ Бесплатная подписка KrolekVPNReborn ⬇️</h2>
-        <div class="link-box">
-            <span class="link-url" id="vpnLink">https://raw.githubusercontent.com/kangaroo255075-collab/KrolekVPNReborn-Reborn-/refs/heads/main/Krolek.txt</span>
-            <button class="copy-btn" id="copyBtn">📋 Копировать</button>
+    <!-- Вкладка: Подписка -->
+    <div id="sub" class="tab-content active-content">
+        <div class="offer">
+            <h2>⬇️ Бесплатная подписка KrolekVPNReborn ⬇️</h2>
+            <div class="link-box">
+                <span class="link-url" id="vpnLink">https://raw.githubusercontent.com/kangaroo255075-collab/KrolekVPNReborn-Reborn-/refs/heads/main/Krolek.txt</span>
+                <button class="copy-btn" id="copyBtn">📋 Копировать</button>
+            </div>
+        </div>
+
+        <div class="telegram-btn">
+            <a href="https://t.me/KrolekVPNReborn" target="_blank" rel="noopener noreferrer" class="tg-button">
+                <span class="tg-logo">✈️</span> Подпишитесь на канал KrolekVPNReborn
+            </a>
+        </div>
+
+        <div class="rules-frame">
+            <div class="rules-title">‼️‼️ Правила использования Нашего VPN ‼️‼️</div>
+            <div class="rules-text">
+                <p>Некоторые из Вас возможно нарушат правила. Читайте внимательно статью и Вы научитесь пользоваться обходом📜</p>
+                <ol>
+                    <li><strong>Не заходить в банковские приложения!</strong> Все банки без исключения узнают, что Вы пользуетесь конфигурацией для обхода и срочно передаст данные Роскомнадзору. И только после этого конфигурация или подписка снесется.</li>
+                    <li><strong>Не заходить в русские сервисы или приложения.</strong> Такие приложения под полным контролем Роскомнадзора. Русские приложения — Max, Яндекс, Яндекс Карты, Яндекс Навигатор (все, что от Яндекса), VK, VK Клипы, VK видео (все, что от VK) и т.д.</li>
+                    <li><strong>Не используйте торренты</strong>, так как из-за этого сервер сбросится и придется Нам обновлять целую подписку.</li>
+                </ol>
+                <hr>
+                <p style="font-size:0.85rem; opacity:0.8;">⚡ Соблюдение правил — залог стабильной работы подписки.</p>
+            </div>
         </div>
     </div>
 
-    <div class="telegram-btn">
-        <a href="https://t.me/KrolekVPNReborn" target="_blank" rel="noopener noreferrer" class="tg-button">
-            <span class="tg-logo">✈️</span> Подпишитесь на канал KrolekVPNReborn
-        </a>
-    </div>
-
-    <div class="rules-frame">
-        <div class="rules-title">‼️‼️ Правила использования Нашего VPN ‼️‼️</div>
-        <div class="rules-text">
-            <p>Некоторые из Вас возможно нарушат правила. Читайте внимательно статью и Вы научитесь пользоваться обходом📜</p>
-            <ol>
-                <li><strong>Не заходить в банковские приложения!</strong> Все банки без исключения узнают, что Вы пользуетесь конфигурацией для обхода и срочно передаст данные Роскомнадзору. И только после этого конфигурация или подписка снесется.</li>
-                <li><strong>Не заходить в русские сервисы или приложения.</strong> Такие приложения под полным контролем Роскомнадзора. Русские приложения — Max, Яндекс, Яндекс Карты, Яндекс Навигатор (все, что от Яндекса), VK, VK Клипы, VK видео (все, что от VK) и т.д.</li>
-                <li><strong>Не используйте торренты</strong>, так как из-за этого сервер сбросится и придется Нам обновлять целую подписку.</li>
-            </ol>
-            <hr>
-            <p style="font-size:0.85rem; opacity:0.8;">⚡ Соблюдение правил — залог стабильной работы подписки.</p>
+    <!-- Вкладка: Поддержка -->
+    <div id="support" class="tab-content">
+        <div class="support-text">
+            Друзья, если у Вас появились проблемы с нашим VPN, ошибка сертификата, не работают конфигурации, ошибка 562 в Happ и другие прочие ошибки, срочно сообщайтесь в поддержку. Ведь у нас есть поддержка — внизу⬇️
+        </div>
+        <div class="telegram-btn">
+            <a href="https://t.me/KrolekVPNRebornSupport_bot" target="_blank" rel="noopener noreferrer" class="tg-button">
+                <span class="tg-logo">🗨️</span> Поддержка KrolekVPNReborn 🗨️
+            </a>
         </div>
     </div>
 
@@ -268,6 +358,25 @@
 </div>
 
 <script>
+    // переключение вкладок
+    const tabs = document.querySelectorAll('.tab');
+    const contents = document.querySelectorAll('.tab-content');
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const targetId = tab.getAttribute('data-tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            contents.forEach(content => {
+                content.classList.remove('active-content');
+                if (content.id === targetId) {
+                    content.classList.add('active-content');
+                }
+            });
+        });
+    });
+
+    // копирование ссылки (без изменений)
     const copyBtn = document.getElementById('copyBtn');
     const linkSpan = document.getElementById('vpnLink');
     const linkToCopy = linkSpan.innerText;

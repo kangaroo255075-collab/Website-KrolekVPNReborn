@@ -12,6 +12,13 @@
             font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
         }
 
+        /* Принудительно iOS-стиль для эмодзи зайцев */
+        .ios-bunny {
+            font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+            font-size: 1.8rem;
+            display: inline-block;
+        }
+
         body {
             min-height: 100vh;
             background: linear-gradient(145deg, #fff5e6 0%, #ffe0c0 100%);
@@ -34,29 +41,28 @@
             overflow: hidden;
         }
 
-        /* анимированные зайцы (iOS-стиль) */
+        /* Анимированные зайцы под контентом */
         .bunny-runner {
             position: absolute;
-            bottom: 10px;
-            left: -50px;
+            bottom: 30px;
+            left: -60px;
             font-size: 2rem;
-            animation: runBunny 12s linear infinite;
+            animation: runBunny 14s linear infinite;
             pointer-events: none;
-            z-index: 1;
+            z-index: 0;
+            font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
         }
 
         .bunny-runner2 {
-            animation-duration: 15s;
-            animation-delay: -5s;
-            bottom: 40px;
-            left: -60px;
+            animation-duration: 17s;
+            animation-delay: -6s;
+            bottom: 80px;
         }
 
         .bunny-runner3 {
-            animation-duration: 18s;
+            animation-duration: 20s;
             animation-delay: -2s;
-            bottom: 70px;
-            left: -40px;
+            bottom: 130px;
         }
 
         @keyframes runBunny {
@@ -75,6 +81,12 @@
                 left: -60px;
                 transform: scaleX(1);
             }
+        }
+
+        /* Контент поверх зайцев */
+        .content {
+            position: relative;
+            z-index: 2;
         }
 
         /* вкладки */
@@ -107,7 +119,6 @@
             background: #ffe0c0;
         }
 
-        /* контент вкладок */
         .tab-content {
             display: none;
             animation: fade 0.3s ease;
@@ -122,7 +133,6 @@
             to { opacity: 1; transform: translateY(0);}
         }
 
-        /* старые стили (адаптированы) */
         .offer {
             text-align: center;
             margin-bottom: 2rem;
@@ -220,6 +230,8 @@
             background: #fffaf2;
             padding: 1.6rem 1.8rem;
             box-shadow: 0 12px 22px -10px rgba(0, 0, 0, 0.08);
+            position: relative;
+            z-index: 2;
         }
 
         .rules-title {
@@ -298,63 +310,65 @@
 <body>
 
 <div class="card">
-    <!-- анимированные зайцы iOS-стиля -->
+    <!-- Анимированные зайцы iOS-стиля (бегают под контентом) -->
     <div class="bunny-runner">🐇</div>
     <div class="bunny-runner bunny-runner2">🐰</div>
     <div class="bunny-runner bunny-runner3">🐇</div>
 
-    <!-- вкладки -->
-    <div class="tabs">
-        <div class="tab active" data-tab="sub">Подписка ✅</div>
-        <div class="tab" data-tab="support">Поддержка 🗨️</div>
-    </div>
+    <div class="content">
+        <!-- вкладки -->
+        <div class="tabs">
+            <div class="tab active" data-tab="sub">Подписка ✅</div>
+            <div class="tab" data-tab="support">Поддержка 🗨️</div>
+        </div>
 
-    <!-- Вкладка: Подписка -->
-    <div id="sub" class="tab-content active-content">
-        <div class="offer">
-            <h2>⬇️ Бесплатная подписка KrolekVPNReborn ⬇️</h2>
-            <div class="link-box">
-                <span class="link-url" id="vpnLink">https://raw.githubusercontent.com/kangaroo255075-collab/KrolekVPNReborn-Reborn-/refs/heads/main/Krolek.txt</span>
-                <button class="copy-btn" id="copyBtn">📋 Копировать</button>
+        <!-- Вкладка: Подписка -->
+        <div id="sub" class="tab-content active-content">
+            <div class="offer">
+                <h2>⬇️ Бесплатная подписка KrolekVPNReborn ⬇️</h2>
+                <div class="link-box">
+                    <span class="link-url" id="vpnLink">https://raw.githubusercontent.com/kangaroo255075-collab/KrolekVPNReborn-Reborn-/refs/heads/main/Krolek.txt</span>
+                    <button class="copy-btn" id="copyBtn">📋 Копировать</button>
+                </div>
+            </div>
+
+            <div class="telegram-btn">
+                <a href="https://t.me/KrolekVPNReborn" target="_blank" rel="noopener noreferrer" class="tg-button">
+                    <span class="tg-logo">✈️</span> Подпишитесь на канал KrolekVPNReborn
+                </a>
+            </div>
+
+            <div class="rules-frame">
+                <div class="rules-title">‼️‼️ Правила использования Нашего VPN ‼️‼️</div>
+                <div class="rules-text">
+                    <p>Некоторые из Вас возможно нарушат правила. Читайте внимательно статью и Вы научитесь пользоваться обходом📜</p>
+                    <ol>
+                        <li><strong>Не заходить в банковские приложения!</strong> Все банки без исключения узнают, что Вы пользуетесь конфигурацией для обхода и срочно передаст данные Роскомнадзору. И только после этого конфигурация или подписка снесется.</li>
+                        <li><strong>Не заходить в русские сервисы или приложения.</strong> Такие приложения под полным контролем Роскомнадзора. Русские приложения — Max, Яндекс, Яндекс Карты, Яндекс Навигатор (все, что от Яндекса), VK, VK Клипы, VK видео (все, что от VK) и т.д.</li>
+                        <li><strong>Не используйте торренты</strong>, так как из-за этого сервер сбросится и придется Нам обновлять целую подписку.</li>
+                    </ol>
+                    <hr>
+                    <p style="font-size:0.85rem; opacity:0.8;">⚡ Соблюдение правил — залог стабильной работы подписки.</p>
+                </div>
             </div>
         </div>
 
-        <div class="telegram-btn">
-            <a href="https://t.me/KrolekVPNReborn" target="_blank" rel="noopener noreferrer" class="tg-button">
-                <span class="tg-logo">✈️</span> Подпишитесь на канал KrolekVPNReborn
-            </a>
-        </div>
-
-        <div class="rules-frame">
-            <div class="rules-title">‼️‼️ Правила использования Нашего VPN ‼️‼️</div>
-            <div class="rules-text">
-                <p>Некоторые из Вас возможно нарушат правила. Читайте внимательно статью и Вы научитесь пользоваться обходом📜</p>
-                <ol>
-                    <li><strong>Не заходить в банковские приложения!</strong> Все банки без исключения узнают, что Вы пользуетесь конфигурацией для обхода и срочно передаст данные Роскомнадзору. И только после этого конфигурация или подписка снесется.</li>
-                    <li><strong>Не заходить в русские сервисы или приложения.</strong> Такие приложения под полным контролем Роскомнадзора. Русские приложения — Max, Яндекс, Яндекс Карты, Яндекс Навигатор (все, что от Яндекса), VK, VK Клипы, VK видео (все, что от VK) и т.д.</li>
-                    <li><strong>Не используйте торренты</strong>, так как из-за этого сервер сбросится и придется Нам обновлять целую подписку.</li>
-                </ol>
-                <hr>
-                <p style="font-size:0.85rem; opacity:0.8;">⚡ Соблюдение правил — залог стабильной работы подписки.</p>
+        <!-- Вкладка: Поддержка -->
+        <div id="support" class="tab-content">
+            <div class="support-text">
+                Друзья, если у Вас появились проблемы с нашим VPN, ошибка сертификата, не работают конфигурации, ошибка 562 в Happ и другие прочие ошибки, срочно сообщайтесь в поддержку. Ведь у нас есть поддержка — внизу⬇️
+            </div>
+            <div class="telegram-btn">
+                <a href="https://t.me/KrolekVPNRebornSupport_bot" target="_blank" rel="noopener noreferrer" class="tg-button">
+                    <span class="tg-logo">🗨️</span> Поддержка KrolekVPNReborn 🗨️
+                </a>
             </div>
         </div>
-    </div>
 
-    <!-- Вкладка: Поддержка -->
-    <div id="support" class="tab-content">
-        <div class="support-text">
-            Друзья, если у Вас появились проблемы с нашим VPN, ошибка сертификата, не работают конфигурации, ошибка 562 в Happ и другие прочие ошибки, срочно сообщайтесь в поддержку. Ведь у нас есть поддержка — внизу⬇️
-        </div>
-        <div class="telegram-btn">
-            <a href="https://t.me/KrolekVPNRebornSupport_bot" target="_blank" rel="noopener noreferrer" class="tg-button">
-                <span class="tg-logo">🗨️</span> Поддержка KrolekVPNReborn 🗨️
-            </a>
-        </div>
+        <footer>
+            🐇 KrolekVPNReborn — честный VPN без скрытых условий
+        </footer>
     </div>
-
-    <footer>
-        🐇 KrolekVPNReborn — честный VPN без скрытых условий
-    </footer>
 </div>
 
 <script>
@@ -376,7 +390,7 @@
         });
     });
 
-    // копирование ссылки (без изменений)
+    // копирование ссылки
     const copyBtn = document.getElementById('copyBtn');
     const linkSpan = document.getElementById('vpnLink');
     const linkToCopy = linkSpan.innerText;

@@ -29,40 +29,8 @@
             border-radius: 52px;
             box-shadow: 0 25px 45px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 165, 0, 0.2);
             padding: 2rem 1.8rem 2.5rem;
-            position: relative;
-            overflow: hidden;
         }
 
-        /* Контейнер для зайцев — именно там, где ссылка и кнопка */
-        .bunny-area {
-            position: relative;
-            margin: 20px 0;
-            min-height: 90px;
-        }
-
-        .bunny {
-            position: absolute;
-            font-size: 2.2rem;
-            transition: all 0.05s linear;
-            pointer-events: none;
-            font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
-            z-index: 10;
-            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.2));
-        }
-
-        /* Анимация подпрыгивания и движения */
-        @keyframes jumpAndMove {
-            0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
-            30% { transform: translate(calc(var(--moveX) * 0.3), calc(var(--moveY) * 0.3 - 20px)) rotate(10deg); }
-            70% { transform: translate(calc(var(--moveX) * 0.7), calc(var(--moveY) * 0.7 - 10px)) rotate(-5deg); }
-            100% { transform: translate(var(--moveX), var(--moveY)) rotate(0deg); opacity: 0; }
-        }
-
-        .jump-to-btn {
-            animation: jumpAndMove 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-        }
-
-        /* Остальные стили */
         .tabs {
             display: flex;
             gap: 12px;
@@ -123,8 +91,6 @@
             gap: 12px;
             flex-wrap: wrap;
             border: 1px solid #ffd9aa;
-            position: relative;
-            z-index: 5;
         }
 
         .link-url {
@@ -147,8 +113,11 @@
             color: white;
             cursor: pointer;
             transition: 0.2s;
-            position: relative;
-            z-index: 15;
+        }
+
+        .copy-btn:hover {
+            background: #e5741e;
+            transform: scale(0.97);
         }
 
         .telegram-btn {
@@ -170,6 +139,11 @@
             transition: 0.2s;
         }
 
+        .tg-button:hover {
+            background: #1f8bc9;
+            transform: translateY(-2px);
+        }
+
         .rules-frame {
             margin-top: 1.5rem;
             border: 2px solid #ffbd7f;
@@ -184,6 +158,32 @@
             text-align: center;
             color: #b65100;
             margin-bottom: 1rem;
+        }
+
+        .rules-text {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #2e241d;
+        }
+
+        .rules-text p {
+            margin-bottom: 0.75rem;
+        }
+
+        .rules-text ol {
+            padding-left: 1.5rem;
+            margin: 1rem 0 0.5rem;
+        }
+
+        .rules-text li {
+            margin-bottom: 0.7rem;
+        }
+
+        hr {
+            margin: 0.5rem 0 1rem;
+            border: none;
+            height: 1px;
+            background: radial-gradient(circle, #ffb469, transparent);
         }
 
         .support-text {
@@ -210,7 +210,6 @@
 <body>
 
 <div class="card">
-    <!-- Вкладки -->
     <div class="tabs">
         <div class="tab active" data-tab="sub">Подписка ✅</div>
         <div class="tab" data-tab="support">Поддержка 🗨️</div>
@@ -220,14 +219,6 @@
     <div id="sub" class="tab-content active-content">
         <div class="offer">
             <h2>⬇️ Бесплатная подписка KrolekVPNReborn ⬇️</h2>
-            <div class="bunny-area" id="bunnyArea">
-                <!-- Сюда будут добавляться зайцы -->
-                <div class="bunny" style="left: 10px; top: -20px;">🐇</div>
-                <div class="bunny" style="left: 80px; top: -10px;">🐰</div>
-                <div class="bunny" style="left: 150px; top: -30px;">🐇</div>
-                <div class="bunny" style="left: 220px; top: -5px;">🐰</div>
-                <div class="bunny" style="left: 290px; top: -25px;">🐇</div>
-            </div>
             <div class="link-box">
                 <span class="link-url" id="vpnLink">https://raw.githubusercontent.com/kangaroo255075-collab/KrolekVPNReborn-Reborn-/refs/heads/main/Krolek.txt</span>
                 <button class="copy-btn" id="copyBtn">📋 Копировать</button>
@@ -243,11 +234,14 @@
         <div class="rules-frame">
             <div class="rules-title">‼️‼️ Правила использования Нашего VPN ‼️‼️</div>
             <div class="rules-text">
+                <p>Некоторые из Вас возможно нарушат правила. Читайте внимательно статью и Вы научитесь пользоваться обходом📜</p>
                 <ol>
-                    <li><strong>Не заходить в банковские приложения!</strong> Все банки узнают, что Вы пользуетесь обходом и передадут данные Роскомнадзору.</li>
-                    <li><strong>Не заходить в русские сервисы</strong> (Яндекс, VK, Max и т.д.).</li>
-                    <li><strong>Не использовать торренты</strong>, иначе сервер сбросится.</li>
+                    <li><strong>Не заходить в банковские приложения!</strong> Все банки без исключения узнают, что Вы пользуетесь конфигурацией для обхода и срочно передаст данные Роскомнадзору. И только после этого конфигурация или подписка снесется.</li>
+                    <li><strong>Не заходить в русские сервисы или приложения.</strong> Такие приложения под полным контролем Роскомнадзора. Русские приложения — Max, Яндекс, Яндекс Карты, Яндекс Навигатор (все, что от Яндекса), VK, VK Клипы, VK видео (все, что от VK) и т.д.</li>
+                    <li><strong>Не используйте торренты</strong>, так как из-за этого сервер сбросится и придется Нам обновлять целую подписку.</li>
                 </ol>
+                <hr>
+                <p style="font-size:0.85rem; opacity:0.8;">⚡ Соблюдение правил — залог стабильной работы подписки.</p>
             </div>
         </div>
     </div>
@@ -255,16 +249,18 @@
     <!-- Вкладка: Поддержка -->
     <div id="support" class="tab-content">
         <div class="support-text">
-            Друзья, если у Вас появились проблемы с VPN, ошибка сертификата, не работают конфигурации, ошибка 562 в Happ и другие — срочно сообщайтесь в поддержку. Внизу кнопка ⬇️
+            Друзья, если у Вас появились проблемы с нашим VPN, ошибка сертификата, не работают конфигурации, ошибка 562 в Happ и другие прочие ошибки, срочно сообщайтесь в поддержку. Ведь у нас есть поддержка — внизу⬇️
         </div>
         <div class="telegram-btn">
             <a href="https://t.me/KrolekVPNRebornSupport_bot" target="_blank" class="tg-button">
-                🗨️ Поддержка KrolekVPNReborn
+                🗨️ Поддержка KrolekVPNReborn 🗨️
             </a>
         </div>
     </div>
 
-    <footer>🐇 KrolekVPNReborn — честный VPN без скрытых условий</footer>
+    <footer>
+        🐇 KrolekVPNReborn — честный VPN без скрытых условий
+    </footer>
 </div>
 
 <script>
@@ -276,73 +272,40 @@
             tab.classList.add('active');
             document.querySelectorAll('.tab-content').forEach(content => {
                 content.classList.remove('active-content');
-                if (content.id === target) content.classList.add('active-content');
+                if (content.id === target) {
+                    content.classList.add('active-content');
+                }
             });
         });
     });
 
-    // Копирование и анимация зайцев
+    // Копирование ссылки
     const copyBtn = document.getElementById('copyBtn');
     const linkSpan = document.getElementById('vpnLink');
-    const linkText = linkSpan.innerText;
-    const bunnyArea = document.getElementById('bunnyArea');
-
-    function getButtonPosition() {
-        const btnRect = copyBtn.getBoundingClientRect();
-        const areaRect = bunnyArea.getBoundingClientRect();
-        return {
-            x: btnRect.left + btnRect.width / 2 - areaRect.left,
-            y: btnRect.top + btnRect.height / 2 - areaRect.top
-        };
-    }
+    const linkToCopy = linkSpan.innerText;
 
     copyBtn.addEventListener('click', async () => {
-        // Копируем ссылку
         try {
-            await navigator.clipboard.writeText(linkText);
-        } catch(e) {
+            await navigator.clipboard.writeText(linkToCopy);
+            const originalText = copyBtn.innerHTML;
+            copyBtn.innerHTML = '✅ Скопировано!';
+            setTimeout(() => {
+                copyBtn.innerHTML = originalText;
+            }, 1800);
+        } catch (err) {
             const textarea = document.createElement('textarea');
-            textarea.value = linkText;
+            textarea.value = linkToCopy;
             document.body.appendChild(textarea);
             textarea.select();
             document.execCommand('copy');
             document.body.removeChild(textarea);
-        }
-
-        // Анимируем зайцев к кнопке
-        const bunnies = document.querySelectorAll('.bunny');
-        const target = getButtonPosition();
-
-        bunnies.forEach((bunny, index) => {
-            const rect = bunny.getBoundingClientRect();
-            const areaRect = bunnyArea.getBoundingClientRect();
-            const startX = rect.left - areaRect.left;
-            const startY = rect.top - areaRect.top;
-
-            const moveX = target.x - startX;
-            const moveY = target.y - startY;
-
-            bunny.style.setProperty('--moveX', moveX + 'px');
-            bunny.style.setProperty('--moveY', moveY + 'px');
-            bunny.classList.remove('jump-to-btn');
-            // форсируем перерисовку
-            void bunny.offsetWidth;
-            bunny.classList.add('jump-to-btn');
-
-            // После анимации возвращаем зайца на место
+            copyBtn.innerHTML = '📋 Скопировано!';
             setTimeout(() => {
-                bunny.classList.remove('jump-to-btn');
-                bunny.style.transform = '';
-            }, 600);
-        });
-
-        // Визуальный фидбек кнопки
-        const originalText = copyBtn.innerHTML;
-        copyBtn.innerHTML = '✅ Скопировано!';
-        setTimeout(() => {
-            copyBtn.innerHTML = originalText;
-        }, 1500);
+                copyBtn.innerHTML = '📋 Копировать';
+            }, 1500);
+        }
     });
 </script>
+
 </body>
 </html>

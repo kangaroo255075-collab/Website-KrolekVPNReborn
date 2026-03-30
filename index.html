@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>KrolekVPNReborn — бесплатная подписка</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(145deg, #fff5e6 0%, #ffe0c0 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 1rem;
+        }
+
+        /* главный контейнер */
+        .card {
+            max-width: 720px;
+            width: 100%;
+            background: rgba(255, 248, 235, 0.85);
+            backdrop-filter: blur(2px);
+            border-radius: 52px;
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 165, 0, 0.2);
+            padding: 2rem 1.8rem 2.5rem;
+            transition: all 0.2s;
+        }
+
+        /* оранжевые зайцы — декоративные элементы */
+        .bunny-deco {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .bunny {
+            font-size: 2.6rem;
+            filter: drop-shadow(2px 4px 12px rgba(255, 100, 0, 0.4));
+            transition: transform 0.2s ease;
+            display: inline-block;
+        }
+
+        .bunny:hover {
+            transform: scale(1.08) rotate(2deg);
+        }
+
+        /* заголовок + ссылка */
+        .offer {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .offer h2 {
+            font-size: 1.7rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #d45a00, #ff8c33);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 1.2rem;
+            letter-spacing: -0.3px;
+        }
+
+        .link-box {
+            background: #fff7ef;
+            border-radius: 60px;
+            padding: 0.8rem 1rem 0.8rem 1.6rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            border: 1px solid #ffd9aa;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+        }
+
+        .link-url {
+            font-size: 0.85rem;
+            word-break: break-all;
+            color: #b45a1a;
+            font-weight: 500;
+            background: #fff2e4;
+            padding: 0.4rem 0.8rem;
+            border-radius: 40px;
+            flex: 1;
+            text-align: left;
+            font-family: 'SF Mono', monospace;
+        }
+
+        .copy-btn {
+            background: #ff8c42;
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 60px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .copy-btn:hover {
+            background: #e5741e;
+            transform: scale(0.97);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        /* кнопка Telegram */
+        .telegram-btn {
+            display: flex;
+            justify-content: center;
+            margin: 2rem 0 2rem;
+        }
+
+        .tg-button {
+            background: #2aabee;
+            padding: 0.9rem 2rem;
+            border-radius: 100px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            transition: 0.2s;
+            box-shadow: 0 8px 18px rgba(42, 171, 238, 0.25);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .tg-button:hover {
+            background: #1f8bc9;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 22px rgba(42, 171, 238, 0.35);
+        }
+
+        .tg-logo {
+            font-size: 1.6rem;
+            filter: drop-shadow(0 1px 1px rgba(0,0,0,0.1));
+        }
+
+        /* правила в качественной рамке */
+        .rules-frame {
+            margin-top: 1.5rem;
+            border: 2px solid #ffbd7f;
+            border-radius: 36px;
+            background: #fffaf2;
+            padding: 1.6rem 1.8rem;
+            box-shadow: 0 12px 22px -10px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255,255,240,0.8);
+            transition: 0.1s;
+        }
+
+        .rules-title {
+            font-size: 1.2rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 1.2rem;
+            color: #b65100;
+            letter-spacing: -0.2px;
+        }
+
+        .rules-text {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #2e241d;
+        }
+
+        .rules-text p {
+            margin-bottom: 0.75rem;
+        }
+
+        .rules-text ol {
+            padding-left: 1.5rem;
+            margin: 1rem 0 0.5rem;
+        }
+
+        .rules-text li {
+            margin-bottom: 0.7rem;
+        }
+
+        hr {
+            margin: 0.5rem 0 1rem;
+            border: none;
+            height: 1px;
+            background: radial-gradient(circle, #ffb469, transparent);
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #c28444;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 550px) {
+            .card {
+                padding: 1.5rem;
+            }
+            .offer h2 {
+                font-size: 1.3rem;
+            }
+            .link-box {
+                flex-direction: column;
+                align-items: stretch;
+                border-radius: 32px;
+                padding: 1rem;
+            }
+            .link-url {
+                text-align: center;
+            }
+            .copy-btn {
+                justify-content: center;
+            }
+            .rules-frame {
+                padding: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <!-- оранжевые зайцы вверху -->
+    <div class="bunny-deco">
+        <span class="bunny">🐇🧡</span>
+        <span class="bunny">🐰✨</span>
+        <span class="bunny">🧡🐇</span>
+    </div>
+
+    <!-- надпись + ссылка с копированием -->
+    <div class="offer">
+        <h2>⬇️ Бесплатная подписка KrolekVPNReborn ⬇️</h2>
+        <div class="link-box">
+            <span class="link-url" id="vpnLink">https://raw.githubusercontent.com/kangaroo255075-collab/KrolekVPNReborn-/refs/heads/main/KrolekVPNReborn.txt</span>
+            <button class="copy-btn" id="copyBtn">📋 Копировать</button>
+        </div>
+    </div>
+
+    <!-- Telegram кнопка с логотипом -->
+    <div class="telegram-btn">
+        <a href="https://t.me/KrolekVPNReborn" target="_blank" rel="noopener noreferrer" class="tg-button">
+            <span class="tg-logo">✈️</span> Подпишитесь на канал KrolekVPNReborn
+        </a>
+    </div>
+
+    <!-- правила в рамке -->
+    <div class="rules-frame">
+        <div class="rules-title">‼️‼️ Правила использования Нашего VPN ‼️‼️</div>
+        <div class="rules-text">
+            <p>Некоторые из Вас возможно нарушат правила. Читайте внимательно статью и Вы научитесь пользоваться обходом📜</p>
+            <ol>
+                <li><strong>Не заходить в банковские приложения!</strong> Все банки без исключения узнают, что Вы пользуетесь конфигурацией для обхода и срочно передаст данные Роскомнадзору. И только после этого конфигурация или подписка снесется.</li>
+                <li><strong>Не заходить в русские сервисы или приложения.</strong> Такие приложения под полным контролем Роскомнадзора. Русские приложения — Max, Яндекс, Яндекс Карты, Яндекс Навигатор (все, что от Яндекса), VK, VK Клипы, VK видео (все, что от VK) и т.д.</li>
+                <li><strong>Не используйте торренты</strong>, так как из-за этого сервер сбросится и придется Нам обновлять целую подписку.</li>
+            </ol>
+            <hr>
+            <p style="font-size:0.85rem; opacity:0.8;">⚡ Соблюдение правил — залог стабильной работы подписки.</p>
+        </div>
+    </div>
+
+    <footer>
+        🐇 KrolekVPNReborn — честный VPN без скрытых условий
+    </footer>
+</div>
+
+<script>
+    const copyBtn = document.getElementById('copyBtn');
+    const linkSpan = document.getElementById('vpnLink');
+    const linkToCopy = linkSpan.innerText;
+
+    copyBtn.addEventListener('click', async () => {
+        try {
+            await navigator.clipboard.writeText(linkToCopy);
+            // визуальная обратная связь
+            const originalText = copyBtn.innerHTML;
+            copyBtn.innerHTML = '✅ Скопировано!';
+            setTimeout(() => {
+                copyBtn.innerHTML = originalText;
+            }, 1800);
+        } catch (err) {
+            // fallback для старых браузеров
+            const textarea = document.createElement('textarea');
+            textarea.value = linkToCopy;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            copyBtn.innerHTML = '📋 Скопировано!';
+            setTimeout(() => {
+                copyBtn.innerHTML = '📋 Копировать';
+            }, 1500);
+        }
+    });
+</script>
+
+</body>
+  </html>

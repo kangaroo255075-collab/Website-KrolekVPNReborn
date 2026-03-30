@@ -21,7 +21,6 @@
             padding: 2rem 1rem;
         }
 
-        /* главный контейнер */
         .card {
             max-width: 720px;
             width: 100%;
@@ -33,7 +32,6 @@
             transition: all 0.2s;
         }
 
-        /* оранжевые зайцы — декоративные элементы */
         .bunny-deco {
             display: flex;
             justify-content: center;
@@ -53,7 +51,6 @@
             transform: scale(1.08) rotate(2deg);
         }
 
-        /* заголовок + ссылка */
         .offer {
             text-align: center;
             margin-bottom: 2rem;
@@ -118,7 +115,6 @@
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
-        /* кнопка Telegram */
         .telegram-btn {
             display: flex;
             justify-content: center;
@@ -152,7 +148,6 @@
             filter: drop-shadow(0 1px 1px rgba(0,0,0,0.1));
         }
 
-        /* правила в качественной рамке */
         .rules-frame {
             margin-top: 1.5rem;
             border: 2px solid #ffbd7f;
@@ -233,30 +228,26 @@
 <body>
 
 <div class="card">
-    <!-- оранжевые зайцы вверху -->
     <div class="bunny-deco">
         <span class="bunny">🐇🧡</span>
         <span class="bunny">🐰✨</span>
         <span class="bunny">🧡🐇</span>
     </div>
 
-    <!-- надпись + ссылка с копированием -->
     <div class="offer">
         <h2>⬇️ Бесплатная подписка KrolekVPNReborn ⬇️</h2>
         <div class="link-box">
-            <span class="link-url" id="vpnLink">https://raw.githubusercontent.com/kangaroo255075-collab/KrolekVPNReborn-/refs/heads/main/KrolekVPNReborn.txt</span>
+            <span class="link-url" id="vpnLink">https://raw.githubusercontent.com/kangaroo255075-collab/KrolekVPNReborn-Reborn-/refs/heads/main/Krolek.txt</span>
             <button class="copy-btn" id="copyBtn">📋 Копировать</button>
         </div>
     </div>
 
-    <!-- Telegram кнопка с логотипом -->
     <div class="telegram-btn">
         <a href="https://t.me/KrolekVPNReborn" target="_blank" rel="noopener noreferrer" class="tg-button">
             <span class="tg-logo">✈️</span> Подпишитесь на канал KrolekVPNReborn
         </a>
     </div>
 
-    <!-- правила в рамке -->
     <div class="rules-frame">
         <div class="rules-title">‼️‼️ Правила использования Нашего VPN ‼️‼️</div>
         <div class="rules-text">
@@ -284,14 +275,12 @@
     copyBtn.addEventListener('click', async () => {
         try {
             await navigator.clipboard.writeText(linkToCopy);
-            // визуальная обратная связь
             const originalText = copyBtn.innerHTML;
             copyBtn.innerHTML = '✅ Скопировано!';
             setTimeout(() => {
                 copyBtn.innerHTML = originalText;
             }, 1800);
         } catch (err) {
-            // fallback для старых браузеров
             const textarea = document.createElement('textarea');
             textarea.value = linkToCopy;
             document.body.appendChild(textarea);
@@ -307,4 +296,4 @@
 </script>
 
 </body>
-  </html>
+</html>

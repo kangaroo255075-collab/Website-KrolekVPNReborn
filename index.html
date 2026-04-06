@@ -215,7 +215,7 @@
         <div class="subscription-card">
             <h3>🔐 Ваша подписка</h3>
             <div class="expire-date" id="expireDate">10 апреля 2026</div>
-            <p style="font-size: 12px; color:#888;">Кормите кролика, чтобы продлить подписку</p>
+            <p style="font-size: 12px; color:#888;">Кормите кролика морковками, чтобы продлить подписку</p>
         </div>
 
         <div class="features" id="features">
@@ -239,8 +239,8 @@
             <div class="rabbit-emoji">🐇</div>
             <div class="rabbit-info">
                 <h4>Голодный кролик!</h4>
-                <p id="rabbitPoints"><span class="loading-spinner"></span> Загрузка...</p>
-                <button class="btn-feed" id="feedBtn" disabled><i class="fas fa-carrot"></i> Покорми кролика 🥕</button>
+                <p id="rabbitCarrots"><span class="loading-spinner"></span> Загрузка...</p>
+                <button class="btn-feed" id="feedBtn" disabled><i class="fas fa-carrot"></i> Покормить (1🥕)</button>
             </div>
         </div>
     </div>
@@ -250,7 +250,7 @@
     <script>
         const BOT_TOKEN = "8214032735:AAEjdPUQUUzvyit4OQWiQWvjM7aJ1_mMzAU";
         let userId = null;
-        let userPoints = 0;
+        let userCarrots = 0;
 
         async function getTelegramUser() {
             return new Promise((resolve) => {
@@ -269,7 +269,7 @@
             });
         }
 
-        async function fetchUserPoints() {
+        async function fetchUserCarrots() {
             if (!userId) return null;
             
             return new Promise((resolve) => {
@@ -282,17 +282,13 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         chat_id: userId,
-                        text: '/points'
+                        text: '/carrots'
                     })
                 }).then(async (response) => {
                     clearTimeout(timeout);
                     if (response.ok) {
                         const data = await response.json();
-                        if (data.ok && data.result) {
-                            resolve(null);
-                        } else {
-                            resolve(null);
-                        }
+                        resolve(null);
                     } else {
                         resolve(null);
                     }
@@ -303,29 +299,29 @@
             });
         }
 
-        async function loadUserPoints() {
-            const pointsElement = document.getElementById('rabbitPoints');
+        async function loadUserCarrots() {
+            const carrotsElement = document.getElementById('rabbitCarrots');
             const feedBtn = document.getElementById('feedBtn');
             
-            pointsElement.innerHTML = '<span class="loading-spinner"></span> Загрузка...';
+            carrotsElement.innerHTML = '<span class="loading-spinner"></span> Загрузка...';
             feedBtn.disabled = true;
             
             userId = await getTelegramUser();
             
             if (!userId) {
-                pointsElement.innerHTML = '❌ Откройте сайт через бота';
+                carrotsElement.innerHTML = '❌ Откройте сайт через бота';
                 feedBtn.disabled = true;
                 return;
             }
             
-            const points = await fetchUserPoints();
+            const carrots = await fetchUserCarrots();
             
-            if (points !== null) {
-                userPoints = points;
-                pointsElement.innerHTML = `У вас ${userPoints} очков`;
-                feedBtn.disabled = userPoints < 100;
+            if (carrots !== null) {
+                userCarrots = carrots;
+                carrotsElement.innerHTML = `🥕 ${userCarrots} морковок`;
+                feedBtn.disabled = userCarrots < 1;
             } else {
-                pointsElement.innerHTML = `⚠️ Ошибка загрузки (ID: ${userId})`;
+                carrotsElement.innerHTML = `⚠️ Ошибка загрузки (ID: ${userId})`;
                 feedBtn.disabled = true;
             }
         }
@@ -338,14 +334,14 @@
             if (!userId) {
                 showNotification('❌ Ошибка: не удалось определить пользователя', false);
                 feedBtn.disabled = false;
-                feedBtn.innerHTML = '<i class="fas fa-carrot"></i> Покорми кролика 🥕';
+                feedBtn.innerHTML = '<i class="fas fa-carrot"></i> Покормить (1🥕)';
                 return;
             }
             
-            if (userPoints < 100) {
-                showNotification(`❌ Не хватает очков! Нужно 100, у вас ${userPoints}`, false);
+            if (userCarrots < 1) {
+                showNotification(`❌ Не хватает морковок! Нужно 1🥕, у вас ${userCarrots}🥕`, false);
                 feedBtn.disabled = false;
-                feedBtn.innerHTML = '<i class="fas fa-carrot"></i> Покорми кролика 🥕';
+                feedBtn.innerHTML = '<i class="fas fa-carrot"></i> Покормить (1🥕)';
                 return;
             }
             
@@ -361,8 +357,8 @@
                 
                 if (response.ok) {
                     showNotification(`✅ Кролик сыт! Подписка продлена на 7 дней! 🎉`, true);
-                    userPoints -= 100;
-                    document.getElementById('rabbitPoints').innerHTML = `У вас ${userPoints} очков`;
+                    userCarrots -= 1;
+                    document.getElementById('rabbitCarrots').innerHTML = `🥕 ${userCarrots} морковок`;
                     const rabbit = document.querySelector('.rabbit-emoji');
                     rabbit.style.transform = 'scale(1.2)';
                     setTimeout(() => rabbit.style.transform = '', 300);
@@ -373,8 +369,8 @@
                 showNotification(`❌ Ошибка соединения!`, false);
             }
             
-            feedBtn.disabled = userPoints < 100;
-            feedBtn.innerHTML = '<i class="fas fa-carrot"></i> Покорми кролика 🥕';
+            feedBtn.disabled = userCarrots < 1;
+            feedBtn.innerHTML = '<i class="fas fa-carrot"></i> Покормить (1🥕)';
         }
 
         function showNotification(msg, isSuccess = true) {
@@ -386,7 +382,7 @@
 
         document.getElementById('feedBtn').addEventListener('click', feedRabbit);
         
-        loadUserPoints();
+        loadUserCarrots();
     </script>
 </body>
 </html>

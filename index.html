@@ -3,309 +3,347 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>KrolekVPNReborn — бесплатная подписка</title>
+    <title>KrolekVPNReborn — Бесплатный VPN</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a00 100%);
+            color: #fff;
+            line-height: 1.6;
             min-height: 100vh;
-            background: linear-gradient(145deg, #fff5e6 0%, #ffe0c0 100%);
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
+        /* Навбар */
+        .navbar {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            padding: 2rem 1rem;
+            padding: 20px 0;
+            flex-wrap: wrap;
+            gap: 15px;
         }
-
-        .card {
-            max-width: 720px;
-            width: 100%;
-            background: rgba(255, 248, 235, 0.85);
-            backdrop-filter: blur(2px);
-            border-radius: 52px;
-            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 165, 0, 0.2);
-            padding: 2rem 1.8rem 2.5rem;
-        }
-
-        .tabs {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 2rem;
-            border-bottom: 2px solid #ffd9aa;
-            padding-bottom: 0.5rem;
-        }
-
-        .tab {
-            font-size: 1.2rem;
+        .logo { display: flex; align-items: center; gap: 10px; font-size: 24px; font-weight: 700; }
+        .logo i { color: #ff6b35; font-size: 32px; }
+        .logo span { background: linear-gradient(135deg, #ff6b35, #ff9f4a); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { color: #fff; text-decoration: none; transition: 0.3s; font-weight: 500; }
+        .nav-links a:hover { color: #ff6b35; }
+        .btn-bot {
+            background: linear-gradient(135deg, #ff6b35, #ff9f4a);
+            padding: 10px 24px;
+            border-radius: 30px;
+            color: #fff;
+            text-decoration: none;
             font-weight: 600;
-            padding: 0.5rem 1.2rem;
-            border-radius: 40px;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-bot:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(255,107,53,0.4); }
+        
+        /* Кролик */
+        .rabbit-desktop {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
             cursor: pointer;
-            transition: 0.2s;
-            background: transparent;
-            color: #b45a1a;
         }
-
-        .tab.active {
-            background: #ff8c42;
+        .rabbit-card {
+            background: rgba(255,107,53,0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 1px solid rgba(255,107,53,0.4);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+        .rabbit-emoji { font-size: 48px; animation: hop 1s infinite ease-in-out; }
+        @keyframes hop { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+        .rabbit-info { text-align: right; }
+        .rabbit-info h4 { font-size: 14px; color: #ff9f4a; }
+        .rabbit-info p { font-size: 12px; color: #aaa; }
+        .btn-feed {
+            background: linear-gradient(135deg, #ff6b35, #ff9f4a);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 25px;
             color: white;
-            box-shadow: 0 4px 10px rgba(255, 140, 66, 0.3);
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
-
-        .tab-content {
-            display: none;
-            animation: fade 0.3s ease;
-        }
-
-        .tab-content.active-content {
-            display: block;
-        }
-
-        @keyframes fade {
-            from { opacity: 0; transform: translateY(5px);}
-            to { opacity: 1; transform: translateY(0);}
-        }
-
-        .offer h2 {
-            font-size: 1.7rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #d45a00, #ff8c33);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-            margin-bottom: 1.2rem;
-            text-align: center;
-        }
-
-        .link-box {
-            background: #fff7ef;
-            border-radius: 60px;
-            padding: 0.8rem 1rem;
+        .btn-feed:hover { transform: scale(1.05); box-shadow: 0 0 15px rgba(255,107,53,0.5); }
+        .btn-feed:disabled { opacity: 0.5; cursor: not-allowed; }
+        
+        /* Герой */
+        .hero {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 12px;
+            min-height: 70vh;
+            gap: 40px;
             flex-wrap: wrap;
-            border: 1px solid #ffd9aa;
+            padding: 40px 0;
         }
-
-        .link-url {
-            font-size: 0.85rem;
-            word-break: break-all;
-            color: #b45a1a;
-            background: #fff2e4;
-            padding: 0.4rem 0.8rem;
-            border-radius: 40px;
-            flex: 1;
-            font-family: monospace;
+        .hero-content { flex: 1; }
+        .hero-badge {
+            background: rgba(255,107,53,0.2);
+            border: 1px solid rgba(255,107,53,0.5);
+            border-radius: 30px;
+            padding: 5px 15px;
+            display: inline-block;
+            font-size: 14px;
+            margin-bottom: 20px;
+            color: #ff9f4a;
         }
-
-        .copy-btn {
-            background: #ff8c42;
-            border: none;
-            padding: 0.5rem 1.2rem;
-            border-radius: 60px;
-            font-weight: bold;
-            color: white;
-            cursor: pointer;
-            transition: 0.2s;
+        .hero h1 { font-size: 52px; font-weight: 700; margin-bottom: 20px; line-height: 1.2; }
+        .hero h1 span { color: #ff6b35; }
+        .hero p { font-size: 18px; color: #aaa; margin-bottom: 30px; max-width: 500px; }
+        .hero-stats { display: flex; gap: 30px; margin-top: 30px; }
+        .stat { text-align: center; }
+        .stat-number { font-size: 32px; font-weight: 700; color: #ff6b35; }
+        .stat-label { font-size: 14px; color: #888; }
+        .hero-image { flex: 1; text-align: center; }
+        .hero-image i { font-size: 250px; color: rgba(255,107,53,0.2); }
+        
+        /* Подписка */
+        .subscription-card {
+            background: linear-gradient(135deg, rgba(255,107,53,0.1), rgba(255,159,74,0.05));
+            border-radius: 20px;
+            padding: 25px;
+            margin: 20px 0;
+            text-align: center;
+            border: 1px solid rgba(255,107,53,0.3);
         }
-
-        .copy-btn:hover {
-            background: #e5741e;
-            transform: scale(0.97);
+        .expire-date { font-size: 24px; font-weight: 700; color: #ff6b35; margin: 10px 0; }
+        
+        /* Преимущества */
+        .features { padding: 60px 0; }
+        .section-title { text-align: center; font-size: 36px; margin-bottom: 50px; }
+        .section-title span { color: #ff6b35; }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
         }
-
-        .telegram-btn {
-            display: flex;
-            justify-content: center;
-            margin: 2rem 0;
+        .feature-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            transition: 0.3s;
+            border: 1px solid rgba(255,107,53,0.2);
         }
-
-        .tg-button {
-            background: #2aabee;
-            padding: 0.9rem 2rem;
-            border-radius: 100px;
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-            display: inline-flex;
+        .feature-card:hover { transform: translateY(-5px); border-color: #ff6b35; box-shadow: 0 10px 30px rgba(255,107,53,0.2); }
+        .feature-icon { font-size: 48px; color: #ff6b35; margin-bottom: 20px; }
+        .feature-card h3 { margin-bottom: 15px; }
+        .feature-card p { color: #aaa; font-size: 14px; }
+        
+        /* Уведомление */
+        .notification {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: #1a1a1a;
+            border-left: 4px solid #ff6b35;
+            padding: 12px 20px;
+            border-radius: 10px;
+            z-index: 200;
+            display: none;
             align-items: center;
-            gap: 12px;
-            transition: 0.2s;
+            gap: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
-
-        .tg-button:hover {
-            background: #1f8bc9;
-            transform: translateY(-2px);
-        }
-
-        .rules-frame {
-            margin-top: 1.5rem;
-            border: 2px solid #ffbd7f;
-            border-radius: 36px;
-            background: #fffaf2;
-            padding: 1.6rem;
-        }
-
-        .rules-title {
-            font-size: 1.2rem;
-            font-weight: 800;
-            text-align: center;
-            color: #b65100;
-            margin-bottom: 1rem;
-        }
-
-        .rules-text {
-            font-size: 0.9rem;
-            line-height: 1.5;
-            color: #2e241d;
-        }
-
-        .rules-text p {
-            margin-bottom: 0.75rem;
-        }
-
-        .rules-text ol {
-            padding-left: 1.5rem;
-            margin: 1rem 0 0.5rem;
-        }
-
-        .rules-text li {
-            margin-bottom: 0.7rem;
-        }
-
-        hr {
-            margin: 0.5rem 0 1rem;
-            border: none;
-            height: 1px;
-            background: radial-gradient(circle, #ffb469, transparent);
-        }
-
-        .support-text {
-            background: #fff7ef;
-            border-radius: 28px;
-            padding: 1.2rem;
-            text-align: center;
-            margin: 1rem 0;
-        }
-
-        footer {
-            text-align: center;
-            font-size: 0.7rem;
-            color: #c28444;
-            margin-top: 2rem;
-        }
-
-        @media (max-width: 550px) {
-            .offer h2 { font-size: 1.3rem; }
-            .link-box { flex-direction: column; }
-            .tabs { gap: 6px; }
-            .tab { font-size: 1rem; padding: 0.3rem 0.8rem; }
+        .notification.show { display: flex; animation: slideIn 0.3s ease; }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        
+        .footer { text-align: center; padding: 40px 0; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 40px; color: #666; }
+        
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 36px; }
+            .navbar { flex-direction: column; text-align: center; }
+            .nav-links { flex-wrap: wrap; justify-content: center; }
+            .rabbit-desktop { bottom: 10px; right: 10px; }
+            .rabbit-card { padding: 10px 15px; }
+            .rabbit-emoji { font-size: 36px; }
         }
     </style>
 </head>
 <body>
+    <div class="container">
+        <nav class="navbar">
+            <div class="logo"><i class="fas fa-shield-alt"></i><span>KrolekVPN<span style="color:#fff">Reborn</span></span></div>
+            <div class="nav-links">
+                <a href="#features">Преимущества</a>
+                <a href="https://t.me/KrolekVPNReborn" target="_blank">Канал</a>
+                <a href="https://t.me/KrolekVPNReborn_bot" target="_blank">Бот</a>
+            </div>
+            <a href="https://t.me/KrolekVPNReborn_bot" class="btn-bot" target="_blank"><i class="fab fa-telegram"></i> Перейти в бот</a>
+        </nav>
 
-<div class="card">
-    <div class="tabs">
-        <div class="tab active" data-tab="sub">Подписка ✅</div>
-        <span style="color:#ff8c42; font-weight:bold; font-size:1.4rem;">|</span>
-        <div class="tab" data-tab="support">Поддержка 🗨️</div>
-    </div>
+        <div class="hero">
+            <div class="hero-content">
+                <div class="hero-badge"><i class="fas fa-crown"></i> Бесплатно навсегда</div>
+                <h1>Обходи блокировки с <span>KrolekVPNReborn</span></h1>
+                <p>Стабильная скорость 15 Мбит/с, поддержка 24/7 и никаких скрытых платежей.</p>
+                <div class="hero-stats">
+                    <div class="stat"><div class="stat-number" id="userCount">500+</div><div class="stat-label">Активных пользователей</div></div>
+                    <div class="stat"><div class="stat-number">15+</div><div class="stat-label">Серверов</div></div>
+                    <div class="stat"><div class="stat-number">24/7</div><div class="stat-label">Поддержка</div></div>
+                </div>
+            </div>
+            <div class="hero-image"><i class="fas fa-globe"></i></div>
+        </div>
 
-    <!-- Вкладка: Подписка -->
-    <div id="sub" class="tab-content active-content">
-        <div class="offer">
-            <h2>⬇️ Бесплатная подписка KrolekVPNReborn ⬇️</h2>
-            <div class="link-box">
-                <span class="link-url" id="vpnLink">https://raw.githubusercontent.com/kangaroo255075-collab/KrolekVPNReborn-Reborn-/refs/heads/main/Krolek.txt</span>
-                <button class="copy-btn" id="copyBtn">📋 Копировать</button>
+        <!-- Подписка -->
+        <div class="subscription-card">
+            <h3>🔐 Ваша подписка</h3>
+            <div class="expire-date" id="expireDate">10 апреля 2026</div>
+            <p style="font-size: 12px; color:#888;">Подписка продлевается автоматически</p>
+        </div>
+
+        <div class="features" id="features">
+            <h2 class="section-title">Почему <span>KrolekVPNReborn</span>?</h2>
+            <div class="features-grid">
+                <div class="feature-card"><div class="feature-icon"><i class="fas fa-bolt"></i></div><h3>Высокая скорость</h3><p>Стабильные 15 Мбит/с</p></div>
+                <div class="feature-card"><div class="feature-icon"><i class="fas fa-headset"></i></div><h3>Поддержка 24/7</h3><p>Живые люди отвечают в любое время</p></div>
+                <div class="feature-card"><div class="feature-icon"><i class="fas fa-lock"></i></div><h3>Обход глушилок</h3><p>Работает там, где остальные падают</p></div>
+                <div class="feature-card"><div class="feature-icon"><i class="fas fa-gem"></i></div><h3>Совершенно бесплатно</h3><p>Навсегда. Без скрытых подписок</p></div>
             </div>
         </div>
 
-        <div class="telegram-btn">
-            <a href="https://t.me/KrolekVPNReborn" target="_blank" class="tg-button">
-                ✈️ Подпишитесь на канал KrolekVPNReborn
-            </a>
+        <div class="footer">
+            <p>© 2025-2026 KrolekVPNReborn. Бесплатный VPN для обхода блокировок.</p>
+            <p><a href="https://t.me/KrolekVPNReborn" style="color:#666;">Канал</a> | <a href="https://t.me/KrolekVPNReborn_bot" style="color:#666;">Бот</a> | <a href="https://t.me/Kr0l3k" style="color:#666;">Поддержка</a></p>
         </div>
+    </div>
 
-        <div class="rules-frame">
-            <div class="rules-title">‼️‼️ Правила использования Нашего VPN ‼️‼️</div>
-            <div class="rules-text">
-                <p>Некоторые из Вас возможно нарушат правила. Читайте внимательно статью и Вы научитесь пользоваться обходом📜</p>
-                <ol>
-                    <li><strong>Не заходить в банковские приложения!</strong> Все банки без исключения узнают, что Вы пользуетесь конфигурацией для обхода и срочно передаст данные Роскомнадзору. И только после этого конфигурация или подписка снесется.</li>
-                    <li><strong>Не заходить в русские сервисы или приложения.</strong> Такие приложения под полным контролем Роскомнадзора. Русские приложения — Max, Яндекс, Яндекс Карты, Яндекс Навигатор (все, что от Яндекса), VK, VK Клипы, VK видео (все, что от VK) и т.д.</li>
-                    <li><strong>Не используйте торренты</strong>, так как из-за этого сервер сбросится и придется Нам обновлять целую подписку.</li>
-                </ol>
-                <hr>
-                <p style="font-size:0.85rem; opacity:0.8;">⚡ Соблюдение правил — залог стабильной работы подписки.</p>
+    <!-- Кролик -->
+    <div class="rabbit-desktop">
+        <div class="rabbit-card">
+            <div class="rabbit-emoji">🐇</div>
+            <div class="rabbit-info">
+                <h4>Голодный кролик!</h4>
+                <p id="rabbitPoints">Загрузка...</p>
+                <button class="btn-feed" id="feedBtn"><i class="fas fa-carrot"></i> Покорми кролика 🥕</button>
             </div>
         </div>
     </div>
 
-    <!-- Вкладка: Поддержка -->
-    <div id="support" class="tab-content">
-        <div class="support-text">
-            Друзья, если у Вас появились проблемы с нашим VPN, ошибка сертификата, не работают конфигурации, ошибка 562 в Happ и другие прочие ошибки, срочно сообщайтесь в поддержку. Ведь у нас есть поддержка — внизу⬇️
-        </div>
-        <div class="telegram-btn">
-            <a href="https://t.me/KrolekVPNRebornSupport_bot" target="_blank" class="tg-button">
-                🗨️ Поддержка KrolekVPNReborn 🗨️
-            </a>
-        </div>
-    </div>
+    <div class="notification" id="notification"><i class="fas fa-carrot"></i><span id="notificationText"></span></div>
 
-    <footer>
-        🐇 KrolekVPNReborn — честный VPN без скрытых условий
-    </footer>
-</div>
-
-<script>
-    document.querySelectorAll('.tab').forEach(tab => {
-        tab.addEventListener('click', () => {
-            const target = tab.dataset.tab;
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active-content');
-                if (content.id === target) content.classList.add('active-content');
-            });
-        });
-    });
-
-    const copyBtn = document.getElementById('copyBtn');
-    const linkSpan = document.getElementById('vpnLink');
-    const linkToCopy = linkSpan.innerText;
-
-    copyBtn.addEventListener('click', async () => {
-        try {
-            await navigator.clipboard.writeText(linkToCopy);
-            const originalText = copyBtn.innerHTML;
-            copyBtn.innerHTML = '✅ Скопировано!';
-            setTimeout(() => {
-                copyBtn.innerHTML = originalText;
-            }, 1800);
-        } catch (err) {
-            const textarea = document.createElement('textarea');
-            textarea.value = linkToCopy;
-            document.body.appendChild(textarea);
-            textarea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textarea);
-            copyBtn.innerHTML = '📋 Скопировано!';
-            setTimeout(() => {
-                copyBtn.innerHTML = '📋 Копировать';
-            }, 1500);
+    <script>
+        // Функция для получения данных пользователя из Telegram WebApp
+        function getUserData() {
+            if (window.Telegram && window.Telegram.WebApp) {
+                const tg = window.Telegram.WebApp;
+                tg.ready();
+                return tg.initDataUnsafe?.user;
+            }
+            return null;
         }
-    });
-</script>
 
+        // Функция для получения очков пользователя через бота
+        async function getUserPoints() {
+            const user = getUserData();
+            if (!user) {
+                // Демо-режим
+                let points = localStorage.getItem('demoPoints');
+                if (!points) {
+                    points = 150;
+                    localStorage.setItem('demoPoints', points);
+                }
+                return parseInt(points);
+            }
+            
+            // Запрос к боту для получения очков
+            try {
+                const response = await fetch(`https://api.telegram.org/bot8214032735:AAEjdPUQUUzvyit4OQWiQWvjM7aJ1_mMzAU/getUserPoints?user_id=${user.id}`);
+                const data = await response.json();
+                return data.ok ? data.result.points : 150;
+            } catch {
+                return 150;
+            }
+        }
+
+        // Функция для кормления кролика
+        async function feedRabbit() {
+            const feedBtn = document.getElementById('feedBtn');
+            feedBtn.disabled = true;
+            feedBtn.innerHTML = '🔄 Проверка...';
+            
+            const user = getUserData();
+            const currentPoints = await getUserPoints();
+            
+            if (currentPoints < 100) {
+                showNotification(`❌ Не хватает очков! Нужно 100, у вас ${currentPoints}`, false);
+                feedBtn.disabled = false;
+                feedBtn.innerHTML = '<i class="fas fa-carrot"></i> Покорми кролика 🥕';
+                return;
+            }
+            
+            // Отправляем команду /feed в бота
+            try {
+                const response = await fetch(`https://api.telegram.org/bot8214032735:AAEjdPUQUUzvyit4OQWiQWvjM7aJ1_mMzAU/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: user.id,
+                        text: '/feed'
+                    })
+                });
+                
+                if (response.ok) {
+                    showNotification(`✅ Кролик сыт! Подписка продлена на 7 дней! 🎉`, true);
+                    
+                    // Обновляем отображение очков
+                    const newPoints = await getUserPoints();
+                    document.getElementById('rabbitPoints').textContent = `У вас ${newPoints} очков`;
+                    
+                    // Анимация
+                    const rabbit = document.querySelector('.rabbit-emoji');
+                    rabbit.style.transform = 'scale(1.2)';
+                    setTimeout(() => rabbit.style.transform = '', 300);
+                } else {
+                    showNotification(`❌ Ошибка! Попробуйте позже.`, false);
+                }
+            } catch (error) {
+                showNotification(`❌ Ошибка соединения!`, false);
+            }
+            
+            feedBtn.disabled = false;
+            feedBtn.innerHTML = '<i class="fas fa-carrot"></i> Покорми кролика 🥕';
+        }
+
+        function showNotification(msg, isSuccess = true) {
+            const notif = document.getElementById('notification');
+            document.getElementById('notificationText').textContent = msg;
+            notif.classList.add('show');
+            setTimeout(() => notif.classList.remove('show'), 3000);
+        }
+
+        async function updateUI() {
+            const points = await getUserPoints();
+            const rabbitPoints = document.getElementById('rabbitPoints');
+            const feedBtn = document.getElementById('feedBtn');
+            rabbitPoints.textContent = `У вас ${points} очков`;
+            feedBtn.disabled = points < 100;
+        }
+
+        document.getElementById('feedBtn').addEventListener('click', feedRabbit);
+        updateUI();
+    </script>
 </body>
-</html>
+    </html>

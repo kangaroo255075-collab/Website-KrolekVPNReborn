@@ -185,6 +185,7 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
     <div class="container">
@@ -234,13 +235,14 @@
         </div>
     </div>
 
+    <!-- Кролик -->
     <div class="rabbit-desktop">
         <div class="rabbit-card">
             <div class="rabbit-emoji">🐇</div>
             <div class="rabbit-info">
                 <h4>Голодный кролик!</h4>
-                <p id="rabbitCarrots">🥕 200 морковок</p>
-                <button class="btn-feed" id="feedBtn"><i class="fas fa-carrot"></i> Покормить (1🥕)</button>
+                <p id="rabbitCarrots"><span class="loading-spinner"></span> Загрузка...</p>
+                <button class="btn-feed" id="feedBtn" disabled><i class="fas fa-carrot"></i> Покормить (1🥕)</button>
             </div>
         </div>
     </div>
@@ -250,27 +252,75 @@
     <script>
         const BOT_TOKEN = "8214032735:AAEjdPUQUUzvyit4OQWiQWvjM7aJ1_mMzAU";
         let userId = null;
-        let userCarrots = 200;  // ← ТВОИ МОРКОВКИ (200)
-        
-        let currentCarrots = userCarrots;
-        
-        document.getElementById('rabbitCarrots').innerHTML = `🥕 ${currentCarrots} морковок`;
-        
+        let userCarrots = 0;
+
         async function getTelegramUser() {
+            if (window.Telegram && window.Telegram.WebApp) {
+                const tg = window.Telegram.WebApp;
+                tg.ready();
+                const user = tg.initDataUnsafe?.user;
+                if (user && user.id) {
+                    return user.id;
+                }
+            }
+            return null;
+        }
+
+        async function fetchUserCarrots() {
+            if (!userId) return null;
+            
             return new Promise((resolve) => {
-                if (window.Telegram && window.Telegram.WebApp) {
-                    const tg = window.Telegram.WebApp;
-                    tg.ready();
-                    const user = tg.initDataUnsafe?.user;
-                    if (user && user.id) {
-                        resolve(user.id);
+                const timeout = setTimeout(() => {
+                    resolve(null);
+                }, 5000);
+                
+                fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: userId,
+                        text: '/carrots'
+                    })
+                }).then(async (response) => {
+                    clearTimeout(timeout);
+                    if (response.ok) {
+                        const data = await response.json();
+                        resolve(null);
                     } else {
                         resolve(null);
                     }
-                } else {
+                }).catch(() => {
+                    clearTimeout(timeout);
                     resolve(null);
-                }
+                });
             });
+        }
+
+        async function loadUserCarrots() {
+            const carrotsElement = document.getElementById('rabbitCarrots');
+            const feedBtn = document.getElementById('feedBtn');
+            
+            carrotsElement.innerHTML = '<span class="loading-spinner"></span> Загрузка...';
+            feedBtn.disabled = true;
+            
+            userId = await getTelegramUser();
+            
+            if (!userId) {
+                carrotsElement.innerHTML = '❌ Откройте сайт через бота';
+                feedBtn.disabled = true;
+                return;
+            }
+            
+            const carrots = await fetchUserCarrots();
+            
+            if (carrots !== null) {
+                userCarrots = carrots;
+                carrotsElement.innerHTML = `🥕 ${userCarrots} морковок`;
+                feedBtn.disabled = userCarrots < 1;
+            } else {
+                carrotsElement.innerHTML = `⚠️ Ошибка загрузки`;
+                feedBtn.disabled = true;
+            }
         }
 
         async function feedRabbit() {
@@ -278,17 +328,15 @@
             feedBtn.disabled = true;
             feedBtn.innerHTML = '<span class="loading-spinner"></span> Проверка...';
             
-            userId = await getTelegramUser();
-            
             if (!userId) {
-                showNotification('❌ Ошибка: откройте сайт через бота', false);
+                showNotification('❌ Ошибка: не удалось определить пользователя', false);
                 feedBtn.disabled = false;
                 feedBtn.innerHTML = '<i class="fas fa-carrot"></i> Покормить (1🥕)';
                 return;
             }
             
-            if (currentCarrots < 1) {
-                showNotification(`❌ Не хватает морковок! Нужно 1🥕, у вас ${currentCarrots}🥕`, false);
+            if (userCarrots < 1) {
+                showNotification(`❌ Не хватает морковок! Нужно 1🥕, у вас ${userCarrots}🥕`, false);
                 feedBtn.disabled = false;
                 feedBtn.innerHTML = '<i class="fas fa-carrot"></i> Покормить (1🥕)';
                 return;
@@ -305,9 +353,9 @@
                 });
                 
                 if (response.ok) {
-                    currentCarrots -= 1;
-                    document.getElementById('rabbitCarrots').innerHTML = `🥕 ${currentCarrots} морковок`;
                     showNotification(`✅ Кролик сыт! Подписка продлена на 7 дней! 🎉`, true);
+                    userCarrots -= 1;
+                    document.getElementById('rabbitCarrots').innerHTML = `🥕 ${userCarrots} морковок`;
                     const rabbit = document.querySelector('.rabbit-emoji');
                     rabbit.style.transform = 'scale(1.2)';
                     setTimeout(() => rabbit.style.transform = '', 300);
@@ -318,7 +366,7 @@
                 showNotification(`❌ Ошибка соединения!`, false);
             }
             
-            feedBtn.disabled = false;
+            feedBtn.disabled = userCarrots < 1;
             feedBtn.innerHTML = '<i class="fas fa-carrot"></i> Покормить (1🥕)';
         }
 
@@ -330,6 +378,8 @@
         }
 
         document.getElementById('feedBtn').addEventListener('click', feedRabbit);
+        
+        loadUserCarrots();
     </script>
 </body>
 </html>

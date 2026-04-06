@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>KrolekVPNReborn — Бесплатный VPN</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -17,7 +16,6 @@
         }
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
         
-        /* Навбар */
         .navbar {
             display: flex;
             justify-content: space-between;
@@ -46,7 +44,6 @@
         }
         .btn-bot:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(255,107,53,0.4); }
         
-        /* Кролик */
         .rabbit-desktop {
             position: fixed;
             bottom: 20px;
@@ -87,7 +84,6 @@
         .btn-feed:hover { transform: scale(1.05); box-shadow: 0 0 15px rgba(255,107,53,0.5); }
         .btn-feed:disabled { opacity: 0.5; cursor: not-allowed; }
         
-        /* Герой */
         .hero {
             display: flex;
             align-items: center;
@@ -118,7 +114,6 @@
         .hero-image { flex: 1; text-align: center; }
         .hero-image i { font-size: 250px; color: rgba(255,107,53,0.2); }
         
-        /* Подписка */
         .subscription-card {
             background: linear-gradient(135deg, rgba(255,107,53,0.1), rgba(255,159,74,0.05));
             border-radius: 20px;
@@ -129,7 +124,6 @@
         }
         .expire-date { font-size: 24px; font-weight: 700; color: #ff6b35; margin: 10px 0; }
         
-        /* Преимущества */
         .features { padding: 60px 0; }
         .section-title { text-align: center; font-size: 36px; margin-bottom: 50px; }
         .section-title span { color: #ff6b35; }
@@ -151,7 +145,6 @@
         .feature-card h3 { margin-bottom: 15px; }
         .feature-card p { color: #aaa; font-size: 14px; }
         
-        /* Уведомление */
         .notification {
             position: fixed;
             bottom: 100px;
@@ -199,19 +192,18 @@
                 <h1>Обходи блокировки с <span>KrolekVPNReborn</span></h1>
                 <p>Стабильная скорость 15 Мбит/с, поддержка 24/7 и никаких скрытых платежей.</p>
                 <div class="hero-stats">
-                    <div class="stat"><div class="stat-number" id="userCount">500+</div><div class="stat-label">Активных пользователей</div></div>
-                    <div class="stat"><div class="stat-number">15+</div><div class="stat-label">Серверов</div></div>
+                    <div class="stat"><div class="stat-number">100+</div><div class="stat-label">Активных пользователей</div></div>
+                    <div class="stat"><div class="stat-number">3+</div><div class="stat-label">Серверов</div></div>
                     <div class="stat"><div class="stat-number">24/7</div><div class="stat-label">Поддержка</div></div>
                 </div>
             </div>
             <div class="hero-image"><i class="fas fa-globe"></i></div>
         </div>
 
-        <!-- Подписка -->
         <div class="subscription-card">
             <h3>🔐 Ваша подписка</h3>
-            <div class="expire-date" id="expireDate">10 апреля 2026</div>
-            <p style="font-size: 12px; color:#888;">Подписка продлевается автоматически</p>
+            <div class="expire-date" id="expireDate">Загрузка...</div>
+            <p style="font-size: 12px; color:#888;">Кормите кролика, чтобы продлить подписку</p>
         </div>
 
         <div class="features" id="features">
@@ -230,7 +222,6 @@
         </div>
     </div>
 
-    <!-- Кролик -->
     <div class="rabbit-desktop">
         <div class="rabbit-card">
             <div class="rabbit-emoji">🐇</div>
@@ -245,74 +236,95 @@
     <div class="notification" id="notification"><i class="fas fa-carrot"></i><span id="notificationText"></span></div>
 
     <script>
-        // Функция для получения данных пользователя из Telegram WebApp
-        function getUserData() {
+        const BOT_TOKEN = "8214032735:AAEjdPUQUUzvyit4OQWiQWvjM7aJ1_mMzAU";
+        let tg = null;
+        let userId = null;
+        let userPoints = 0;
+
+        async function initTelegram() {
             if (window.Telegram && window.Telegram.WebApp) {
-                const tg = window.Telegram.WebApp;
+                tg = window.Telegram.WebApp;
                 tg.ready();
-                return tg.initDataUnsafe?.user;
+                const user = tg.initDataUnsafe?.user;
+                if (user) {
+                    userId = user.id;
+                    await loadUserPoints();
+                    await loadUserExpire();
+                    return true;
+                }
             }
-            return null;
+            return false;
         }
 
-        // Функция для получения очков пользователя через бота
-        async function getUserPoints() {
-            const user = getUserData();
-            if (!user) {
-                // Демо-режим
-                let points = localStorage.getItem('demoPoints');
-                if (!points) {
-                    points = 150;
-                    localStorage.setItem('demoPoints', points);
-                }
-                return parseInt(points);
+        async function loadUserPoints() {
+            if (!userId) return;
+            try {
+                const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: userId,
+                        text: '/points'
+                    })
+                });
+                // В реальности нужно, чтобы бот отвечал на /points
+                // Пока заглушка
+                userPoints = 2136;
+                document.getElementById('rabbitPoints').innerHTML = `У вас ${userPoints} очков`;
+                const feedBtn = document.getElementById('feedBtn');
+                if (feedBtn) feedBtn.disabled = userPoints < 100;
+            } catch(e) {
+                console.log('Ошибка загрузки очков');
+            }
+        }
+
+        async function loadUserExpire() {
+            if (!userId) return;
+            try {
+                const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: userId,
+                        text: '/myconfig'
+                    })
+                });
+            } catch(e) {
+                document.getElementById('expireDate').innerHTML = '10 апреля 2026';
+            }
+        }
+
+        async function feedRabbit() {
+            if (!userId) {
+                showNotification('❌ Откройте сайт через бота Telegram!', false);
+                return;
             }
             
-            // Запрос к боту для получения очков
-            try {
-                const response = await fetch(`https://api.telegram.org/bot8214032735:AAEjdPUQUUzvyit4OQWiQWvjM7aJ1_mMzAU/getUserPoints?user_id=${user.id}`);
-                const data = await response.json();
-                return data.ok ? data.result.points : 150;
-            } catch {
-                return 150;
-            }
-        }
-
-        // Функция для кормления кролика
-        async function feedRabbit() {
             const feedBtn = document.getElementById('feedBtn');
             feedBtn.disabled = true;
             feedBtn.innerHTML = '🔄 Проверка...';
             
-            const user = getUserData();
-            const currentPoints = await getUserPoints();
-            
-            if (currentPoints < 100) {
-                showNotification(`❌ Не хватает очков! Нужно 100, у вас ${currentPoints}`, false);
+            if (userPoints < 100) {
+                showNotification(`❌ Не хватает очков! Нужно 100, у вас ${userPoints}`, false);
                 feedBtn.disabled = false;
                 feedBtn.innerHTML = '<i class="fas fa-carrot"></i> Покорми кролика 🥕';
                 return;
             }
             
-            // Отправляем команду /feed в бота
             try {
-                const response = await fetch(`https://api.telegram.org/bot8214032735:AAEjdPUQUUzvyit4OQWiQWvjM7aJ1_mMzAU/sendMessage`, {
+                const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        chat_id: user.id,
+                        chat_id: userId,
                         text: '/feed'
                     })
                 });
                 
                 if (response.ok) {
                     showNotification(`✅ Кролик сыт! Подписка продлена на 7 дней! 🎉`, true);
-                    
-                    // Обновляем отображение очков
-                    const newPoints = await getUserPoints();
-                    document.getElementById('rabbitPoints').textContent = `У вас ${newPoints} очков`;
-                    
-                    // Анимация
+                    userPoints -= 100;
+                    document.getElementById('rabbitPoints').innerHTML = `У вас ${userPoints} очков`;
                     const rabbit = document.querySelector('.rabbit-emoji');
                     rabbit.style.transform = 'scale(1.2)';
                     setTimeout(() => rabbit.style.transform = '', 300);
@@ -334,16 +346,8 @@
             setTimeout(() => notif.classList.remove('show'), 3000);
         }
 
-        async function updateUI() {
-            const points = await getUserPoints();
-            const rabbitPoints = document.getElementById('rabbitPoints');
-            const feedBtn = document.getElementById('feedBtn');
-            rabbitPoints.textContent = `У вас ${points} очков`;
-            feedBtn.disabled = points < 100;
-        }
-
         document.getElementById('feedBtn').addEventListener('click', feedRabbit);
-        updateUI();
+        initTelegram();
     </script>
 </body>
-    </html>
+</html>

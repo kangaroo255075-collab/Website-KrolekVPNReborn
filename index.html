@@ -209,6 +209,18 @@
             margin-right: 5px;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
+        
+        .telegram-badge {
+            background: #ff6b35;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 15px;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
@@ -226,6 +238,9 @@
 
         <div class="hero">
             <div class="hero-content">
+                <div class="telegram-badge" id="telegramBadge" style="display: none;">
+                    <i class="fab fa-telegram"></i> Открыто через Telegram
+                </div>
                 <div class="hero-badge"><i class="fas fa-crown"></i> Бесплатно навсегда</div>
                 <h1>Обходи блокировки с <span>KrolekVPNReborn</span></h1>
                 <p>Стабильная скорость 15 Мбит/с, поддержка 24/7 и никаких скрытых платежей.</p>
@@ -288,22 +303,32 @@
 
     <script>
         const BOT_TOKEN = "8214032735:AAEjdPUQUUzvyit4OQWiQWvjM7aJ1_mMzAU";
+        const BOT_USERNAME = "KrolekVPNReborn_bot";
         let userId = null;
         let userCarrots = 0;
         let expireTimestamp = null;
         let daysLeft = 0;
 
-        function getTelegramUserId() {
+        // Инициализация Telegram WebApp
+        function initTelegramWebApp() {
             if (window.Telegram && window.Telegram.WebApp) {
                 const tg = window.Telegram.WebApp;
                 tg.ready();
+                tg.expand(); // Разворачиваем на весь экран
+                
                 const user = tg.initDataUnsafe?.user;
                 if (user && user.id) {
-                    console.log('✅ WebApp работает, user_id:', user.id);
-                    return user.id;
+                    userId = user.id;
+                    console.log('✅ WebApp инициализирован, user_id:', userId);
+                    document.getElementById('telegramBadge').style.display = 'inline-flex';
+                    return true;
                 }
             }
-            return null;
+            
+            // Если не в WebApp, показываем сообщение
+            console.log('❌ Сайт открыт не через Telegram WebApp');
+            document.getElementById('telegramBadge').style.display = 'none';
+            return false;
         }
 
         function updateProgressBar(days) {
@@ -331,6 +356,55 @@
             }
         }
 
+        // Получение данных пользователя через бота
+        async function fetchUserData() {
+            if (!userId) return false;
+            
+            try {
+                // Запрашиваем профиль через бота (отправим команду /start или используем прямой запрос)
+                // Так как прямой API к users.json нет, используем альтернативный подход
+                // Показываем тестовые данные, но с возможностью обновления через бота
+                
+                // TODO: Здесь нужен реальный API эндпоинт для получения данных
+                // Пока используем localStorage для хранения состояния
+                
+                let storedData = localStorage.getItem(`krolek_user_${userId}`);
+                if (storedData) {
+                    const data = JSON.parse(storedData);
+                    userCarrots = data.carrots || 5;
+                    expireTimestamp = data.expireTimestamp || (Math.floor(Date.now() / 1000) + 30 * 24 * 3600);
+                    daysLeft = data.daysLeft || 30;
+                } else {
+                    // Стартовые значения для нового пользователя
+                    userCarrots = 5;
+                    expireTimestamp = Math.floor(Date.now() / 1000) + 30 * 24 * 3600;
+                    daysLeft = 30;
+                    saveUserData();
+                }
+                
+                updateUI();
+                return true;
+            } catch (error) {
+                console.error('Ошибка загрузки данных:', error);
+                return false;
+            }
+        }
+        
+        function saveUserData() {
+            if (!userId) return;
+            localStorage.setItem(`krolek_user_${userId}`, JSON.stringify({
+                carrots: userCarrots,
+                expireTimestamp: expireTimestamp,
+                daysLeft: daysLeft
+            }));
+        }
+        
+        function updateUI() {
+            document.getElementById('rabbitCarrots').innerHTML = `🥕 ${userCarrots} морковок`;
+            document.getElementById('feedBtn').disabled = userCarrots < 1;
+            updateProgressBar(daysLeft);
+        }
+
         async function loadUserData() {
             const carrotsElement = document.getElementById('rabbitCarrots');
             const feedBtn = document.getElementById('feedBtn');
@@ -338,23 +412,15 @@
             carrotsElement.innerHTML = '<span class="loading-spinner"></span> Загрузка...';
             feedBtn.disabled = true;
             
-            userId = getTelegramUserId();
+            const webappInitialized = initTelegramWebApp();
             
-            if (!userId) {
-                carrotsElement.innerHTML = '❌ Откройте сайт через кнопку в боте Telegram';
+            if (!webappInitialized || !userId) {
+                carrotsElement.innerHTML = '⚠️ Нажмите "🚀 Подключиться" в боте Telegram';
                 feedBtn.disabled = true;
                 return;
             }
             
-            // Для теста: 5 стартовых морковок
-            userCarrots = 5;
-            carrotsElement.innerHTML = `🥕 ${userCarrots} морковок`;
-            feedBtn.disabled = userCarrots < 1;
-            
-            // Для теста: подписка до 14 апреля 2026
-            expireTimestamp = Math.floor(Date.now() / 1000) + 8 * 24 * 3600;
-            daysLeft = 8;
-            updateProgressBar(daysLeft);
+            await fetchUserData();
         }
 
         function animateRabbit() {
@@ -387,6 +453,7 @@
             }
             
             try {
+                // Отправляем команду /feed боту
                 const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -396,32 +463,35 @@
                     })
                 });
                 
-                if (response.ok) {
+                const result = await response.json();
+                
+                if (result.ok) {
+                    // Обновляем локальные данные
                     userCarrots -= 1;
                     daysLeft += 7;
-                    updateProgressBar(daysLeft);
-                    document.getElementById('rabbitCarrots').innerHTML = `🥕 ${userCarrots} морковок`;
+                    expireTimestamp = Math.floor(Date.now() / 1000) + daysLeft * 24 * 3600;
+                    saveUserData();
+                    updateUI();
                     
                     animateRabbit();
                     showNotification(`✅ Кролик сыт! Подписка продлена на 7 дней! 🎉`, true);
-                    
-                    feedBtn.disabled = userCarrots < 1;
-                    feedBtn.innerHTML = '<i class="fas fa-carrot"></i> Покормить (1🥕)';
                 } else {
                     showNotification(`❌ Ошибка! Попробуйте позже.`, false);
-                    feedBtn.disabled = false;
-                    feedBtn.innerHTML = '<i class="fas fa-carrot"></i> Покормить (1🥕)';
                 }
             } catch (error) {
-                showNotification(`❌ Ошибка соединения!`, false);
-                feedBtn.disabled = false;
-                feedBtn.innerHTML = '<i class="fas fa-carrot"></i> Покормить (1🥕)';
+                console.error('Feed error:', error);
+                showNotification(`❌ Ошибка соединения! Убедитесь, что бот запущен.`, false);
             }
+            
+            feedBtn.disabled = userCarrots < 1;
+            feedBtn.innerHTML = '<i class="fas fa-carrot"></i> Покормить (1🥕)';
         }
 
         function showNotification(msg, isSuccess = true) {
             const notif = document.getElementById('notification');
-            document.getElementById('notificationText').textContent = msg;
+            const notifText = document.getElementById('notificationText');
+            notifText.textContent = msg;
+            notif.style.borderLeftColor = isSuccess ? '#4caf50' : '#ff6b35';
             notif.classList.add('show');
             setTimeout(() => notif.classList.remove('show'), 3000);
         }
@@ -432,4 +502,4 @@
         });
     </script>
 </body>
-</html>
+    </html>

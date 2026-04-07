@@ -303,6 +303,7 @@
 
     <script>
         const BOT_TOKEN = "8214032735:AAEjdPUQUUzvyit4OQWiQWvjM7aJ1_mMzAU";
+        const BOT_USERNAME = "KrolekVPNReborn_bot";
         let userId = null;
         let userCarrots = 0;
         let expireTimestamp = null;
@@ -352,36 +353,29 @@
             }
         }
 
-        function loadUserData() {
-            const carrotsElement = document.getElementById('rabbitCarrots');
-            const feedBtn = document.getElementById('feedBtn');
+        async function fetchUserData() {
+            if (!userId) return false;
             
-            carrotsElement.innerHTML = '<span class="loading-spinner"></span> Загрузка...';
-            feedBtn.disabled = true;
-            
-            const webappInitialized = initTelegramWebApp();
-            
-            if (!webappInitialized || !userId) {
-                carrotsElement.innerHTML = '⚠️ Нажмите "🚀 Подключиться" в боте Telegram';
-                feedBtn.disabled = true;
-                return;
+            try {
+                let storedData = localStorage.getItem(`krolek_user_${userId}`);
+                if (storedData) {
+                    const data = JSON.parse(storedData);
+                    userCarrots = data.carrots || 5;
+                    expireTimestamp = data.expireTimestamp || (Math.floor(Date.now() / 1000) + 30 * 24 * 3600);
+                    daysLeft = data.daysLeft || 30;
+                } else {
+                    userCarrots = 5;
+                    expireTimestamp = Math.floor(Date.now() / 1000) + 30 * 24 * 3600;
+                    daysLeft = 30;
+                    saveUserData();
+                }
+                
+                updateUI();
+                return true;
+            } catch (error) {
+                console.error('Ошибка загрузки данных:', error);
+                return false;
             }
-            
-            // Загружаем данные из localStorage
-            let storedData = localStorage.getItem(`krolek_user_${userId}`);
-            if (storedData) {
-                const data = JSON.parse(storedData);
-                userCarrots = data.carrots || 5;
-                expireTimestamp = data.expireTimestamp || (Math.floor(Date.now() / 1000) + 30 * 24 * 3600);
-                daysLeft = data.daysLeft || 30;
-            } else {
-                userCarrots = 5;
-                expireTimestamp = Math.floor(Date.now() / 1000) + 30 * 24 * 3600;
-                daysLeft = 30;
-                saveUserData();
-            }
-            
-            updateUI();
         }
         
         function saveUserData() {
@@ -397,6 +391,24 @@
             document.getElementById('rabbitCarrots').innerHTML = `🥕 ${userCarrots} морковок`;
             document.getElementById('feedBtn').disabled = userCarrots < 1;
             updateProgressBar(daysLeft);
+        }
+
+        async function loadUserData() {
+            const carrotsElement = document.getElementById('rabbitCarrots');
+            const feedBtn = document.getElementById('feedBtn');
+            
+            carrotsElement.innerHTML = '<span class="loading-spinner"></span> Загрузка...';
+            feedBtn.disabled = true;
+            
+            const webappInitialized = initTelegramWebApp();
+            
+            if (!webappInitialized || !userId) {
+                carrotsElement.innerHTML = '⚠️ Нажмите "🚀 Подключиться" в боте Telegram';
+                feedBtn.disabled = true;
+                return;
+            }
+            
+            await fetchUserData();
         }
 
         function animateRabbit() {

@@ -222,20 +222,15 @@
             margin-bottom: 15px;
         }
         
-        .sync-btn {
-            background: rgba(255,107,53,0.3);
-            border: 1px solid #ff6b35;
-            padding: 8px 16px;
-            border-radius: 25px;
-            color: #ff9f4a;
-            cursor: pointer;
-            font-size: 12px;
-            margin-top: 10px;
-            transition: 0.3s;
+        .pet-card {
+            position: relative;
+            bottom: auto;
+            right: auto;
+            margin-top: 20px;
+            margin-bottom: 20px;
         }
-        .sync-btn:hover {
-            background: #ff6b35;
-            color: white;
+        .pet-card .rabbit-card {
+            justify-content: space-between;
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -289,6 +284,18 @@
             <p style="font-size: 11px; color:#666;">🥕 Морковки даются за приглашение друзей в бота</p>
         </div>
 
+        <!-- БЛОК ПОГЛАДИТЬ КРОЛИКА -->
+        <div class="pet-card">
+            <div class="rabbit-card" style="justify-content: space-between;">
+                <div class="rabbit-emoji" id="petRabbitEmoji">🐇</div>
+                <div class="rabbit-info">
+                    <h4>Погладить кролика</h4>
+                    <p id="petCountDisplay">Поглаживаний: 0</p>
+                    <button class="btn-feed" id="petRabbitBtn"><i class="fas fa-hand-peace"></i> Погладить</button>
+                </div>
+            </div>
+        </div>
+
         <div class="features" id="features">
             <h2 class="section-title">Почему <span>KrolekVPNReborn</span>?</h2>
             <div class="features-grid">
@@ -305,7 +312,7 @@
         </div>
     </div>
 
-    <!-- Кролик -->
+    <!-- Кролик (кормление) -->
     <div class="rabbit-desktop">
         <div class="rabbit-card">
             <div class="rabbit-emoji" id="rabbitEmoji">🐇</div>
@@ -326,6 +333,7 @@
         let expireTimestamp = null;
         let daysLeft = 0;
 
+        // ===== ФУНКЦИИ ДЛЯ ОСНОВНОГО БЛОКА (КОРМЛЕНИЕ) =====
         function initTelegramWebApp() {
             if (window.Telegram && window.Telegram.WebApp) {
                 const tg = window.Telegram.WebApp;
@@ -383,29 +391,6 @@
             }
         }
 
-        // Получение данных из бота
-        async function fetchDataFromBot() {
-            if (!userId) return false;
-            
-            try {
-                const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        chat_id: userId,
-                        text: '/get_user_data'
-                    })
-                });
-                
-                // Бот ответит отдельным сообщением с JSON
-                // Пока используем localStorage, но при каждом кормлении обновляем
-                return true;
-            } catch (error) {
-                console.error('Fetch error:', error);
-                return false;
-            }
-        }
-
         function loadUserData() {
             const carrotsElement = document.getElementById('rabbitCarrots');
             const feedBtn = document.getElementById('feedBtn');
@@ -421,7 +406,6 @@
                 return;
             }
             
-            // Загружаем данные из localStorage
             let storedData = localStorage.getItem(`krolek_user_${userId}`);
             if (storedData) {
                 const data = JSON.parse(storedData);
@@ -495,9 +479,7 @@
                 const result = await response.json();
                 
                 if (result.ok) {
-                    // Уменьшаем морковки
                     userCarrots -= 1;
-                    // ПРИБАВЛЯЕМ 7 ДНЕЙ К ТЕКУЩЕЙ ДАТЕ
                     const currentDate = new Date(expireTimestamp * 1000);
                     const newDate = new Date(currentDate.getTime() + 7 * 24 * 3600 * 1000);
                     expireTimestamp = Math.floor(newDate.getTime() / 1000);
@@ -520,6 +502,47 @@
             feedBtn.innerHTML = '<i class="fas fa-carrot"></i> Покормить (1🥕)';
         }
 
+        // ===== БЛОК ПОГЛАДИТЬ КРОЛИКА =====
+        let petCount = localStorage.getItem('krolekPetCount') ? parseInt(localStorage.getItem('krolekPetCount')) : 0;
+        
+        function updatePetUI() {
+            const petDisplay = document.getElementById('petCountDisplay');
+            if (petDisplay) petDisplay.innerText = `Поглаживаний: ${petCount}`;
+        }
+        
+        function addCarrotFromPet() {
+            userCarrots++;
+            saveUserData();
+            updateUI();
+            showNotification('🥕 +1 морковка за поглаживание!', true);
+        }
+        
+        function initPetButton() {
+            const petBtn = document.getElementById('petRabbitBtn');
+            if (petBtn) {
+                petBtn.addEventListener('click', function() {
+                    petCount++;
+                    localStorage.setItem('krolekPetCount', petCount);
+                    updatePetUI();
+                    
+                    const rabbitEmoji = document.getElementById('petRabbitEmoji');
+                    if (rabbitEmoji) {
+                        rabbitEmoji.style.transform = 'scale(1.2)';
+                        setTimeout(() => { rabbitEmoji.style.transform = 'scale(1)'; }, 150);
+                    }
+                    
+                    if (petCount % 5 === 0) {
+                        addCarrotFromPet();
+                        showNotification('🎉 Ура! +1 морковка за 5 поглаживаний!', true);
+                    } else {
+                        showNotification('🐰 Кролик довольно мурлычет...', true);
+                    }
+                });
+            }
+            updatePetUI();
+        }
+
+        // ===== ОБЩИЕ ФУНКЦИИ =====
         function showNotification(msg, isSuccess = true) {
             const notif = document.getElementById('notification');
             const notifText = document.getElementById('notificationText');
@@ -532,6 +555,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             loadUserData();
             document.getElementById('feedBtn').addEventListener('click', feedRabbit);
+            initPetButton();
         });
     </script>
 </body>

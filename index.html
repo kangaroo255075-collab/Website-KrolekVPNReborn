@@ -2,9 +2,8 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KrolekVPNReborn — Бесплатный VPN</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -43,46 +42,6 @@
             gap: 8px;
         }
         .btn-bot:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(255,107,53,0.4); }
-        
-        .rabbit-desktop {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 100;
-            cursor: pointer;
-        }
-        .rabbit-card {
-            background: rgba(255,107,53,0.15);
-            backdrop-filter: blur(10px);
-            border-radius: 30px;
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            border: 1px solid rgba(255,107,53,0.4);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-        }
-        .rabbit-emoji { font-size: 48px; animation: hop 1s infinite ease-in-out; }
-        @keyframes hop { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-        .rabbit-info { text-align: right; }
-        .rabbit-info h4 { font-size: 14px; color: #ff9f4a; }
-        .rabbit-info p { font-size: 12px; color: #aaa; }
-        .btn-feed {
-            background: linear-gradient(135deg, #ff6b35, #ff9f4a);
-            border: none;
-            padding: 8px 16px;
-            border-radius: 25px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.3s;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        .btn-feed:hover { transform: scale(1.05); box-shadow: 0 0 15px rgba(255,107,53,0.5); }
-        .btn-feed:disabled { opacity: 0.5; cursor: not-allowed; }
         
         .hero {
             display: flex;
@@ -145,45 +104,13 @@
         .feature-card h3 { margin-bottom: 15px; }
         .feature-card p { color: #aaa; font-size: 14px; }
         
-        .notification {
-            position: fixed;
-            bottom: 100px;
-            right: 20px;
-            background: #1a1a1a;
-            border-left: 4px solid #ff6b35;
-            padding: 12px 20px;
-            border-radius: 10px;
-            z-index: 200;
-            display: none;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-        .notification.show { display: flex; animation: slideIn 0.3s ease; }
-        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        
         .footer { text-align: center; padding: 40px 0; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 40px; color: #666; }
         
         @media (max-width: 768px) {
             .hero h1 { font-size: 36px; }
             .navbar { flex-direction: column; text-align: center; }
             .nav-links { flex-wrap: wrap; justify-content: center; }
-            .rabbit-desktop { bottom: 10px; right: 10px; }
-            .rabbit-card { padding: 10px 15px; }
-            .rabbit-emoji { font-size: 36px; }
         }
-        
-        .loading-spinner {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            border: 2px solid rgba(255,255,255,0.3);
-            border-radius: 50%;
-            border-top-color: #fff;
-            animation: spin 0.8s linear infinite;
-            margin-right: 5px;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
@@ -215,8 +142,8 @@
 
         <div class="subscription-card">
             <h3>🔐 Ваша подписка</h3>
-            <div class="expire-date" id="expireDate">10 апреля 2026</div>
-            <p style="font-size: 12px; color:#888;">Кормите кролика морковками, чтобы продлить подписку</p>
+            <div class="expire-date">15 июля 2090</div>
+            <p style="font-size: 12px; color:#888;">Бессрочная подписка</p>
         </div>
 
         <div class="features" id="features">
@@ -234,130 +161,5 @@
             <p><a href="https://t.me/KrolekVPNReborn" style="color:#666;">Канал</a> | <a href="https://t.me/KrolekVPNReborn_bot" style="color:#666;">Бот</a> | <a href="https://t.me/Kr0l3k" style="color:#666;">Поддержка</a></p>
         </div>
     </div>
-
-    <div class="rabbit-desktop">
-        <div class="rabbit-card">
-            <div class="rabbit-emoji">🐇</div>
-            <div class="rabbit-info">
-                <h4>Голодный кролик!</h4>
-                <p id="rabbitCarrots"><span class="loading-spinner"></span> Загрузка...</p>
-                <button class="btn-feed" id="feedBtn" disabled><i class="fas fa-carrot"></i> Покормить (1🥕)</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="notification" id="notification"><i class="fas fa-carrot"></i><span id="notificationText"></span></div>
-
-    <script>
-        const BOT_TOKEN = "8214032735:AAEjdPUQUUzvyit4OQWiQWvjM7aJ1_mMzAU";
-        let userId = null;
-        let userCarrots = 0;
-
-        // Получение user_id из Telegram WebApp
-        function getTelegramUserId() {
-            if (window.Telegram && window.Telegram.WebApp) {
-                const tg = window.Telegram.WebApp;
-                tg.ready();
-                const user = tg.initDataUnsafe?.user;
-                if (user && user.id) {
-                    console.log('✅ WebApp работает, user_id:', user.id);
-                    return user.id;
-                } else {
-                    console.log('❌ user не найден');
-                    return null;
-                }
-            } else {
-                console.log('❌ window.Telegram.WebApp не найден');
-                return null;
-            }
-        }
-
-        // Загрузка морковок
-        async function loadUserCarrots() {
-            const carrotsElement = document.getElementById('rabbitCarrots');
-            const feedBtn = document.getElementById('feedBtn');
-            
-            carrotsElement.innerHTML = '<span class="loading-spinner"></span> Загрузка...';
-            feedBtn.disabled = true;
-            
-            userId = getTelegramUserId();
-            
-            if (!userId) {
-                carrotsElement.innerHTML = '❌ Откройте сайт через кнопку в боте Telegram';
-                feedBtn.disabled = true;
-                return;
-            }
-            
-            // Для теста показываем 150 морковок
-            userCarrots = 150;
-            carrotsElement.innerHTML = `🥕 ${userCarrots} морковок`;
-            feedBtn.disabled = userCarrots < 1;
-            
-            // В будущем здесь будет реальный запрос к боту:
-            // const carrots = await fetch(`/api/get_carrots?user_id=${userId}`);
-            // userCarrots = carrots;
-        }
-
-        // Кормление кролика
-        async function feedRabbit() {
-            const feedBtn = document.getElementById('feedBtn');
-            feedBtn.disabled = true;
-            feedBtn.innerHTML = '<span class="loading-spinner"></span> Проверка...';
-            
-            if (!userId) {
-                showNotification('❌ Ошибка: не удалось определить пользователя', false);
-                feedBtn.disabled = false;
-                feedBtn.innerHTML = '<i class="fas fa-carrot"></i> Покормить (1🥕)';
-                return;
-            }
-            
-            if (userCarrots < 1) {
-                showNotification(`❌ Не хватает морковок! Нужно 1🥕, у вас ${userCarrots}🥕`, false);
-                feedBtn.disabled = false;
-                feedBtn.innerHTML = '<i class="fas fa-carrot"></i> Покормить (1🥕)';
-                return;
-            }
-            
-            try {
-                const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        chat_id: userId,
-                        text: '/feed'
-                    })
-                });
-                
-                if (response.ok) {
-                    showNotification(`✅ Кролик сыт! Подписка продлена на 7 дней! 🎉`, true);
-                    userCarrots -= 1;
-                    document.getElementById('rabbitCarrots').innerHTML = `🥕 ${userCarrots} морковок`;
-                    const rabbit = document.querySelector('.rabbit-emoji');
-                    rabbit.style.transform = 'scale(1.2)';
-                    setTimeout(() => rabbit.style.transform = '', 300);
-                } else {
-                    showNotification(`❌ Ошибка! Попробуйте позже.`, false);
-                }
-            } catch (error) {
-                showNotification(`❌ Ошибка соединения!`, false);
-            }
-            
-            feedBtn.disabled = userCarrots < 1;
-            feedBtn.innerHTML = '<i class="fas fa-carrot"></i> Покормить (1🥕)';
-        }
-
-        function showNotification(msg, isSuccess = true) {
-            const notif = document.getElementById('notification');
-            document.getElementById('notificationText').textContent = msg;
-            notif.classList.add('show');
-            setTimeout(() => notif.classList.remove('show'), 3000);
-        }
-
-        // Запуск при загрузке страницы
-        document.addEventListener('DOMContentLoaded', function() {
-            loadUserCarrots();
-            document.getElementById('feedBtn').addEventListener('click', feedRabbit);
-        });
-    </script>
 </body>
-                    </html>
+</html>

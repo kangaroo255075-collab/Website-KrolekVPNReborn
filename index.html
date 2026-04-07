@@ -2,8 +2,10 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>KrolekVPNReborn — Бесплатный VPN</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -42,6 +44,24 @@
             gap: 8px;
         }
         .btn-bot:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(255,107,53,0.4); }
+        
+        .btn-copy {
+            background: rgba(255,107,53,0.2);
+            border: 1px solid #ff6b35;
+            padding: 10px 20px;
+            border-radius: 30px;
+            color: #ff9f4a;
+            cursor: pointer;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+        .btn-copy:hover {
+            background: rgba(255,107,53,0.4);
+            transform: scale(1.02);
+        }
         
         .hero {
             display: flex;
@@ -82,6 +102,15 @@
             border: 1px solid rgba(255,107,53,0.3);
         }
         .expire-date { font-size: 24px; font-weight: 700; color: #ff6b35; margin: 10px 0; }
+        .config-url {
+            background: rgba(0,0,0,0.5);
+            padding: 12px;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 12px;
+            word-break: break-all;
+            margin: 15px 0;
+        }
         
         .features { padding: 60px 0; }
         .section-title { text-align: center; font-size: 36px; margin-bottom: 50px; }
@@ -104,6 +133,27 @@
         .feature-card h3 { margin-bottom: 15px; }
         .feature-card p { color: #aaa; font-size: 14px; }
         
+        .notification {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1a1a1a;
+            border-left: 4px solid #4caf50;
+            padding: 12px 24px;
+            border-radius: 10px;
+            z-index: 200;
+            display: none;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .notification.show { display: flex; animation: slideIn 0.3s ease; }
+        @keyframes slideIn {
+            from { transform: translateX(-50%) translateY(100px); opacity: 0; }
+            to { transform: translateX(-50%) translateY(0); opacity: 1; }
+        }
+        
         .footer { text-align: center; padding: 40px 0; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 40px; color: #666; }
         
         @media (max-width: 768px) {
@@ -112,7 +162,6 @@
             .nav-links { flex-wrap: wrap; justify-content: center; }
         }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
     <div class="container">
@@ -144,6 +193,14 @@
             <h3>🔐 Ваша подписка</h3>
             <div class="expire-date">15 июля 2090</div>
             <p style="font-size: 12px; color:#888;">Бессрочная подписка</p>
+            
+            <div class="config-url" id="configUrl">
+                https://raw.githubusercontent.com/kangaroo255075-collab/KrolekVPNReborn-Reborn-/refs/heads/main/Krolek.txt
+            </div>
+            
+            <button class="btn-copy" id="copyBtn">
+                <i class="fas fa-copy"></i> Скопировать ссылку на подписку
+            </button>
         </div>
 
         <div class="features" id="features">
@@ -161,5 +218,34 @@
             <p><a href="https://t.me/KrolekVPNReborn" style="color:#666;">Канал</a> | <a href="https://t.me/KrolekVPNReborn_bot" style="color:#666;">Бот</a> | <a href="https://t.me/Kr0l3k" style="color:#666;">Поддержка</a></p>
         </div>
     </div>
+
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle" style="color:#4caf50;"></i>
+        <span id="notificationText">Ссылка скопирована!</span>
+    </div>
+
+    <script>
+        const configUrl = document.getElementById('configUrl').innerText;
+        const copyBtn = document.getElementById('copyBtn');
+        const notification = document.getElementById('notification');
+        const notificationText = document.getElementById('notificationText');
+
+        function showNotification(message, isSuccess = true) {
+            notificationText.textContent = message;
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 2000);
+        }
+
+        copyBtn.addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(configUrl);
+                showNotification('✅ Ссылка на подписку скопирована!', true);
+            } catch (err) {
+                showNotification('❌ Ошибка копирования', false);
+            }
+        });
+    </script>
 </body>
-</html>
+                                                                                                                                  </html>

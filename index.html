@@ -235,7 +235,6 @@
         </div>
     </div>
 
-    <!-- Кролик -->
     <div class="rabbit-desktop">
         <div class="rabbit-card">
             <div class="rabbit-emoji">🐇</div>
@@ -254,48 +253,26 @@
         let userId = null;
         let userCarrots = 0;
 
-        async function getTelegramUser() {
+        // Получение user_id из Telegram WebApp
+        function getTelegramUserId() {
             if (window.Telegram && window.Telegram.WebApp) {
                 const tg = window.Telegram.WebApp;
                 tg.ready();
                 const user = tg.initDataUnsafe?.user;
                 if (user && user.id) {
+                    console.log('✅ WebApp работает, user_id:', user.id);
                     return user.id;
+                } else {
+                    console.log('❌ user не найден');
+                    return null;
                 }
+            } else {
+                console.log('❌ window.Telegram.WebApp не найден');
+                return null;
             }
-            return null;
         }
 
-        async function fetchUserCarrots() {
-            if (!userId) return null;
-            
-            return new Promise((resolve) => {
-                const timeout = setTimeout(() => {
-                    resolve(null);
-                }, 5000);
-                
-                fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        chat_id: userId,
-                        text: '/carrots'
-                    })
-                }).then(async (response) => {
-                    clearTimeout(timeout);
-                    if (response.ok) {
-                        const data = await response.json();
-                        resolve(null);
-                    } else {
-                        resolve(null);
-                    }
-                }).catch(() => {
-                    clearTimeout(timeout);
-                    resolve(null);
-                });
-            });
-        }
-
+        // Загрузка морковок
         async function loadUserCarrots() {
             const carrotsElement = document.getElementById('rabbitCarrots');
             const feedBtn = document.getElementById('feedBtn');
@@ -303,26 +280,25 @@
             carrotsElement.innerHTML = '<span class="loading-spinner"></span> Загрузка...';
             feedBtn.disabled = true;
             
-            userId = await getTelegramUser();
+            userId = getTelegramUserId();
             
             if (!userId) {
-                carrotsElement.innerHTML = '❌ Откройте сайт через бота';
+                carrotsElement.innerHTML = '❌ Откройте сайт через кнопку в боте Telegram';
                 feedBtn.disabled = true;
                 return;
             }
             
-            const carrots = await fetchUserCarrots();
+            // Для теста показываем 150 морковок
+            userCarrots = 150;
+            carrotsElement.innerHTML = `🥕 ${userCarrots} морковок`;
+            feedBtn.disabled = userCarrots < 1;
             
-            if (carrots !== null) {
-                userCarrots = carrots;
-                carrotsElement.innerHTML = `🥕 ${userCarrots} морковок`;
-                feedBtn.disabled = userCarrots < 1;
-            } else {
-                carrotsElement.innerHTML = `⚠️ Ошибка загрузки`;
-                feedBtn.disabled = true;
-            }
+            // В будущем здесь будет реальный запрос к боту:
+            // const carrots = await fetch(`/api/get_carrots?user_id=${userId}`);
+            // userCarrots = carrots;
         }
 
+        // Кормление кролика
         async function feedRabbit() {
             const feedBtn = document.getElementById('feedBtn');
             feedBtn.disabled = true;
@@ -377,9 +353,11 @@
             setTimeout(() => notif.classList.remove('show'), 3000);
         }
 
-        document.getElementById('feedBtn').addEventListener('click', feedRabbit);
-        
-        loadUserCarrots();
+        // Запуск при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUserCarrots();
+            document.getElementById('feedBtn').addEventListener('click', feedRabbit);
+        });
     </script>
 </body>
 </html>

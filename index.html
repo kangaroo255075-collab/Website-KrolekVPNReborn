@@ -53,41 +53,6 @@
             border: 1px solid rgba(255,107,53,0.3);
         }
         
-        .mood-bar {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin: 25px 0;
-        }
-        .mood-sector {
-            width: 45px;
-            height: 45px;
-            border-radius: 14px;
-            background: rgba(255,255,255,0.08);
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-        .mood-sector.filled {
-            background: linear-gradient(135deg, #ff6b35, #ff9f4a);
-            box-shadow: 0 0 12px rgba(255,107,53,0.4);
-        }
-        .mood-sector.blink-warning {
-            animation: blinkWarning 1s infinite;
-            background: #ffaa00;
-        }
-        .mood-sector.blink-critical {
-            animation: blinkCritical 0.6s infinite;
-            background: #ff4444;
-        }
-        @keyframes blinkWarning {
-            0%, 100% { opacity: 1; background: #ffaa00; }
-            50% { opacity: 0.5; background: #ff8800; }
-        }
-        @keyframes blinkCritical {
-            0%, 100% { opacity: 1; background: #ff4444; transform: scale(1); }
-            50% { opacity: 0.6; background: #cc0000; transform: scale(0.95); }
-        }
-        
         .feed-button {
             background: linear-gradient(135deg, #ff6b35, #ff9f4a);
             border: none;
@@ -155,7 +120,6 @@
         @media (max-width: 768px) {
             .hero h1 { font-size: 32px; }
             .navbar { flex-direction: column; text-align: center; }
-            .mood-sector { width: 35px; height: 35px; }
             .feed-button { padding: 12px 20px; font-size: 14px; }
         }
         
@@ -265,21 +229,19 @@
         <div class="subscription-card">
             <h3 style="margin-bottom: 10px;">🐇 НАСТРОЕНИЕ КРОЛИКА</h3>
             
-            <div class="mood-bar" id="moodBar"></div>
-            
-            <div class="expire-date" id="expireDate">12 апреля 2026 г.</div>
+            <div class="expire-date" id="expireDate">8 мая 2026 г.</div>
             
             <div class="info-row">
                 <div class="info-label"><i class="fas fa-calendar-week"></i> Осталось дней</div>
-                <div class="info-value" id="daysLeft">4</div>
+                <div class="info-value" id="daysLeft">29</div>
             </div>
             <div class="info-row">
                 <div class="info-label"><i class="fas fa-carrot"></i> Морковок</div>
-                <div class="info-value" id="carrotsCount">0</div>
+                <div class="info-value" id="carrotsCount">25</div>
             </div>
             <div class="info-row">
                 <div class="info-label"><i class="fas fa-chart-line"></i> Статус</div>
-                <div class="info-value" id="statusText">🟡 СКОРО ЗАКОНЧИТСЯ</div>
+                <div class="info-value" id="statusText">🟢 АКТИВНА</div>
             </div>
             
             <button class="feed-button" id="feedBtn">
@@ -312,10 +274,9 @@
     <script>
         const BOT_TOKEN = "8214032735:AAEjdPUQUUzvyit4OQWiQWvjM7aJ1_mMzAU";
         let userId = null;
-        let userCarrots = 0;
-        let daysLeft = 4;
-        let expireDate = "12 апреля 2026 г.";
-        let expireTimestamp = 1744416000;
+        let userCarrots = 25;
+        let daysLeft = 29;
+        let expireDate = "8 мая 2026 г.";
         let isLoading = false;
         
         // ===== ИНИЦИАЛИЗАЦИЯ =====
@@ -334,32 +295,7 @@
             return false;
         }
         
-        // ===== ОБНОВЛЕНИЕ СЕКТОРОВ =====
-        function updateMoodSectors() {
-            const moodBar = document.getElementById('moodBar');
-            const displayDays = Math.min(daysLeft, 7);
-            moodBar.innerHTML = '';
-            
-            for (let i = 6; i >= 0; i--) {
-                const sector = document.createElement('div');
-                sector.className = 'mood-sector';
-                const sectorValue = i + 1;
-                
-                if (displayDays >= sectorValue) {
-                    sector.classList.add('filled');
-                } else if (displayDays === 0 && sectorValue === 1) {
-                    sector.classList.add('blink-critical');
-                } else if (displayDays === 1 && sectorValue === 7) {
-                    sector.classList.add('blink-warning');
-                }
-                
-                moodBar.appendChild(sector);
-            }
-        }
-        
-        // ===== ОБНОВЛЕНИЕ UI =====
         function updateUI() {
-            document.getElementById('expireDate').textContent = expireDate;
             document.getElementById('daysLeft').textContent = daysLeft;
             document.getElementById('carrotsCount').textContent = userCarrots;
             
@@ -367,20 +303,16 @@
             const statusText = daysLeft <= 0 ? "ПРОСРОЧЕНА" : (daysLeft <= 7 ? "СКОРО ЗАКОНЧИТСЯ" : "АКТИВНА");
             document.getElementById('statusText').innerHTML = `${statusIcon} ${statusText}`;
             
-            updateMoodSectors();
-            
             const feedBtn = document.getElementById('feedBtn');
             feedBtn.disabled = userCarrots < 1 || isLoading;
         }
         
-        // ===== LOCALSTORAGE =====
         function saveToLocalStorage() {
             if (!userId) return;
             localStorage.setItem(`krolek_user_${userId}`, JSON.stringify({
                 carrots: userCarrots,
                 days_left: daysLeft,
-                expire_date: expireDate,
-                expire_timestamp: expireTimestamp
+                expire_date: expireDate
             }));
         }
         
@@ -393,13 +325,12 @@
                     userCarrots = data.carrots;
                     daysLeft = data.days_left;
                     expireDate = data.expire_date;
-                    expireTimestamp = data.expire_timestamp;
                 } catch(e) {}
             }
             updateUI();
         }
         
-        // ===== ЗАПРОС К БОТУ (получение данных) =====
+        // ===== ЗАПРОС К БОТУ =====
         async function syncWithBot() {
             if (!userId) return;
             
@@ -422,10 +353,9 @@
                             userCarrots = data.carrots;
                             daysLeft = data.days_left;
                             expireDate = data.expire_date;
-                            expireTimestamp = data.expire_timestamp;
                             saveToLocalStorage();
                             updateUI();
-                            console.log('✅ Синхронизировано с ботом:', userCarrots, 'морковок');
+                            console.log('✅ Синхронизировано с ботом');
                         }
                     } catch(e) {}
                 }
@@ -466,7 +396,6 @@
                             userCarrots = data.carrots;
                             daysLeft = data.days_left;
                             expireDate = data.expire_date;
-                            expireTimestamp = data.expire_timestamp;
                             saveToLocalStorage();
                             updateUI();
                             showNotification(`✅ Кролик сыт! Подписка продлена до ${expireDate}! 🎉`, true);
@@ -491,7 +420,6 @@
             feedBtn.disabled = userCarrots < 1;
         }
         
-        // ===== ЛОКАЛЬНОЕ КОРМЛЕНИЕ (резерв) =====
         function localFeed() {
             if (userCarrots < 1) return;
             userCarrots--;
@@ -499,7 +427,6 @@
             const newDate = new Date();
             newDate.setDate(newDate.getDate() + daysLeft);
             expireDate = newDate.toLocaleDateString('ru-RU', { year: 'numeric', month: 'long', day: 'numeric' });
-            expireTimestamp = Math.floor(newDate.getTime() / 1000);
             saveToLocalStorage();
             updateUI();
             showNotification(`✅ Кролик сыт! Подписка продлена до ${expireDate}! 🎉`, true);
@@ -517,7 +444,6 @@
         initTelegram();
         loadFromLocalStorage();
         
-        // Синхронизация с ботом при загрузке
         setTimeout(() => {
             syncWithBot();
         }, 500);
@@ -525,4 +451,4 @@
         document.getElementById('feedBtn').addEventListener('click', feedRabbit);
     </script>
 </body>
-</html>
+    </html>

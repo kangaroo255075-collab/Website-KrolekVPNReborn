@@ -206,22 +206,6 @@
             gap: 5px;
             margin-bottom: 15px;
         }
-        
-        .sync-btn {
-            background: rgba(255,107,53,0.3);
-            border: 1px solid #ff6b35;
-            padding: 6px 12px;
-            border-radius: 20px;
-            color: #ff9f4a;
-            cursor: pointer;
-            font-size: 11px;
-            margin-top: 10px;
-            transition: 0.3s;
-        }
-        .sync-btn:hover {
-            background: #ff6b35;
-            color: white;
-        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
@@ -303,25 +287,27 @@
     <div class="notification" id="notification"><i class="fas fa-carrot"></i><span id="notificationText"></span></div>
 
     <script>
-        // Данные пользователя
+        // ===== ДАННЫЕ ПОЛЬЗОВАТЕЛЯ =====
         let userCarrots = 3;
         let daysLeft = 37;
         let expireDate = "14 мая 2026 г.";
         
-        // Элементы DOM
+        // ===== ЭЛЕМЕНТЫ =====
         const carrotsEl = document.getElementById('rabbitCarrots');
         const daysLeftEl = document.getElementById('daysLeft');
         const expireDateEl = document.getElementById('expireDate');
         const feedBtn = document.getElementById('feedBtn');
         const progressFill = document.getElementById('progressFill');
         const statusDiv = document.getElementById('subscriptionStatus');
+        const rabbitEmoji = document.getElementById('rabbitEmoji');
         
+        // ===== ФУНКЦИЯ ОБНОВЛЕНИЯ ИНТЕРФЕЙСА =====
         function updateUI() {
-            // Обновляем морковки
+            // Морковки
             carrotsEl.innerHTML = `🥕 ${userCarrots} морковок`;
             feedBtn.disabled = userCarrots < 1;
             
-            // Обновляем подписку
+            // Подписка
             daysLeftEl.textContent = daysLeft;
             expireDateEl.textContent = expireDate;
             
@@ -329,28 +315,30 @@
             let percent = Math.min(100, Math.max(0, (daysLeft / 30) * 100));
             progressFill.style.width = percent + '%';
             
-            // Статус
-            let statusIcon = "", statusText = "", statusColor = "";
+            // Статус и цвет
+            let statusIcon = "", statusText = "", statusColor = "", progressClass = "";
             if (daysLeft <= 0) {
                 statusIcon = "🔴";
                 statusText = "ПРОСРОЧЕНА";
                 statusColor = "#ff4444";
-                progressFill.className = 'progress-fill critical';
+                progressClass = "critical";
             } else if (daysLeft <= 7) {
                 statusIcon = "🟡";
                 statusText = "СКОРО ЗАКОНЧИТСЯ";
                 statusColor = "#ffaa00";
-                progressFill.className = 'progress-fill warning';
+                progressClass = "warning";
             } else {
                 statusIcon = "🟢";
                 statusText = "АКТИВНА";
                 statusColor = "#4caf50";
-                progressFill.className = 'progress-fill good';
+                progressClass = "good";
             }
+            progressFill.className = `progress-fill ${progressClass}`;
             statusDiv.innerHTML = `<p style="color: ${statusColor}; font-weight: bold; margin: 5px 0;">${statusIcon} Статус: ${statusText}</p>`;
         }
         
-        function saveToLocalStorage() {
+        // ===== СОХРАНЕНИЕ В localStorage =====
+        function saveData() {
             localStorage.setItem('krolek_data', JSON.stringify({
                 carrots: userCarrots,
                 days_left: daysLeft,
@@ -358,17 +346,21 @@
             }));
         }
         
-        function loadFromLocalStorage() {
-            const stored = localStorage.getItem('krolek_data');
-            if (stored) {
-                const data = JSON.parse(stored);
-                userCarrots = data.carrots;
-                daysLeft = data.days_left;
-                expireDate = data.expire_date;
+        // ===== ЗАГРУЗКА ИЗ localStorage =====
+        function loadData() {
+            const saved = localStorage.getItem('krolek_data');
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    userCarrots = data.carrots;
+                    daysLeft = data.days_left;
+                    expireDate = data.expire_date;
+                } catch(e) {}
             }
             updateUI();
         }
         
+        // ===== КОРМЛЕНИЕ =====
         function feedRabbit() {
             if (userCarrots < 1) {
                 showNotification('❌ Не хватает морковок! Приглашайте друзей в бота 🥕', false);
@@ -381,23 +373,23 @@
             // Прибавляем 7 дней
             daysLeft += 7;
             
-            // Обновляем дату
-            const currentDate = new Date();
-            const newDate = new Date(currentDate.getTime() + daysLeft * 24 * 3600 * 1000);
+            // Обновляем дату (от текущей даты + daysLeft дней)
+            const newDate = new Date();
+            newDate.setDate(newDate.getDate() + daysLeft);
             expireDate = newDate.toLocaleDateString('ru-RU', { year: 'numeric', month: 'long', day: 'numeric' });
             
-            // Сохраняем и обновляем UI
-            saveToLocalStorage();
+            // Сохраняем и обновляем
+            saveData();
             updateUI();
             
-            // Анимация
-            const rabbit = document.getElementById('rabbitEmoji');
-            rabbit.style.transform = 'scale(1.3)';
-            setTimeout(() => { rabbit.style.transform = 'scale(1)'; }, 150);
+            // Анимация кролика
+            rabbitEmoji.style.transform = 'scale(1.3)';
+            setTimeout(() => { rabbitEmoji.style.transform = 'scale(1)'; }, 150);
             
             showNotification(`✅ Кролик сыт! Подписка продлена до ${expireDate}! 🎉`, true);
         }
         
+        // ===== УВЕДОМЛЕНИЯ =====
         function showNotification(msg, isSuccess = true) {
             const notif = document.getElementById('notification');
             const notifText = document.getElementById('notificationText');
@@ -407,7 +399,7 @@
             setTimeout(() => notif.classList.remove('show'), 3000);
         }
         
-        // Инициализация Telegram WebApp
+        // ===== ИНИЦИАЛИЗАЦИЯ TELEGRAM =====
         if (window.Telegram && window.Telegram.WebApp) {
             const tg = window.Telegram.WebApp;
             tg.ready();
@@ -417,11 +409,9 @@
             }
         }
         
-        // Загрузка данных
-        loadFromLocalStorage();
-        
-        // Обработчик кнопки
+        // ===== ЗАПУСК =====
+        loadData();
         feedBtn.addEventListener('click', feedRabbit);
     </script>
 </body>
-    </html>
+</html>

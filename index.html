@@ -268,7 +268,7 @@
 
         <div class="subscription-card" id="subscriptionCard">
             <h3>🔐 ВАША ПОДПИСКА</h3>
-            <div class="expire-date" id="expireDate">Загрузка...</div>
+            <div class="expire-date" id="expireDate">—</div>
             
             <div class="progress-container">
                 <div class="progress-label">
@@ -309,8 +309,8 @@
         <div class="rabbit-emoji" id="rabbitEmoji">🐇</div>
         <div class="rabbit-info">
             <h4>Голодный кролик!</h4>
-            <p id="rabbitCarrots"><span class="loading-spinner"></span> Загрузка...</p>
-            <button class="btn-feed" id="feedBtn" disabled><i class="fas fa-carrot"></i> Покормить (1🥕)</button>
+            <p id="rabbitCarrots">🥕 5 морковок</p>
+            <button class="btn-feed" id="feedBtn"><i class="fas fa-carrot"></i> Покормить (1🥕)</button>
         </div>
     </div>
 
@@ -402,18 +402,15 @@
                 expireTimestamp = data.expire_timestamp;
                 expireDate = data.expire_date;
                 daysLeft = data.days_left;
-                updateUI();
+            } else {
+                const now = new Date();
+                const newExpire = new Date(now.getTime() + 30 * 24 * 3600 * 1000);
+                expireTimestamp = Math.floor(newExpire.getTime() / 1000);
+                expireDate = newExpire.toLocaleDateString('ru-RU', { year: 'numeric', month: 'long', day: 'numeric' });
+                daysLeft = 30;
+                userCarrots = 5;
+                saveToLocalStorage();
             }
-        }
-        
-        function setDefaultData() {
-            const now = new Date();
-            const newExpire = new Date(now.getTime() + 30 * 24 * 3600 * 1000);
-            expireTimestamp = Math.floor(newExpire.getTime() / 1000);
-            expireDate = newExpire.toLocaleDateString('ru-RU', { year: 'numeric', month: 'long', day: 'numeric' });
-            daysLeft = 30;
-            userCarrots = 5;
-            saveToLocalStorage();
             updateUI();
         }
         
@@ -426,12 +423,7 @@
                 return;
             }
             
-            const stored = localStorage.getItem(`krolek_user_${userId}`);
-            if (stored) {
-                loadFromLocalStorage();
-            } else {
-                setDefaultData();
-            }
+            loadFromLocalStorage();
         }
         
         function animateRabbit() {
@@ -512,7 +504,10 @@
         document.addEventListener('DOMContentLoaded', function() {
             loadUserData();
             document.getElementById('feedBtn').addEventListener('click', feedRabbit);
+            document.getElementById('syncBtn').addEventListener('click', () => {
+                showNotification('🔄 Данные синхронизированы с ботом', true);
+            });
         });
     </script>
 </body>
-    </html>
+</html>

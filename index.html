@@ -206,18 +206,6 @@
             gap: 5px;
             margin-bottom: 15px;
         }
-        
-        .loading-spinner {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            border: 2px solid rgba(255,255,255,0.3);
-            border-radius: 50%;
-            border-top-color: #fff;
-            animation: spin 0.8s linear infinite;
-            margin-right: 5px;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
@@ -397,9 +385,6 @@
             const carrotsElement = document.getElementById('rabbitCarrots');
             const feedBtn = document.getElementById('feedBtn');
             
-            carrotsElement.innerHTML = '<span class="loading-spinner"></span> Загрузка...';
-            feedBtn.disabled = true;
-            
             const webappInitialized = initTelegramWebApp();
             
             if (!webappInitialized || !userId) {
@@ -408,35 +393,41 @@
                 return;
             }
             
-            const response = await callBotAPI("get_data");
-            if (response && response.ok) {
-                userData.carrots = response.carrots;
-                userData.expire_timestamp = response.expire_timestamp;
-                userData.expire_date = response.expire_date;
-                userData.days_left = response.days_left;
+            // Загружаем из localStorage
+            const saved = localStorage.getItem(`krolek_user_${userId}`);
+            if (saved) {
+                const data = JSON.parse(saved);
+                userData = data;
                 updateUI();
-                saveToLocalStorage();
+                carrotsElement.innerHTML = `🥕 ${userData.carrots} морковок`;
+                feedBtn.disabled = userData.carrots < 1;
             } else {
-                // Загружаем из localStorage как резерв
-                const saved = localStorage.getItem(`krolek_user_${userId}`);
-                if (saved) {
-                    const data = JSON.parse(saved);
-                    userData = data;
-                    updateUI();
-                } else {
-                    // Данные по умолчанию
-                    userData.carrots = 5;
-                    const now = new Date();
-                    const expire = new Date(now.getTime() + 30 * 24 * 3600 * 1000);
-                    userData.expire_timestamp = Math.floor(expire.getTime() / 1000);
-                    userData.expire_date = expire.toLocaleDateString('ru-RU', { year: 'numeric', month: 'long', day: 'numeric' });
-                    userData.days_left = 30;
-                    updateUI();
-                }
+                // Данные по умолчанию
+                userData.carrots = 5;
+                const now = new Date();
+                const expire = new Date(now.getTime() + 30 * 24 * 3600 * 1000);
+                userData.expire_timestamp = Math.floor(expire.getTime() / 1000);
+                userData.expire_date = expire.toLocaleDateString('ru-RU', { year: 'numeric', month: 'long', day: 'numeric' });
+                userData.days_left = 30;
+                updateUI();
+                carrotsElement.innerHTML = `🥕 ${userData.carrots} морковок`;
+                feedBtn.disabled = false;
+                saveToLocalStorage();
             }
             
-            carrotsElement.innerHTML = `🥕 ${userData.carrots} морковок`;
-            feedBtn.disabled = userData.carrots < 1;
+            // Фоновый запрос к боту для синхронизации
+            callBotAPI("get_data").then(response => {
+                if (response && response.ok) {
+                    userData.carrots = response.carrots;
+                    userData.expire_timestamp = response.expire_timestamp;
+                    userData.expire_date = response.expire_date;
+                    userData.days_left = response.days_left;
+                    updateUI();
+                    saveToLocalStorage();
+                    carrotsElement.innerHTML = `🥕 ${userData.carrots} морковок`;
+                    feedBtn.disabled = userData.carrots < 1;
+                }
+            });
         }
         
         function saveToLocalStorage() {
@@ -493,7 +484,17 @@
             } else if (response && response.error === "NO_CARROTS") {
                 showNotification(`❌ Не хватает морковок!`, false);
             } else {
-                showNotification(`❌ Ошибка! Попробуйте позже.`, false);
+                // Если бот не ответил, обновляем локально
+                userData.carrots -= 1;
+                const currentDate = new Date(userData.expire_timestamp * 1000);
+                const newDate = new Date(currentDate.getTime() + 7 * 24 * 3600 * 1000);
+                userData.expire_timestamp = Math.floor(newDate.getTime() / 1000);
+                userData.expire_date = newDate.toLocaleDateString('ru-RU', { year: 'numeric', month: 'long', day: 'numeric' });
+                userData.days_left = Math.max(0, Math.floor((newDate - new Date()) / (24 * 3600 * 1000)));
+                saveToLocalStorage();
+                updateUI();
+                animateRabbit();
+                showNotification(`✅ Кролик сыт! Подписка продлена до ${userData.expire_date}! 🎉`, true);
             }
             
             feedBtn.disabled = userData.carrots < 1;

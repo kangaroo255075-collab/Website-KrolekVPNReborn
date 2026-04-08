@@ -268,19 +268,19 @@
 
         <div class="subscription-card" id="subscriptionCard">
             <h3>🔐 ВАША ПОДПИСКА</h3>
-            <div class="expire-date" id="expireDate">—</div>
+            <div class="expire-date" id="expireDate">14 мая 2026 г.</div>
             
             <div class="progress-container">
                 <div class="progress-label">
                     <span>📅 Дней осталось:</span>
-                    <span id="daysLeft">—</span>
+                    <span id="daysLeft">37</span>
                 </div>
                 <div class="progress-bar">
-                    <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+                    <div class="progress-fill good" id="progressFill" style="width: 74%;"></div>
                 </div>
             </div>
             
-            <div id="subscriptionStatus"></div>
+            <div id="subscriptionStatus"><p style="color: #4caf50; font-weight: bold; margin: 5px 0;">🟢 Статус: АКТИВНА</p></div>
             
             <p style="font-size: 12px; color:#888; margin-top: 10px;">🐇 Кормите кролика, чтобы получить +7 дней подписки</p>
             <p style="font-size: 11px; color:#666;">🥕 Морковки даются за приглашение друзей в бота</p>
@@ -309,7 +309,7 @@
         <div class="rabbit-emoji" id="rabbitEmoji">🐇</div>
         <div class="rabbit-info">
             <h4>Голодный кролик!</h4>
-            <p id="rabbitCarrots">🥕 5 морковок</p>
+            <p id="rabbitCarrots">🥕 3 морковок</p>
             <button class="btn-feed" id="feedBtn"><i class="fas fa-carrot"></i> Покормить (1🥕)</button>
         </div>
     </div>
@@ -319,10 +319,10 @@
     <script>
         const BOT_TOKEN = "8214032735:AAEjdPUQUUzvyit4OQWiQWvjM7aJ1_mMzAU";
         let userId = null;
-        let userCarrots = 5;
-        let expireTimestamp = null;
-        let daysLeft = 30;
-        let expireDate = null;
+        let userCarrots = 3;
+        let expireTimestamp = 1747267200; // 14 мая 2026
+        let daysLeft = 37;
+        let expireDate = "14 мая 2026 г.";
         
         // ===== ИНИЦИАЛИЗАЦИЯ =====
         function initTelegramWebApp() {
@@ -347,40 +347,30 @@
         function updateUI() {
             document.getElementById('rabbitCarrots').innerHTML = `🥕 ${userCarrots} морковок`;
             document.getElementById('feedBtn').disabled = userCarrots < 1;
-            
-            const daysLeftSpan = document.getElementById('daysLeft');
-            const expireDateSpan = document.getElementById('expireDate');
-            const progressFill = document.getElementById('progressFill');
-            const statusDiv = document.getElementById('subscriptionStatus');
-            
-            daysLeftSpan.textContent = daysLeft;
+            document.getElementById('daysLeft').textContent = daysLeft;
+            document.getElementById('expireDate').textContent = expireDate;
             
             let percent = Math.min(100, Math.max(0, (daysLeft / 30) * 100));
-            progressFill.style.width = percent + '%';
+            document.getElementById('progressFill').style.width = percent + '%';
             
             let statusIcon = "", statusText = "", statusColor = "";
             if (daysLeft <= 0) {
                 statusIcon = "🔴";
                 statusText = "ПРОСРОЧЕНА";
                 statusColor = "#ff4444";
-                progressFill.className = 'progress-fill critical';
+                document.getElementById('progressFill').className = 'progress-fill critical';
             } else if (daysLeft <= 7) {
                 statusIcon = "🟡";
                 statusText = "СКОРО ЗАКОНЧИТСЯ";
                 statusColor = "#ffaa00";
-                progressFill.className = 'progress-fill warning';
+                document.getElementById('progressFill').className = 'progress-fill warning';
             } else {
                 statusIcon = "🟢";
                 statusText = "АКТИВНА";
                 statusColor = "#4caf50";
-                progressFill.className = 'progress-fill good';
+                document.getElementById('progressFill').className = 'progress-fill good';
             }
-            
-            statusDiv.innerHTML = `<p style="color: ${statusColor}; font-weight: bold; margin: 5px 0;">${statusIcon} Статус: ${statusText}</p>`;
-            
-            if (expireDate) {
-                expireDateSpan.textContent = expireDate;
-            }
+            document.getElementById('subscriptionStatus').innerHTML = `<p style="color: ${statusColor}; font-weight: bold; margin: 5px 0;">${statusIcon} Статус: ${statusText}</p>`;
         }
         
         function saveToLocalStorage() {
@@ -403,12 +393,6 @@
                 expireDate = data.expire_date;
                 daysLeft = data.days_left;
             } else {
-                const now = new Date();
-                const newExpire = new Date(now.getTime() + 30 * 24 * 3600 * 1000);
-                expireTimestamp = Math.floor(newExpire.getTime() / 1000);
-                expireDate = newExpire.toLocaleDateString('ru-RU', { year: 'numeric', month: 'long', day: 'numeric' });
-                daysLeft = 30;
-                userCarrots = 5;
                 saveToLocalStorage();
             }
             updateUI();
@@ -470,7 +454,7 @@
                 if (result.ok) {
                     userCarrots -= 1;
                     
-                    const currentDate = expireTimestamp ? new Date(expireTimestamp * 1000) : new Date();
+                    const currentDate = new Date(expireTimestamp * 1000);
                     const newDate = new Date(currentDate.getTime() + 7 * 24 * 3600 * 1000);
                     expireTimestamp = Math.floor(newDate.getTime() / 1000);
                     expireDate = newDate.toLocaleDateString('ru-RU', { year: 'numeric', month: 'long', day: 'numeric' });

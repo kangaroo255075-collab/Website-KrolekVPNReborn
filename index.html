@@ -299,7 +299,7 @@
     <div class="notification" id="notification"><i class="fas fa-carrot"></i><span id="notificationText"></span></div>
 
     <script>
-        const BOT_TOKEN = "8214032735:AAEjdPUQUUzvyit4OQWiQWvjM7aJ1_mMzAU";
+        let tg = null;
         let userId = null;
         let userData = {
             carrots: 0,
@@ -308,10 +308,10 @@
             days_left: 0
         };
         
-        // ===== ИНИЦИАЛИЗАЦИЯ =====
+        // ===== ИНИЦИАЛИЗАЦИЯ TELEGRAM WEBAPP =====
         function initTelegramWebApp() {
             if (window.Telegram && window.Telegram.WebApp) {
-                const tg = window.Telegram.WebApp;
+                tg = window.Telegram.WebApp;
                 tg.ready();
                 tg.expand();
                 
@@ -320,6 +320,10 @@
                     userId = user.id;
                     console.log('✅ WebApp инициализирован, user_id:', userId);
                     document.getElementById('telegramBadge').style.display = 'inline-flex';
+                    
+                    // Слушаем ответы от бота
+                    tg.onEvent('mainButtonClicked', () => {});
+                    
                     return true;
                 }
             }
@@ -364,40 +368,6 @@
             }
         }
         
-        async function callBotAPI(action) {
-            if (!userId) return null;
-            
-            try {
-                const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        chat_id: userId,
-                        text: `/api ${action}`
-                    })
-                });
-                
-                const result = await response.json();
-                
-                if (result.ok && result.result) {
-                    // Бот ответил текстом, который может быть JSON
-                    try {
-                        const text = result.result;
-                        if (text && text.startsWith('{')) {
-                            return JSON.parse(text);
-                        }
-                    } catch (e) {}
-                }
-                
-                // Ждём ответ от бота (он придёт отдельным сообщением)
-                // Для простоты используем polling или просто показываем уведомление
-                return null;
-            } catch (error) {
-                console.error('API error:', error);
-                return null;
-            }
-        }
-        
         async function loadUserData() {
             const carrotsElement = document.getElementById('rabbitCarrots');
             const feedBtn = document.getElementById('feedBtn');
@@ -413,7 +383,7 @@
                 return;
             }
             
-            // Загружаем данные из localStorage (кеш)
+            // Загружаем из localStorage
             let storedData = localStorage.getItem(`krolek_user_${userId}`);
             if (storedData) {
                 const data = JSON.parse(storedData);
@@ -422,18 +392,20 @@
                 userData.expire_date = data.expire_date;
                 userData.days_left = data.days_left;
                 updateUI();
-            }
-            
-            // Запрашиваем актуальные данные у бота
-            const response = await callBotAPI("get_data");
-            if (response && response.ok) {
-                userData.carrots = response.carrots;
-                userData.expire_timestamp = response.expire_timestamp;
-                userData.expire_date = response.expire_date;
-                userData.days_left = response.days_left;
+            } else {
+                // Дефолтные значения
+                userData.carrots = 5;
+                const now = new Date();
+                const expireDate = new Date(now.getTime() + 30 * 24 * 3600 * 1000);
+                userData.expire_timestamp = Math.floor(expireDate.getTime() / 1000);
+                userData.expire_date = expireDate.toLocaleDateString('ru-RU');
+                userData.days_left = 30;
                 saveUserData();
                 updateUI();
             }
+            
+            carrotsElement.innerHTML = `🥕 ${userData.carrots} морковок`;
+            feedBtn.disabled = userData.carrots < 1;
         }
         
         function saveUserData() {
@@ -481,21 +453,37 @@
                 return;
             }
             
-            const response = await callBotAPI("feed");
-            
-            if (response && response.ok) {
-                userData.carrots = response.carrots;
-                userData.expire_timestamp = response.expire_timestamp;
-                userData.expire_date = response.expire_date;
-                userData.days_left = response.days_left;
-                saveUserData();
-                updateUI();
-                animateRabbit();
-                showNotification(`✅ Кролик сыт! Подписка продлена до ${response.expire_date}! 🎉`, true);
-            } else if (response && response.error === "NO_CARROTS") {
-                showNotification(`❌ Не хватает морковок! Приглашайте друзей в бота 🥕`, false);
-            } else {
-                showNotification(`❌ Ошибка! Попробуйте позже.`, false);
+            // Отправляем команду боту
+            try {
+                const response = await fetch(`https://api.telegram.org/bot8214032735:AAEjdPUQUUzvyit4OQWiQWvjM7aJ1_mMzAU/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: userId,
+                        text: '/feed'
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.ok) {
+                    // Обновляем локальные данные
+                    userData.carrots -= 1;
+                    const currentDate = new Date(userData.expire_timestamp * 1000);
+                    const newDate = new Date(currentDate.getTime() + 7 * 24 * 3600 * 1000);
+                    userData.expire_timestamp = Math.floor(newDate.getTime() / 1000);
+                    userData.expire_date = newDate.toLocaleDateString('ru-RU');
+                    userData.days_left = Math.max(0, Math.floor((newDate - new Date()) / (24 * 3600 * 1000)));
+                    saveUserData();
+                    updateUI();
+                    animateRabbit();
+                    showNotification(`✅ Кролик сыт! Подписка продлена до ${userData.expire_date}! 🎉`, true);
+                } else {
+                    showNotification(`❌ Ошибка! Попробуйте позже.`, false);
+                }
+            } catch (error) {
+                console.error('Feed error:', error);
+                showNotification(`❌ Ошибка соединения!`, false);
             }
             
             feedBtn.disabled = userData.carrots < 1;

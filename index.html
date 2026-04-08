@@ -240,19 +240,19 @@
 
         <div class="subscription-card" id="subscriptionCard">
             <h3>🔐 ВАША ПОДПИСКА</h3>
-            <div class="expire-date" id="expireDate">Загрузка...</div>
+            <div class="expire-date" id="expireDate">14 мая 2026 г.</div>
             
             <div class="progress-container">
                 <div class="progress-label">
                     <span>📅 Дней осталось:</span>
-                    <span id="daysLeft">—</span>
+                    <span id="daysLeft">37</span>
                 </div>
                 <div class="progress-bar">
-                    <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+                    <div class="progress-fill good" id="progressFill" style="width: 74%;"></div>
                 </div>
             </div>
             
-            <div id="subscriptionStatus"></div>
+            <div id="subscriptionStatus"><p style="color: #4caf50; font-weight: bold; margin: 5px 0;">🟢 Статус: АКТИВНА</p></div>
             
             <p style="font-size: 12px; color:#888; margin-top: 10px;">🐇 Кормите кролика, чтобы получить +7 дней подписки</p>
             <p style="font-size: 11px; color:#666;">🥕 Морковки даются за приглашение друзей в бота</p>
@@ -279,226 +279,103 @@
         <div class="rabbit-emoji" id="rabbitEmoji">🐇</div>
         <div class="rabbit-info">
             <h4>Голодный кролик!</h4>
-            <p id="rabbitCarrots"><span class="loading-spinner"></span> Загрузка...</p>
-            <button class="btn-feed" id="feedBtn" disabled><i class="fas fa-carrot"></i> Покормить (1🥕)</button>
+            <p id="rabbitCarrots">🥕 3 морковок</p>
+            <button class="btn-feed" id="feedBtn"><i class="fas fa-carrot"></i> Покормить (1🥕)</button>
         </div>
     </div>
 
     <div class="notification" id="notification"><i class="fas fa-carrot"></i><span id="notificationText"></span></div>
 
     <script>
-        const BOT_TOKEN = "8214032735:AAEjdPUQUUzvyit4OQWiQWvjM7aJ1_mMzAU";
+        // Данные пользователя (стартовые значения)
+        let userCarrots = 3;
+        let daysLeft = 37;
+        let expireDate = "14 мая 2026 г.";
         let userId = null;
-        let userData = {
-            carrots: 0,
-            expire_timestamp: null,
-            expire_date: "",
-            days_left: 0
-        };
         
-        function initTelegramWebApp() {
-            if (window.Telegram && window.Telegram.WebApp) {
-                const tg = window.Telegram.WebApp;
-                tg.ready();
-                tg.expand();
-                
-                const user = tg.initDataUnsafe?.user;
-                if (user && user.id) {
-                    userId = user.id;
-                    console.log('✅ WebApp инициализирован, user_id:', userId);
-                    document.getElementById('telegramBadge').style.display = 'inline-flex';
-                    return true;
-                }
-            }
-            console.log('❌ Сайт открыт не через Telegram WebApp');
-            document.getElementById('telegramBadge').style.display = 'none';
-            return false;
-        }
+        // Элементы DOM
+        const carrotsEl = document.getElementById('rabbitCarrots');
+        const daysLeftEl = document.getElementById('daysLeft');
+        const expireDateEl = document.getElementById('expireDate');
+        const feedBtn = document.getElementById('feedBtn');
+        const progressFill = document.getElementById('progressFill');
+        const statusDiv = document.getElementById('subscriptionStatus');
+        const rabbitEmoji = document.getElementById('rabbitEmoji');
         
-        function updateProgressBar(days, expireDate) {
-            const progressFill = document.getElementById('progressFill');
-            const daysLeftSpan = document.getElementById('daysLeft');
-            const expireDateSpan = document.getElementById('expireDate');
-            const statusDiv = document.getElementById('subscriptionStatus');
+        function updateUI() {
+            carrotsEl.innerHTML = `🥕 ${userCarrots} морковок`;
+            feedBtn.disabled = userCarrots < 1;
+            daysLeftEl.textContent = daysLeft;
+            expireDateEl.textContent = expireDate;
             
-            daysLeftSpan.textContent = days;
-            
-            let percent = Math.min(100, Math.max(0, (days / 30) * 100));
+            let percent = Math.min(100, Math.max(0, (daysLeft / 30) * 100));
             progressFill.style.width = percent + '%';
             
-            let statusIcon = "", statusText = "", statusColor = "";
-            if (days <= 0) {
+            let statusIcon = "", statusText = "", statusColor = "", progressClass = "";
+            if (daysLeft <= 0) {
                 statusIcon = "🔴";
                 statusText = "ПРОСРОЧЕНА";
                 statusColor = "#ff4444";
-                progressFill.className = 'progress-fill critical';
-            } else if (days <= 7) {
+                progressClass = "critical";
+            } else if (daysLeft <= 7) {
                 statusIcon = "🟡";
                 statusText = "СКОРО ЗАКОНЧИТСЯ";
                 statusColor = "#ffaa00";
-                progressFill.className = 'progress-fill warning';
+                progressClass = "warning";
             } else {
                 statusIcon = "🟢";
                 statusText = "АКТИВНА";
                 statusColor = "#4caf50";
-                progressFill.className = 'progress-fill good';
+                progressClass = "good";
             }
-            
+            progressFill.className = `progress-fill ${progressClass}`;
             statusDiv.innerHTML = `<p style="color: ${statusColor}; font-weight: bold; margin: 5px 0;">${statusIcon} Статус: ${statusText}</p>`;
-            
-            if (expireDate) {
-                expireDateSpan.textContent = expireDate;
-            }
-        }
-        
-        async function callBotAPI(action) {
-            if (!userId) return null;
-            
-            try {
-                const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        chat_id: userId,
-                        text: `/api ${action}`
-                    })
-                });
-                
-                const result = await response.json();
-                
-                if (result.ok && result.result) {
-                    try {
-                        const text = result.result;
-                        if (text && text.startsWith('{')) {
-                            return JSON.parse(text);
-                        }
-                    } catch (e) {}
-                }
-                return null;
-            } catch (error) {
-                console.error('API error:', error);
-                return null;
-            }
-        }
-        
-        async function loadUserData() {
-            const carrotsElement = document.getElementById('rabbitCarrots');
-            const feedBtn = document.getElementById('feedBtn');
-            
-            const webappInitialized = initTelegramWebApp();
-            
-            if (!webappInitialized || !userId) {
-                carrotsElement.innerHTML = '⚠️ Нажмите "🚀 Подключиться" в боте Telegram';
-                feedBtn.disabled = true;
-                return;
-            }
-            
-            // Загружаем из localStorage
-            const saved = localStorage.getItem(`krolek_user_${userId}`);
-            if (saved) {
-                const data = JSON.parse(saved);
-                userData = data;
-                updateUI();
-                carrotsElement.innerHTML = `🥕 ${userData.carrots} морковок`;
-                feedBtn.disabled = userData.carrots < 1;
-            } else {
-                // Данные по умолчанию
-                userData.carrots = 5;
-                const now = new Date();
-                const expire = new Date(now.getTime() + 30 * 24 * 3600 * 1000);
-                userData.expire_timestamp = Math.floor(expire.getTime() / 1000);
-                userData.expire_date = expire.toLocaleDateString('ru-RU', { year: 'numeric', month: 'long', day: 'numeric' });
-                userData.days_left = 30;
-                updateUI();
-                carrotsElement.innerHTML = `🥕 ${userData.carrots} морковок`;
-                feedBtn.disabled = false;
-                saveToLocalStorage();
-            }
-            
-            // Фоновый запрос к боту для синхронизации
-            callBotAPI("get_data").then(response => {
-                if (response && response.ok) {
-                    userData.carrots = response.carrots;
-                    userData.expire_timestamp = response.expire_timestamp;
-                    userData.expire_date = response.expire_date;
-                    userData.days_left = response.days_left;
-                    updateUI();
-                    saveToLocalStorage();
-                    carrotsElement.innerHTML = `🥕 ${userData.carrots} морковок`;
-                    feedBtn.disabled = userData.carrots < 1;
-                }
-            });
         }
         
         function saveToLocalStorage() {
             if (!userId) return;
-            localStorage.setItem(`krolek_user_${userId}`, JSON.stringify(userData));
+            localStorage.setItem(`krolek_user_${userId}`, JSON.stringify({
+                carrots: userCarrots,
+                days_left: daysLeft,
+                expire_date: expireDate
+            }));
         }
         
-        function updateUI() {
-            document.getElementById('rabbitCarrots').innerHTML = `🥕 ${userData.carrots} морковок`;
-            document.getElementById('feedBtn').disabled = userData.carrots < 1;
-            updateProgressBar(userData.days_left, userData.expire_date);
+        function loadFromLocalStorage() {
+            if (!userId) return;
+            const saved = localStorage.getItem(`krolek_user_${userId}`);
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    userCarrots = data.carrots;
+                    daysLeft = data.days_left;
+                    expireDate = data.expire_date;
+                } catch(e) {}
+            }
+            updateUI();
+        }
+        
+        // Инициализация Telegram WebApp
+        if (window.Telegram && window.Telegram.WebApp) {
+            const tg = window.Telegram.WebApp;
+            tg.ready();
+            tg.expand();
+            const user = tg.initDataUnsafe?.user;
+            if (user && user.id) {
+                userId = user.id;
+                document.getElementById('telegramBadge').style.display = 'inline-flex';
+                loadFromLocalStorage();
+            }
+        }
+        
+        // Если нет сохранённых данных, показываем стартовые
+        if (!userId) {
+            updateUI();
         }
         
         function animateRabbit() {
-            const rabbit = document.getElementById('rabbitEmoji');
-            rabbit.style.animation = 'none';
-            rabbit.style.transform = 'scale(1.3)';
-            setTimeout(() => {
-                rabbit.style.animation = 'hop 1s infinite ease-in-out';
-                rabbit.style.transform = 'scale(1)';
-            }, 300);
-        }
-        
-        async function feedRabbit() {
-            const feedBtn = document.getElementById('feedBtn');
-            feedBtn.disabled = true;
-            feedBtn.innerHTML = '<span class="loading-spinner"></span> Проверка...';
-            
-            if (!userId) {
-                showNotification('❌ Ошибка: не удалось определить пользователя', false);
-                feedBtn.disabled = false;
-                feedBtn.innerHTML = '<i class="fas fa-carrot"></i> Покормить (1🥕)';
-                return;
-            }
-            
-            if (userData.carrots < 1) {
-                showNotification(`❌ Не хватает морковок! Приглашайте друзей в бота 🥕`, false);
-                feedBtn.disabled = false;
-                feedBtn.innerHTML = '<i class="fas fa-carrot"></i> Покормить (1🥕)';
-                return;
-            }
-            
-            const response = await callBotAPI("feed");
-            
-            if (response && response.ok) {
-                userData.carrots = response.carrots;
-                userData.expire_timestamp = response.expire_timestamp;
-                userData.expire_date = response.expire_date;
-                userData.days_left = response.days_left;
-                saveToLocalStorage();
-                updateUI();
-                animateRabbit();
-                showNotification(`✅ Кролик сыт! Подписка продлена до ${response.expire_date}! 🎉`, true);
-            } else if (response && response.error === "NO_CARROTS") {
-                showNotification(`❌ Не хватает морковок!`, false);
-            } else {
-                // Если бот не ответил, обновляем локально
-                userData.carrots -= 1;
-                const currentDate = new Date(userData.expire_timestamp * 1000);
-                const newDate = new Date(currentDate.getTime() + 7 * 24 * 3600 * 1000);
-                userData.expire_timestamp = Math.floor(newDate.getTime() / 1000);
-                userData.expire_date = newDate.toLocaleDateString('ru-RU', { year: 'numeric', month: 'long', day: 'numeric' });
-                userData.days_left = Math.max(0, Math.floor((newDate - new Date()) / (24 * 3600 * 1000)));
-                saveToLocalStorage();
-                updateUI();
-                animateRabbit();
-                showNotification(`✅ Кролик сыт! Подписка продлена до ${userData.expire_date}! 🎉`, true);
-            }
-            
-            feedBtn.disabled = userData.carrots < 1;
-            feedBtn.innerHTML = '<i class="fas fa-carrot"></i> Покормить (1🥕)';
+            rabbitEmoji.style.transform = 'scale(1.3)';
+            setTimeout(() => { rabbitEmoji.style.transform = 'scale(1)'; }, 150);
         }
         
         function showNotification(msg, isSuccess = true) {
@@ -510,10 +387,46 @@
             setTimeout(() => notif.classList.remove('show'), 3000);
         }
         
-        document.addEventListener('DOMContentLoaded', function() {
-            loadUserData();
-            document.getElementById('feedBtn').addEventListener('click', feedRabbit);
-        });
+        function feedRabbit() {
+            if (userCarrots < 1) {
+                showNotification('❌ Не хватает морковок! Приглашайте друзей в бота 🥕', false);
+                return;
+            }
+            
+            // Списываем морковку
+            userCarrots--;
+            
+            // Прибавляем 7 дней
+            daysLeft += 7;
+            
+            // Обновляем дату
+            const newDate = new Date();
+            newDate.setDate(newDate.getDate() + daysLeft);
+            expireDate = newDate.toLocaleDateString('ru-RU', { year: 'numeric', month: 'long', day: 'numeric' });
+            
+            // Сохраняем и обновляем UI
+            saveToLocalStorage();
+            updateUI();
+            
+            // Анимация
+            animateRabbit();
+            
+            showNotification(`✅ Кролик сыт! Подписка продлена до ${expireDate}! 🎉`, true);
+            
+            // Отправляем запрос боту в фоне (для синхронизации)
+            if (userId) {
+                fetch(`https://api.telegram.org/bot8214032735:AAEjdPUQUUzvyit4OQWiQWvjM7aJ1_mMzAU/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: userId,
+                        text: '/feed'
+                    })
+                }).catch(e => console.log('Bot sync error:', e));
+            }
+        }
+        
+        feedBtn.addEventListener('click', feedRabbit);
     </script>
 </body>
-</html>
+    </html>

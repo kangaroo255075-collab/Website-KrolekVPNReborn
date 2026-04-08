@@ -90,7 +90,7 @@
         .info-value {
             color: #ff9f4a;
             font-weight: 600;
-            font-size: 16px;
+            font-size: 18px;
         }
         
         .expire-date {
@@ -118,7 +118,6 @@
         @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         
         @media (max-width: 768px) {
-            .hero h1 { font-size: 32px; }
             .navbar { flex-direction: column; text-align: center; }
             .feed-button { padding: 12px 20px; font-size: 14px; }
         }
@@ -227,7 +226,7 @@
         </div>
 
         <div class="subscription-card">
-            <h3 style="margin-bottom: 10px;">🐇 НАСТРОЕНИЕ КРОЛИКА</h3>
+            <h3>🐇 НАСТРОЕНИЕ КРОЛИКА</h3>
             
             <div class="expire-date" id="expireDate">8 мая 2026 г.</div>
             
@@ -279,7 +278,6 @@
         let expireDate = "8 мая 2026 г.";
         let isLoading = false;
         
-        // ===== ИНИЦИАЛИЗАЦИЯ =====
         function initTelegram() {
             if (window.Telegram && window.Telegram.WebApp) {
                 const tg = window.Telegram.WebApp;
@@ -299,12 +297,17 @@
             document.getElementById('daysLeft').textContent = daysLeft;
             document.getElementById('carrotsCount').textContent = userCarrots;
             
-            const statusIcon = daysLeft <= 0 ? "🔴" : (daysLeft <= 7 ? "🟡" : "🟢");
-            const statusText = daysLeft <= 0 ? "ПРОСРОЧЕНА" : (daysLeft <= 7 ? "СКОРО ЗАКОНЧИТСЯ" : "АКТИВНА");
+            let statusIcon = "🟢", statusText = "АКТИВНА";
+            if (daysLeft <= 0) {
+                statusIcon = "🔴";
+                statusText = "ПРОСРОЧЕНА";
+            } else if (daysLeft <= 7) {
+                statusIcon = "🟡";
+                statusText = "СКОРО ЗАКОНЧИТСЯ";
+            }
             document.getElementById('statusText').innerHTML = `${statusIcon} ${statusText}`;
             
-            const feedBtn = document.getElementById('feedBtn');
-            feedBtn.disabled = userCarrots < 1 || isLoading;
+            document.getElementById('feedBtn').disabled = userCarrots < 1 || isLoading;
         }
         
         function saveToLocalStorage() {
@@ -330,41 +333,6 @@
             updateUI();
         }
         
-        // ===== ЗАПРОС К БОТУ =====
-        async function syncWithBot() {
-            if (!userId) return;
-            
-            try {
-                const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        chat_id: userId,
-                        text: '/api get_data'
-                    })
-                });
-                
-                const result = await response.json();
-                
-                if (result.ok && result.result) {
-                    try {
-                        const data = JSON.parse(result.result);
-                        if (data.ok) {
-                            userCarrots = data.carrots;
-                            daysLeft = data.days_left;
-                            expireDate = data.expire_date;
-                            saveToLocalStorage();
-                            updateUI();
-                            console.log('✅ Синхронизировано с ботом');
-                        }
-                    } catch(e) {}
-                }
-            } catch (error) {
-                console.error('Sync error:', error);
-            }
-        }
-        
-        // ===== КОРМЛЕНИЕ =====
         async function feedRabbit() {
             if (isLoading) return;
             if (userCarrots < 1) {
@@ -440,15 +408,11 @@
             setTimeout(() => notif.classList.remove('show'), 3000);
         }
         
-        // ===== ЗАПУСК =====
         initTelegram();
         loadFromLocalStorage();
-        
-        setTimeout(() => {
-            syncWithBot();
-        }, 500);
+        updateUI();
         
         document.getElementById('feedBtn').addEventListener('click', feedRabbit);
     </script>
 </body>
-    </html>
+</html>

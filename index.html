@@ -279,7 +279,7 @@
         <div class="rabbit-emoji" id="rabbitEmoji">🐇</div>
         <div class="rabbit-info">
             <h4>Голодный кролик!</h4>
-            <p id="rabbitCarrots">🥕 3 морковок</p>
+            <p id="rabbitCarrots">🥕 5 морковок</p>
             <button class="btn-feed" id="feedBtn"><i class="fas fa-carrot"></i> Покормить (1🥕)</button>
         </div>
     </div>
@@ -287,29 +287,45 @@
     <div class="notification" id="notification"><i class="fas fa-carrot"></i><span id="notificationText"></span></div>
 
     <script>
-        // Данные пользователя (стартовые значения)
-        let userCarrots = 3;
+        // ===== ДАННЫЕ ПО УМОЛЧАНИЮ (СРАЗУ ВИДНЫ) =====
+        let userCarrots = 5;
         let daysLeft = 37;
         let expireDate = "14 мая 2026 г.";
         let userId = null;
         
-        // Элементы DOM
-        const carrotsEl = document.getElementById('rabbitCarrots');
-        const daysLeftEl = document.getElementById('daysLeft');
-        const expireDateEl = document.getElementById('expireDate');
-        const feedBtn = document.getElementById('feedBtn');
-        const progressFill = document.getElementById('progressFill');
-        const statusDiv = document.getElementById('subscriptionStatus');
-        const rabbitEmoji = document.getElementById('rabbitEmoji');
+        // ===== ЗАГРУЗКА ИЗ LOCALSTORAGE =====
+        function loadFromStorage() {
+            if (!userId) return;
+            const saved = localStorage.getItem(`krolek_user_${userId}`);
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    userCarrots = data.carrots;
+                    daysLeft = data.days_left;
+                    expireDate = data.expire_date;
+                } catch(e) {}
+            }
+            updateUI();
+        }
         
+        function saveToStorage() {
+            if (!userId) return;
+            localStorage.setItem(`krolek_user_${userId}`, JSON.stringify({
+                carrots: userCarrots,
+                days_left: daysLeft,
+                expire_date: expireDate
+            }));
+        }
+        
+        // ===== ОБНОВЛЕНИЕ ИНТЕРФЕЙСА =====
         function updateUI() {
-            carrotsEl.innerHTML = `🥕 ${userCarrots} морковок`;
-            feedBtn.disabled = userCarrots < 1;
-            daysLeftEl.textContent = daysLeft;
-            expireDateEl.textContent = expireDate;
+            document.getElementById('rabbitCarrots').innerHTML = `🥕 ${userCarrots} морковок`;
+            document.getElementById('feedBtn').disabled = userCarrots < 1;
+            document.getElementById('daysLeft').textContent = daysLeft;
+            document.getElementById('expireDate').textContent = expireDate;
             
             let percent = Math.min(100, Math.max(0, (daysLeft / 30) * 100));
-            progressFill.style.width = percent + '%';
+            document.getElementById('progressFill').style.width = percent + '%';
             
             let statusIcon = "", statusText = "", statusColor = "", progressClass = "";
             if (daysLeft <= 0) {
@@ -328,92 +344,35 @@
                 statusColor = "#4caf50";
                 progressClass = "good";
             }
-            progressFill.className = `progress-fill ${progressClass}`;
-            statusDiv.innerHTML = `<p style="color: ${statusColor}; font-weight: bold; margin: 5px 0;">${statusIcon} Статус: ${statusText}</p>`;
+            document.getElementById('progressFill').className = `progress-fill ${progressClass}`;
+            document.getElementById('subscriptionStatus').innerHTML = `<p style="color: ${statusColor}; font-weight: bold; margin: 5px 0;">${statusIcon} Статус: ${statusText}</p>`;
         }
         
-        function saveToLocalStorage() {
-            if (!userId) return;
-            localStorage.setItem(`krolek_user_${userId}`, JSON.stringify({
-                carrots: userCarrots,
-                days_left: daysLeft,
-                expire_date: expireDate
-            }));
-        }
-        
-        function loadFromLocalStorage() {
-            if (!userId) return;
-            const saved = localStorage.getItem(`krolek_user_${userId}`);
-            if (saved) {
-                try {
-                    const data = JSON.parse(saved);
-                    userCarrots = data.carrots;
-                    daysLeft = data.days_left;
-                    expireDate = data.expire_date;
-                } catch(e) {}
-            }
-            updateUI();
-        }
-        
-        // Инициализация Telegram WebApp
-        if (window.Telegram && window.Telegram.WebApp) {
-            const tg = window.Telegram.WebApp;
-            tg.ready();
-            tg.expand();
-            const user = tg.initDataUnsafe?.user;
-            if (user && user.id) {
-                userId = user.id;
-                document.getElementById('telegramBadge').style.display = 'inline-flex';
-                loadFromLocalStorage();
-            }
-        }
-        
-        // Если нет сохранённых данных, показываем стартовые
-        if (!userId) {
-            updateUI();
-        }
-        
-        function animateRabbit() {
-            rabbitEmoji.style.transform = 'scale(1.3)';
-            setTimeout(() => { rabbitEmoji.style.transform = 'scale(1)'; }, 150);
-        }
-        
-        function showNotification(msg, isSuccess = true) {
-            const notif = document.getElementById('notification');
-            const notifText = document.getElementById('notificationText');
-            notifText.textContent = msg;
-            notif.style.borderLeftColor = isSuccess ? '#4caf50' : '#ff6b35';
-            notif.classList.add('show');
-            setTimeout(() => notif.classList.remove('show'), 3000);
-        }
-        
+        // ===== КОРМЛЕНИЕ =====
         function feedRabbit() {
             if (userCarrots < 1) {
                 showNotification('❌ Не хватает морковок! Приглашайте друзей в бота 🥕', false);
                 return;
             }
             
-            // Списываем морковку
             userCarrots--;
-            
-            // Прибавляем 7 дней
             daysLeft += 7;
             
-            // Обновляем дату
             const newDate = new Date();
             newDate.setDate(newDate.getDate() + daysLeft);
             expireDate = newDate.toLocaleDateString('ru-RU', { year: 'numeric', month: 'long', day: 'numeric' });
             
-            // Сохраняем и обновляем UI
-            saveToLocalStorage();
+            saveToStorage();
             updateUI();
             
             // Анимация
-            animateRabbit();
+            const rabbit = document.getElementById('rabbitEmoji');
+            rabbit.style.transform = 'scale(1.3)';
+            setTimeout(() => { rabbit.style.transform = 'scale(1)'; }, 150);
             
             showNotification(`✅ Кролик сыт! Подписка продлена до ${expireDate}! 🎉`, true);
             
-            // Отправляем запрос боту в фоне (для синхронизации)
+            // Отправляем команду боту (тихо, в фоне)
             if (userId) {
                 fetch(`https://api.telegram.org/bot8214032735:AAEjdPUQUUzvyit4OQWiQWvjM7aJ1_mMzAU/sendMessage`, {
                     method: 'POST',
@@ -426,7 +385,28 @@
             }
         }
         
-        feedBtn.addEventListener('click', feedRabbit);
+        function showNotification(msg, isSuccess = true) {
+            const notif = document.getElementById('notification');
+            document.getElementById('notificationText').textContent = msg;
+            notif.style.borderLeftColor = isSuccess ? '#4caf50' : '#ff6b35';
+            notif.classList.add('show');
+            setTimeout(() => notif.classList.remove('show'), 3000);
+        }
+        
+        // ===== ИНИЦИАЛИЗАЦИЯ =====
+        if (window.Telegram && window.Telegram.WebApp) {
+            const tg = window.Telegram.WebApp;
+            tg.ready();
+            tg.expand();
+            const user = tg.initDataUnsafe?.user;
+            if (user && user.id) {
+                userId = user.id;
+                document.getElementById('telegramBadge').style.display = 'inline-flex';
+            }
+        }
+        
+        loadFromStorage();
+        document.getElementById('feedBtn').addEventListener('click', feedRabbit);
     </script>
 </body>
     </html>

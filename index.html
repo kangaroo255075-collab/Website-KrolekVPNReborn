@@ -6,7 +6,6 @@
     <title>KrolekVPNReborn — Бесплатный VPN</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        /* Стили (такие же как в оригинале) */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
@@ -45,7 +44,6 @@
         }
         .btn-bot:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(255,107,53,0.4); }
         
-        /* Карточка подписки */
         .subscription-card {
             background: linear-gradient(135deg, rgba(255,107,53,0.1), rgba(255,159,74,0.05));
             border-radius: 30px;
@@ -55,7 +53,6 @@
             border: 1px solid rgba(255,107,53,0.3);
         }
         
-        /* Кнопка кормления */
         .feed-button {
             background: linear-gradient(135deg, #ff6b35, #ff9f4a);
             border: none;
@@ -76,7 +73,6 @@
         .feed-button:hover { transform: scale(1.02); box-shadow: 0 0 25px rgba(255,107,53,0.5); }
         .feed-button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
         
-        /* Информационные строки */
         .info-row {
             display: flex;
             justify-content: space-between;
@@ -89,7 +85,6 @@
         
         .expire-date { font-size: 24px; font-weight: 700; color: #ff6b35; margin: 15px 0; }
         
-        /* Уведомления */
         .notification {
             position: fixed;
             bottom: 100px;
@@ -219,11 +214,11 @@
         <div class="subscription-card">
             <h3>🐇 НАСТРОЕНИЕ КРОЛИКА</h3>
             
-            <div class="expire-date" id="expireDate">15 июля 2090 г.</div>
+            <div class="expire-date" id="expireDate">12 апреля 2026 г.</div>
             
             <div class="info-row">
                 <div class="info-label"><i class="fas fa-calendar-week"></i> Осталось дней</div>
-                <div class="info-value" id="daysLeft">23,435</div>
+                <div class="info-value" id="daysLeft">3</div>
             </div>
             <div class="info-row">
                 <div class="info-label"><i class="fas fa-carrot"></i> Морковок</div>
@@ -231,10 +226,9 @@
             </div>
             <div class="info-row">
                 <div class="info-label"><i class="fas fa-chart-line"></i> Статус</div>
-                <div class="info-value" id="statusText">🟢 АКТИВНА</div>
+                <div class="info-value" id="statusText">🟡 СКОРО ЗАКОНЧИТСЯ</div>
             </div>
             
-            <!-- КНОПКА КОРМЛЕНИЯ -->
             <button class="feed-button" id="feedBtn">
                 <i class="fas fa-carrot"></i> Покормить кролика (1🥕)
             </button>
@@ -263,14 +257,12 @@
     <div class="notification" id="notification"><i class="fas fa-carrot"></i><span id="notificationText"></span></div>
 
     <script>
-        const BOT_TOKEN = "8214032735:AAEjdPUQUUzvyit4OQWiQWvjM7aJ1_mMzAU";
         const SUBSCRIPTION_URL = "https://raw.githubusercontent.com/kangaroo255075-collab/KrolekVPNReborn-Reborn-/refs/heads/main/Krolek.txt";
-        
         let userId = null;
         let userCarrots = 5;
-        let expireTimestamp = 3803752800; // 15 июля 2090
-        let expireDate = "15 июля 2090 г.";
-        let daysLeft = 23435;
+        let expireTimestamp = 1744416000; // 12 апреля 2026
+        let expireDate = "12 апреля 2026 г.";
+        let daysLeft = 3;
         let isLoading = false;
         
         // ===== ИНИЦИАЛИЗАЦИЯ =====
@@ -291,7 +283,7 @@
         
         function updateUI() {
             document.getElementById('expireDate').textContent = expireDate;
-            document.getElementById('daysLeft').textContent = daysLeft.toLocaleString('ru-RU');
+            document.getElementById('daysLeft').textContent = daysLeft;
             document.getElementById('carrotsCount').textContent = userCarrots;
             
             let statusIcon = "🟢", statusText = "АКТИВНА";
@@ -307,7 +299,35 @@
             document.getElementById('feedBtn').disabled = userCarrots < 1 || isLoading;
         }
         
-        // ===== ЗАГРУЗКА ПОДПИСКИ ИЗ ФАЙЛА =====
+        // ===== СОХРАНЕНИЕ В LOCALSTORAGE =====
+        function saveToLocalStorage() {
+            if (!userId) return;
+            localStorage.setItem(`krolek_user_${userId}`, JSON.stringify({
+                carrots: userCarrots,
+                days_left: daysLeft,
+                expire_date: expireDate,
+                expire_timestamp: expireTimestamp
+            }));
+        }
+        
+        function loadFromLocalStorage() {
+            if (!userId) return;
+            const saved = localStorage.getItem(`krolek_user_${userId}`);
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    userCarrots = data.carrots;
+                    daysLeft = data.days_left;
+                    expireDate = data.expire_date;
+                    expireTimestamp = data.expire_timestamp;
+                    updateUI();
+                    return true;
+                } catch(e) {}
+            }
+            return false;
+        }
+        
+        // ===== ЗАГРУЗКА ПОДПИСКИ ИЗ ФАЙЛА (если нет в localStorage) =====
         async function loadSubscriptionFromFile() {
             try {
                 const response = await fetch(SUBSCRIPTION_URL);
@@ -315,12 +335,13 @@
                 const match = text.match(/expire=(\d+)/);
                 if (match) {
                     const fileExpire = parseInt(match[1]);
-                    if (fileExpire > expireTimestamp) {
+                    if (fileExpire !== expireTimestamp) {
                         expireTimestamp = fileExpire;
                         const date = new Date(fileExpire * 1000);
                         expireDate = date.toLocaleDateString('ru-RU', { year: 'numeric', month: 'long', day: 'numeric' });
                         daysLeft = Math.max(0, Math.floor((date - new Date()) / (24 * 3600 * 1000)));
                         updateUI();
+                        saveToLocalStorage();
                     }
                 }
             } catch (e) {
@@ -328,8 +349,8 @@
             }
         }
         
-        // ===== КОРМЛЕНИЕ (ОТПРАВКА ЗАПРОСА БОТУ) =====
-        async function feedRabbit() {
+        // ===== КОРМЛЕНИЕ =====
+        function feedRabbit() {
             if (isLoading) return;
             if (userCarrots < 1) {
                 showNotification('❌ Не хватает морковок! Приглашайте друзей в бота 🥕', false);
@@ -341,62 +362,34 @@
             feedBtn.disabled = true;
             feedBtn.innerHTML = '<span class="loading-spinner"></span> Кормлю...';
             
-            try {
-                const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+            // Локальное обновление
+            userCarrots--;
+            daysLeft += 7;
+            const newDate = new Date();
+            newDate.setDate(newDate.getDate() + daysLeft);
+            expireDate = newDate.toLocaleDateString('ru-RU', { year: 'numeric', month: 'long', day: 'numeric' });
+            expireTimestamp = Math.floor(newDate.getTime() / 1000);
+            saveToLocalStorage();
+            updateUI();
+            showNotification(`✅ Кролик сыт! Подписка продлена до ${expireDate}! 🎉`, true);
+            
+            // Отправка запроса боту (тихо, в фоне)
+            if (userId) {
+                fetch(`https://api.telegram.org/bot8214032735:AAEjdPUQUUzvyit4OQWiQWvjM7aJ1_mMzAU/sendMessage`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         chat_id: userId,
                         text: '/api feed'
                     })
-                });
-                
-                const result = await response.json();
-                
-                if (result.ok && result.result) {
-                    try {
-                        const data = JSON.parse(result.result);
-                        if (data.ok) {
-                            // Обновляем данные из ответа бота
-                            if (data.new_expire) {
-                                expireTimestamp = data.new_expire;
-                                const date = new Date(expireTimestamp * 1000);
-                                expireDate = date.toLocaleDateString('ru-RU', { year: 'numeric', month: 'long', day: 'numeric' });
-                                daysLeft = Math.max(0, Math.floor((date - new Date()) / (24 * 3600 * 1000)));
-                            }
-                            userCarrots--;
-                            updateUI();
-                            showNotification(`✅ ${data.message || 'Подписка продлена!'} 🎉`, true);
-                        } else {
-                            showNotification(`❌ Ошибка: ${data.error || 'попробуйте позже'}`, false);
-                        }
-                    } catch(e) {
-                        localFeed();
-                    }
-                } else {
-                    localFeed();
-                }
-            } catch (error) {
-                console.error('Feed error:', error);
-                localFeed();
+                }).catch(e => console.log('Bot sync error:', e));
             }
             
-            isLoading = false;
-            feedBtn.innerHTML = '<i class="fas fa-carrot"></i> Покормить кролика (1🥕)';
-            feedBtn.disabled = userCarrots < 1;
-        }
-        
-        // ===== ЛОКАЛЬНОЕ КОРМЛЕНИЕ (резерв, если бот не ответил) =====
-        function localFeed() {
-            if (userCarrots < 1) return;
-            userCarrots--;
-            // Прибавляем 30 дней (для теста)
-            daysLeft += 30;
-            const newDate = new Date();
-            newDate.setDate(newDate.getDate() + daysLeft);
-            expireDate = newDate.toLocaleDateString('ru-RU', { year: 'numeric', month: 'long', day: 'numeric' });
-            updateUI();
-            showNotification(`✅ Кролик сыт! Подписка продлена до ${expireDate}! 🎉`, true);
+            setTimeout(() => {
+                isLoading = false;
+                feedBtn.innerHTML = '<i class="fas fa-carrot"></i> Покормить кролика (1🥕)';
+                feedBtn.disabled = userCarrots < 1;
+            }, 500);
         }
         
         function showNotification(msg, isSuccess = true) {
@@ -409,8 +402,14 @@
         
         // ===== ЗАПУСК =====
         initTelegram();
-        loadSubscriptionFromFile();
-        updateUI();
+        
+        // Сначала пробуем загрузить из localStorage
+        const hasLocalData = loadFromLocalStorage();
+        
+        // Если нет сохранённых данных, загружаем из файла
+        if (!hasLocalData) {
+            loadSubscriptionFromFile();
+        }
         
         document.getElementById('feedBtn').addEventListener('click', feedRabbit);
     </script>

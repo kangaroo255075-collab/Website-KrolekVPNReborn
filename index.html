@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>KrolekVPNReborn — Установка подписки</title>
     <style>
+        /* Полное копирование стиля Phonk VPN */
         * {
             margin: 0;
             padding: 0;
@@ -13,188 +14,122 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, sans-serif;
-            background: #0a0a0c;
-            background-image: radial-gradient(circle at 25% 0%, rgba(255, 107, 53, 0.08) 0%, rgba(10, 10, 12, 1) 70%);
-            color: #fff;
+            background: #000000;
+            color: #ffffff;
             line-height: 1.5;
             min-height: 100vh;
-            padding: 20px;
+            padding: 0;
         }
 
         .container {
-            max-width: 600px;
+            max-width: 100%;
             margin: 0 auto;
+            padding: 24px 20px 40px;
         }
 
-        /* Карточка */
-        .card {
-            background: rgba(18, 18, 22, 0.9);
-            backdrop-filter: blur(20px);
-            border-radius: 48px;
-            padding: 32px 28px;
-            border: 1px solid rgba(255, 107, 53, 0.25);
-            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.5);
-            transition: transform 0.2s;
+        /* Заголовок */
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
         }
 
-        /* Логотип */
         .logo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 28px;
-            flex-wrap: wrap;
+            font-size: 64px;
+            margin-bottom: 12px;
         }
 
-        .logo-icon {
-            font-size: 48px;
-            filter: drop-shadow(0 0 8px rgba(255, 107, 53, 0.5));
-        }
-
-        .logo-text {
+        h1 {
             font-size: 28px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #ff6b35, #ffaa66);
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #ffffff, #ffaa66);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
         }
 
-        /* Статус */
-        .status-chip {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 60px;
-            padding: 8px 18px;
-            margin-bottom: 28px;
-            font-size: 14px;
-            font-weight: 500;
-            border: 1px solid rgba(255, 107, 53, 0.3);
-            width: auto;
-            justify-content: center;
-        }
-
-        .status-active {
-            color: #4caf50;
-            border-color: #4caf50;
-            background: rgba(76, 175, 80, 0.1);
-        }
-
-        .status-warning {
-            color: #ff9800;
-            border-color: #ff9800;
-            background: rgba(255, 152, 0, 0.1);
-        }
-
-        /* Блок с датой */
-        .expiry-block {
-            text-align: center;
-            margin: 20px 0;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 32px;
-        }
-
-        .expiry-label {
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #aaa;
-            margin-bottom: 8px;
-        }
-
-        .expiry-date {
-            font-size: 32px;
-            font-weight: 800;
-            color: #ff6b35;
-            line-height: 1.2;
-        }
-
-        .days-left {
-            font-size: 14px;
-            color: #aaa;
-            margin-top: 8px;
-        }
-
-        /* Инструкция */
-        .steps {
-            margin: 28px 0;
-            background: rgba(0, 0, 0, 0.25);
-            border-radius: 28px;
-            padding: 20px;
-        }
-
-        .step {
-            display: flex;
-            gap: 14px;
+        /* Секции как на Phonk VPN */
+        .section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 24px;
             margin-bottom: 20px;
-            align-items: flex-start;
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        .step:last-child {
-            margin-bottom: 0;
-        }
-
-        .step-number {
-            width: 32px;
-            height: 32px;
-            background: rgba(255, 107, 53, 0.2);
-            border-radius: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .section-title {
+            font-size: 22px;
             font-weight: 700;
-            color: #ffaa66;
-            flex-shrink: 0;
-        }
-
-        .step-text {
-            flex: 1;
-            font-size: 15px;
-            color: #ddd;
-        }
-
-        .step-text strong {
+            margin-bottom: 16px;
             color: #ffaa66;
         }
 
-        /* Кнопки */
+        .section-text {
+            color: #ccc;
+            font-size: 16px;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        /* Кнопка как на Phonk VPN */
         .button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
+            display: block;
             width: 100%;
-            padding: 16px 24px;
+            background: #ff6b35;
+            border: none;
             border-radius: 60px;
+            padding: 16px 24px;
+            font-size: 18px;
             font-weight: 600;
-            font-size: 17px;
+            color: white;
+            text-align: center;
             cursor: pointer;
             transition: all 0.2s ease;
-            border: none;
-            margin-bottom: 14px;
-            background: #ff6b35;
-            color: white;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
         }
 
-        .button:hover {
-            transform: scale(0.98);
-            filter: brightness(1.05);
-            box-shadow: 0 8px 20px rgba(255, 107, 53, 0.3);
+        .button:active {
+            transform: scale(0.97);
         }
 
-        .button-secondary {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 107, 53, 0.5);
+        /* Информация о подписке */
+        .subscription-info {
+            background: rgba(255, 107, 53, 0.1);
+            border-radius: 16px;
+            padding: 16px;
+            text-align: center;
+            margin: 20px 0;
+            border: 1px solid rgba(255, 107, 53, 0.3);
+        }
+
+        .subscription-date {
+            font-size: 18px;
+            font-weight: 600;
             color: #ffaa66;
+        }
+
+        /* Список серверов */
+        .server-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .server-tag {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 40px;
+            padding: 6px 14px;
+            font-size: 13px;
+            color: #ddd;
         }
 
         .footer {
             text-align: center;
-            margin-top: 28px;
+            margin-top: 32px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
             font-size: 12px;
             color: #666;
         }
@@ -204,155 +139,152 @@
             text-decoration: none;
         }
 
-        @media (max-width: 500px) {
-            .card {
-                padding: 24px 20px;
-            }
-            .expiry-date {
-                font-size: 26px;
-            }
+        /* Сообщение об ошибке/успехе */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 20px;
+            right: 20px;
+            background: #1a1a1a;
+            border-radius: 60px;
+            padding: 12px 20px;
+            text-align: center;
+            font-size: 14px;
+            z-index: 1000;
+            transition: opacity 0.3s;
+            opacity: 0;
+            pointer-events: none;
+            border-left: 3px solid #ff6b35;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="card">
-            <!-- Логотип -->
-            <div class="logo">
-                <div class="logo-icon">🐇</div>
-                <div class="logo-text">KrolekVPN<br>Reborn</div>
-            </div>
+        <!-- Шапка -->
+        <div class="header">
+            <div class="logo">🐇</div>
+            <h1>KrolekVPNReborn</h1>
+        </div>
 
-            <!-- Статус подписки (обновляется динамически) -->
-            <div style="display: flex; justify-content: center;">
-                <div class="status-chip" id="statusChip">
-                    <span>⏳</span> Загрузка...
-                </div>
+        <!-- Секция установки -->
+        <div class="section">
+            <div class="section-title">Установка</div>
+            <div class="section-text">
+                Установите приложение <strong>NekoBox</strong> или <strong>v2rayNG</strong> (Happ) из Google Play / App Store. 
+                Запустите его, при необходимости разрешите создание VPN-конфигурации.
             </div>
+        </div>
 
-            <!-- Дата окончания -->
-            <div class="expiry-block" id="expiryBlock">
-                <div class="expiry-label">ПОДПИСКА АКТИВНА ДО</div>
-                <div class="expiry-date" id="expiryDate">-- ---- ----</div>
-                <div class="days-left" id="daysLeft"></div>
+        <!-- Информация о подписке -->
+        <div class="subscription-info">
+            <div>📅 Подписка активна до</div>
+            <div class="subscription-date" id="expiryDate">15 июля 2090 года</div>
+            <div style="font-size: 12px; margin-top: 8px;">✅ Безлимитный трафик · 15+ Мбит/с</div>
+        </div>
+
+        <!-- Секция добавления подписки -->
+        <div class="section">
+            <div class="section-title">Добавление подписки</div>
+            <div class="section-text">
+                Нажмите на кнопку ниже — откроется приложение, и подписка добавится автоматически.
+                Если приложение не открылось, скопируйте ссылку и добавьте вручную.
             </div>
-
-            <!-- Инструкция -->
-            <div class="steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <div class="step-text">Установите <strong>NekoBox</strong> или <strong>v2rayNG</strong> из <strong>Google Play</strong> / <strong>App Store</strong></div>
-                </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <div class="step-text">Нажмите <strong>«Импортировать подписку»</strong> — откроется приложение, и подписка добавится автоматически</div>
-                </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <div class="step-text">В приложении выберите сервер и нажмите <strong>подключиться</strong></div>
-                </div>
-            </div>
-
-            <!-- Кнопка импорта -->
             <button class="button" id="importBtn">
-                <span>📡</span> Импортировать подписку
+                📡 Импортировать подписку
             </button>
-
-            <!-- Кнопка копирования ссылки -->
-            <button class="button button-secondary" id="copyBtn">
-                <span>🔗</span> Скопировать ссылку
+            <button class="button" id="copyBtn" style="background: rgba(255,255,255,0.1); box-shadow: none; margin-top: 0;">
+                🔗 Скопировать ссылку
             </button>
+        </div>
 
-            <div class="footer">
-                📡 Серверы: Россия, Германия, Польша, Нидерланды<br>
-                ✨ Бесплатно навсегда · 15+ Мбит/с<br>
-                📢 <a href="https://t.me/KrolekVPNReborn" target="_blank">Telegram-канал</a> · <a href="https://t.me/Kr0l3k" target="_blank">Поддержка</a>
+        <!-- Секция подключения -->
+        <div class="section">
+            <div class="section-title">Подключение и использование</div>
+            <div class="section-text">
+                В приложении перейдите в раздел «Подписки», выберите добавленную подписку, затем нажмите «Обновить».
+                После появления серверов выберите любой и нажмите подключиться.
             </div>
+            <div class="server-list">
+                <span class="server-tag">🇷🇺 Россия</span>
+                <span class="server-tag">🇩🇪 Германия</span>
+                <span class="server-tag">🇵🇱 Польша</span>
+                <span class="server-tag">🇳🇱 Нидерланды</span>
+            </div>
+        </div>
+
+        <div class="footer">
+            🔗 Подписка: <span id="shortLink">KrolekVPNReborn</span><br>
+            📢 <a href="https://t.me/KrolekVPNReborn" target="_blank">Telegram-канал</a> · 
+            💬 <a href="https://t.me/Kr0l3k" target="_blank">Поддержка</a><br>
+            © 2025-2026 Бесплатный VPN для обхода блокировок
         </div>
     </div>
 
+    <div id="toast" class="toast"></div>
+
     <script>
-        // ВАША ССЫЛКА НА ПОДПИСКУ (файл Krolek.txt)
+        // ВАША ССЫЛКА НА ПОДПИСКУ
         const SUBSCRIPTION_URL = "https://raw.githubusercontent.com/kangaroo255075-collab/KrolekVPNReborn-Reborn-/refs/heads/main/Krolek.txt";
         
-        // Функция для получения даты окончания из файла
-        async function fetchExpiryDate() {
-            try {
-                const response = await fetch(SUBSCRIPTION_URL);
-                const text = await response.text();
-                const match = text.match(/expire=(\d+)/);
-                if (match) {
-                    const timestamp = parseInt(match[1], 10);
-                    const expireDate = new Date(timestamp * 1000);
-                    const now = new Date();
-                    const daysLeft = Math.ceil((expireDate - now) / (1000 * 60 * 60 * 24));
-                    
-                    // Форматируем дату
-                    const formattedDate = expireDate.toLocaleDateString('ru-RU', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                    });
-                    
-                    document.getElementById('expiryDate').innerText = formattedDate;
-                    
-                    if (daysLeft < 0) {
-                        document.getElementById('daysLeft').innerHTML = '❌ Подписка истекла';
-                        const chip = document.getElementById('statusChip');
-                        chip.innerHTML = '<span>🔴</span> ПРОСРОЧЕНА';
-                        chip.classList.add('status-warning');
-                    } else if (daysLeft < 7) {
-                        document.getElementById('daysLeft').innerHTML = `⚠️ Осталось ${daysLeft} дней`;
-                        const chip = document.getElementById('statusChip');
-                        chip.innerHTML = '<span>🟡</span> ЗАКАНЧИВАЕТСЯ';
-                        chip.classList.add('status-warning');
-                    } else {
-                        document.getElementById('daysLeft').innerHTML = `✅ Осталось ${daysLeft} дней`;
-                        const chip = document.getElementById('statusChip');
-                        chip.innerHTML = '<span>🟢</span> АКТИВНА';
-                        chip.classList.add('status-active');
-                    }
-                    return;
-                }
-                throw new Error('expire not found');
-            } catch (error) {
-                console.error('Ошибка загрузки подписки:', error);
-                document.getElementById('expiryDate').innerText = 'Не удалось загрузить';
-                document.getElementById('daysLeft').innerHTML = 'Проверьте соединение';
-                const chip = document.getElementById('statusChip');
-                chip.innerHTML = '<span>⚠️</span> ОШИБКА';
-            }
+        // Показываем уведомление
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.style.background = isError ? '#2a1a1a' : '#1a2a1a';
+            toast.style.borderLeftColor = isError ? '#ff4444' : '#4caf50';
+            toast.style.opacity = '1';
+            setTimeout(() => {
+                toast.style.opacity = '0';
+            }, 3000);
         }
 
-        // Импорт подписки (открывает ссылку в приложении)
+        // ИМПОРТ ПОДПИСКИ — пробуем разные схемы для открытия в приложении
         function importSubscription() {
-            // Пытаемся открыть через специальную схему для NekoBox / v2rayNG
-            // Также поддерживается стандартный URL
-            window.location.href = SUBSCRIPTION_URL;
+            // Пробуем открыть через универсальную схему
+            // Для NekoBox, v2rayNG, Happ, Hiddify и др.
             
-            // Дополнительно показываем уведомление
+            // Вариант 1: прямая ссылка (не всегда срабатывает в WebView)
+            // Вариант 2: пробуем через intent для Android
+            // Вариант 3: используем location.href как есть
+            
+            // Самый надёжный способ — скопировать и показать инструкцию
+            // Но попробуем сначала открыть
+            
+            const url = SUBSCRIPTION_URL;
+            
+            // Пытаемся открыть через location (сработает если приложение зарегистрировало схему)
+            window.location.href = url;
+            
+            // Запасной вариант — показываем инструкцию через 1 секунду, если не открылось
             setTimeout(() => {
-                alert("Если приложение не открылось автоматически, скопируйте ссылку и вставьте её вручную в NekoBox / v2rayNG → «Новая подписка»");
-            }, 500);
+                showToast('Если приложение не открылось — скопируйте ссылку и добавьте вручную в NekoBox/v2rayNG → «Новая подписка»');
+            }, 800);
         }
 
         // Копирование ссылки
         async function copyLink() {
             try {
                 await navigator.clipboard.writeText(SUBSCRIPTION_URL);
-                const btn = document.getElementById('copyBtn');
-                const originalHtml = btn.innerHTML;
-                btn.innerHTML = '<span>✅</span> Ссылка скопирована!';
-                setTimeout(() => {
-                    btn.innerHTML = originalHtml;
-                }, 2000);
+                showToast('✅ Ссылка на подписку скопирована!');
             } catch (err) {
-                alert('Не удалось скопировать ссылку. Выделите её вручную.');
+                // fallback
+                const textarea = document.createElement('textarea');
+                textarea.value = SUBSCRIPTION_URL;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                showToast('✅ Ссылка скопирована!');
             }
         }
 
+        // Фиксированная дата — 15 июля 2090 года (как вы и просили)
+        function setFixedDate() {
+            document.getElementById('expiryDate').innerHTML = '15 июля 2090 года';
+        }
+
         // Инициализация
-        fetchExpiryDate();
+        setFixedDate();
         document.getElementById('importBtn').addEventListener('click', importSubscription);
         document.getElementById('copyBtn').addEventListener('click', copyLink);
     </script>

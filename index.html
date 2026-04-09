@@ -3,131 +3,202 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>KrolekVPNReborn — Установка</title>
+    <title>KrolekVPNReborn — Бесплатный VPN</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, sans-serif;
-            background: #ffffff;
-            color: #000000;
-            line-height: 1.5;
-            padding: 40px 20px;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a00 100%);
+            color: #fff;
+            line-height: 1.6;
+            min-height: 100vh;
         }
-
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            flex-wrap: wrap;
+            gap: 15px;
         }
-
-        /* Заголовок */
-        h1 {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            letter-spacing: -0.5px;
-        }
-
-        .subtitle {
-            font-size: 16px;
-            color: #666;
-            margin-bottom: 32px;
-        }
-
-        /* Секции */
-        .section {
-            margin-bottom: 32px;
-        }
-
-        .section h2 {
-            font-size: 22px;
+        .logo { display: flex; align-items: center; gap: 10px; font-size: 24px; font-weight: 700; }
+        .logo i { color: #ff6b35; font-size: 32px; }
+        .logo span { background: linear-gradient(135deg, #ff6b35, #ff9f4a); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { color: #fff; text-decoration: none; transition: 0.3s; font-weight: 500; }
+        .nav-links a:hover { color: #ff6b35; }
+        .btn-bot {
+            background: linear-gradient(135deg, #ff6b35, #ff9f4a);
+            padding: 10px 24px;
+            border-radius: 30px;
+            color: #fff;
+            text-decoration: none;
             font-weight: 600;
-            margin-bottom: 16px;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
-
-        .section p {
-            font-size: 16px;
-            color: #333;
-            margin-bottom: 16px;
+        .btn-bot:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(255,107,53,0.4); }
+        
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 50vh;
+            gap: 40px;
+            flex-wrap: wrap;
+            padding: 40px 0;
         }
-
-        /* Шаги с эмодзи */
+        .hero-content { flex: 1; }
+        .hero-badge {
+            background: rgba(255,107,53,0.2);
+            border: 1px solid rgba(255,107,53,0.5);
+            border-radius: 30px;
+            padding: 5px 15px;
+            display: inline-block;
+            font-size: 14px;
+            margin-bottom: 20px;
+            color: #ff9f4a;
+        }
+        .hero h1 { font-size: 52px; font-weight: 700; margin-bottom: 20px; line-height: 1.2; }
+        .hero h1 span { color: #ff6b35; }
+        .hero p { font-size: 18px; color: #aaa; margin-bottom: 30px; max-width: 500px; }
+        .hero-stats { display: flex; gap: 30px; margin-top: 30px; }
+        .stat-number { font-size: 32px; font-weight: 700; color: #ff6b35; }
+        .stat-label { font-size: 14px; color: #888; }
+        .hero-image { flex: 1; text-align: center; }
+        .hero-image i { font-size: 250px; color: rgba(255,107,53,0.2); }
+        
+        /* Карточка подписки */
+        .subscription-card {
+            background: linear-gradient(135deg, rgba(255,107,53,0.1), rgba(255,159,74,0.05));
+            border-radius: 30px;
+            padding: 25px;
+            margin: 20px 0;
+            text-align: center;
+            border: 1px solid rgba(255,107,53,0.3);
+        }
+        .expire-date { font-size: 28px; font-weight: 700; color: #ff6b35; margin: 10px 0; }
+        
+        /* Инструкция */
+        .instructions {
+            background: rgba(255,255,255,0.05);
+            border-radius: 24px;
+            padding: 24px;
+            margin: 30px 0;
+        }
+        .instructions h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #ff9f4a;
+        }
         .step {
             display: flex;
-            align-items: flex-start;
-            gap: 12px;
+            align-items: center;
+            gap: 15px;
             margin-bottom: 20px;
+            padding: 12px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 16px;
         }
-
-        .step-emoji {
-            font-size: 24px;
-            min-width: 32px;
+        .step-icon {
+            font-size: 32px;
+            min-width: 50px;
+            text-align: center;
         }
-
         .step-text {
-            font-size: 16px;
-            color: #333;
+            flex: 1;
+            font-size: 15px;
+            color: #ddd;
         }
-
         .step-text strong {
-            font-weight: 600;
-            color: #000;
+            color: #ff9f4a;
         }
-
-        /* Кнопка */
-        .button {
-            display: block;
-            width: 100%;
-            background: #000000;
+        
+        /* Кнопка копирования */
+        .copy-btn {
+            background: linear-gradient(135deg, #ff6b35, #ff9f4a);
             border: none;
-            border-radius: 12px;
-            padding: 16px 20px;
-            font-size: 18px;
-            font-weight: 500;
+            padding: 14px 28px;
+            border-radius: 50px;
             color: white;
-            text-align: center;
+            font-weight: 600;
             cursor: pointer;
-            transition: opacity 0.2s;
-            margin: 24px 0;
+            transition: 0.3s;
+            font-size: 16px;
+            width: 100%;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
-
-        .button:active {
-            opacity: 0.7;
+        .copy-btn:hover { transform: scale(1.02); box-shadow: 0 0 20px rgba(255,107,53,0.5); }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
-
-        /* Ссылки внизу */
-        .footer {
+        .info-label { color: #aaa; font-size: 14px; display: flex; align-items: center; gap: 8px; }
+        .info-value { color: #ff9f4a; font-weight: 600; font-size: 16px; }
+        
+        .features { padding: 40px 0; }
+        .section-title { text-align: center; font-size: 32px; margin-bottom: 40px; }
+        .section-title span { color: #ff6b35; }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+        .feature-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 25px;
             text-align: center;
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
-            font-size: 14px;
-            color: #888;
+            border: 1px solid rgba(255,107,53,0.2);
+            transition: 0.3s;
         }
-
-        .footer a {
-            color: #000;
-            text-decoration: none;
+        .feature-card:hover { transform: translateY(-5px); border-color: #ff6b35; }
+        .feature-icon { font-size: 40px; color: #ff6b35; margin-bottom: 15px; }
+        .feature-card h3 { margin-bottom: 10px; }
+        .feature-card p { color: #aaa; font-size: 14px; }
+        
+        .footer { text-align: center; padding: 30px 0; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 40px; color: #666; }
+        
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 36px; }
+            .navbar { flex-direction: column; text-align: center; }
+            .step { flex-wrap: wrap; text-align: center; justify-content: center; }
         }
-
-        .footer a:hover {
-            text-decoration: underline;
+        
+        .telegram-badge {
+            background: #ff6b35;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 15px;
         }
-
-        /* Уведомление */
+        
         .toast {
             position: fixed;
             bottom: 30px;
             left: 20px;
             right: 20px;
-            background: #000000;
-            color: white;
+            background: #1a1a1a;
+            border-left: 4px solid #4caf50;
             border-radius: 12px;
-            padding: 14px 20px;
+            padding: 12px 20px;
             text-align: center;
             font-size: 14px;
             z-index: 1000;
@@ -136,61 +207,104 @@
             pointer-events: none;
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
     <div class="container">
-        <h1>KrolekVPNReborn</h1>
-        <div class="subtitle">Бесплатный VPN для обхода блокировок</div>
-
-        <!-- Секция установки -->
-        <div class="section">
-            <h2>Установка</h2>
-            <div class="step">
-                <div class="step-emoji">📱</div>
-                <div class="step-text">Установите приложение <strong>NekoBox</strong> или <strong>v2rayNG</strong> (Happ) из <strong>Google Play</strong> / <strong>App Store</strong>.</div>
+        <nav class="navbar">
+            <div class="logo"><i class="fas fa-shield-alt"></i><span>KrolekVPN<span style="color:#fff">Reborn</span></span></div>
+            <div class="nav-links">
+                <a href="#features">Преимущества</a>
+                <a href="https://t.me/KrolekVPNReborn" target="_blank">Канал</a>
+                <a href="https://t.me/KrolekVPNReborn_bot" target="_blank">Бот</a>
             </div>
-            <div class="step">
-                <div class="step-emoji">🔑</div>
-                <div class="step-text">Запустите его, в окне разрешения VPN-конфигурации нажмите <strong>Allow</strong> и введите пароль (если потребуется).</div>
+            <a href="https://t.me/KrolekVPNReborn_bot" class="btn-bot" target="_blank"><i class="fab fa-telegram"></i> Перейти в бот</a>
+        </nav>
+
+        <div class="hero">
+            <div class="hero-content">
+                <div class="telegram-badge" id="telegramBadge" style="display: none;">
+                    <i class="fab fa-telegram"></i> Открыто через Telegram
+                </div>
+                <div class="hero-badge"><i class="fas fa-crown"></i> Бесплатно навсегда</div>
+                <h1>Обходи блокировки с <span>KrolekVPNReborn</span></h1>
+                <p>Стабильная скорость 15 Мбит/с, поддержка 24/7 и никаких скрытых платежей.</p>
+                <div class="hero-stats">
+                    <div class="stat"><div class="stat-number">100+</div><div class="stat-label">Активных пользователей</div></div>
+                    <div class="stat"><div class="stat-number">3+</div><div class="stat-label">Серверов</div></div>
+                    <div class="stat"><div class="stat-number">24/7</div><div class="stat-label">Поддержка</div></div>
+                </div>
+            </div>
+            <div class="hero-image"><i class="fas fa-globe"></i></div>
+        </div>
+
+        <!-- Карточка подписки -->
+        <div class="subscription-card">
+            <h3>🔐 ВАША ПОДПИСКА</h3>
+            <div class="expire-date">15 июля 2090 г.</div>
+            <div class="info-row">
+                <div class="info-label"><i class="fas fa-infinity"></i> Лимит трафика</div>
+                <div class="info-value">∞ (Безлимит)</div>
+            </div>
+            <div class="info-row">
+                <div class="info-label"><i class="fas fa-tachometer-alt"></i> Скорость</div>
+                <div class="info-value">До 15 Мбит/с</div>
+            </div>
+            <div class="info-row">
+                <div class="info-label"><i class="fas fa-globe"></i> Серверы</div>
+                <div class="info-value">Россия, Германия, Польша, Нидерланды</div>
             </div>
         </div>
 
-        <!-- Секция добавления ключа -->
-        <div class="section">
-            <h2>Добавление ключа</h2>
-            <p>Нажмите на кнопку ниже — приложение откроется, и ключ добавится автоматически.</p>
-            <button class="button" id="importBtn">
-                🔑 Добавить ключ
+        <!-- Инструкция по установке -->
+        <div class="instructions">
+            <h3><i class="fas fa-book-open"></i> Инструкция по установке</h3>
+            
+            <div class="step">
+                <div class="step-icon">📱</div>
+                <div class="step-text">Установите приложение <strong>NekoBox</strong> или <strong>v2rayNG</strong> (Happ) из <strong>Google Play</strong> / <strong>App Store</strong></div>
+            </div>
+            
+            <div class="step">
+                <div class="step-icon">🔗</div>
+                <div class="step-text">Нажмите <strong>«Скопировать ссылку»</strong> ниже, затем в приложении выберите <strong>«Новая подписка»</strong> и вставьте ссылку</div>
+            </div>
+            
+            <div class="step">
+                <div class="step-icon">🚀</div>
+                <div class="step-text">Обновите подписку, выберите сервер и нажмите <strong>«Подключиться»</strong></div>
+            </div>
+            
+            <!-- Кнопка копирования -->
+            <button class="copy-btn" id="copyBtn">
+                <i class="fas fa-copy"></i> Скопировать ссылку на подписку
             </button>
-            <p style="font-size: 14px; color: #666; text-align: center;">
-                Если не открывается — <a href="#" id="copyLink" style="color: #000;">скопируйте ссылку</a> и добавьте вручную
+            
+            <p style="font-size: 12px; color: #888; text-align: center; margin-top: 15px;">
+                🔗 Ссылка: <span id="shortLink">KrolekVPNReborn</span>
             </p>
         </div>
 
-        <!-- Секция подключения -->
-        <div class="section">
-            <h2>Подключение и использование</h2>
-            <div class="step">
-                <div class="step-emoji">🚀</div>
-                <div class="step-text">В главном разделе нажмите большую кнопку включения в центре для подключения к VPN.</div>
-            </div>
-            <div class="step">
-                <div class="step-emoji">🌍</div>
-                <div class="step-text">При необходимости выберите другой сервер из списка серверов.</div>
+        <div class="features" id="features">
+            <h2 class="section-title">Почему <span>KrolekVPNReborn</span>?</h2>
+            <div class="features-grid">
+                <div class="feature-card"><div class="feature-icon"><i class="fas fa-bolt"></i></div><h3>Высокая скорость</h3><p>Стабильные 15 Мбит/с</p></div>
+                <div class="feature-card"><div class="feature-icon"><i class="fas fa-headset"></i></div><h3>Поддержка 24/7</h3><p>Живые люди отвечают в любое время</p></div>
+                <div class="feature-card"><div class="feature-icon"><i class="fas fa-lock"></i></div><h3>Обход глушилок</h3><p>Работает там, где остальные падают</p></div>
+                <div class="feature-card"><div class="feature-icon"><i class="fas fa-gem"></i></div><h3>Совершенно бесплатно</h3><p>Навсегда. Без скрытых подписок</p></div>
             </div>
         </div>
 
         <div class="footer">
-            📅 Подписка активна до <strong>15 июля 2090 года</strong><br>
-            📢 <a href="https://t.me/KrolekVPNReborn" target="_blank">Telegram-канал</a> · 
-            💬 <a href="https://t.me/Kr0l3k" target="_blank">Поддержка</a>
+            <p>© 2025-2026 KrolekVPNReborn. Бесплатный VPN для обхода блокировок.</p>
+            <p><a href="https://t.me/KrolekVPNReborn" style="color:#666;">Канал</a> | <a href="https://t.me/KrolekVPNReborn_bot" style="color:#666;">Бот</a> | <a href="https://t.me/Kr0l3k" style="color:#666;">Поддержка</a></p>
         </div>
     </div>
 
     <div id="toast" class="toast"></div>
 
     <script>
-        // ССЫЛКА НА ПОДПИСКУ (твой файл)
+        // ССЫЛКА НА ПОДПИСКУ
         const SUBSCRIPTION_URL = "https://raw.githubusercontent.com/kangaroo255075-collab/KrolekVPNReborn-Reborn-/refs/heads/main/Krolek.txt";
 
         function showToast(message) {
@@ -202,20 +316,12 @@
             }, 2500);
         }
 
-        // Импорт подписки
-        function importSubscription() {
-            window.location.href = SUBSCRIPTION_URL;
-            setTimeout(() => {
-                showToast('📲 Если приложение не открылось — добавьте ссылку вручную');
-            }, 800);
-        }
-
-        // Копирование ссылки
         async function copySubscription() {
             try {
                 await navigator.clipboard.writeText(SUBSCRIPTION_URL);
-                showToast('✅ Ссылка скопирована!');
+                showToast('✅ Ссылка на подписку скопирована!');
             } catch (err) {
+                // fallback
                 const textarea = document.createElement('textarea');
                 textarea.value = SUBSCRIPTION_URL;
                 document.body.appendChild(textarea);
@@ -226,11 +332,18 @@
             }
         }
 
-        document.getElementById('importBtn').addEventListener('click', importSubscription);
-        document.getElementById('copyLink').addEventListener('click', (e) => {
-            e.preventDefault();
-            copySubscription();
-        });
+        // Telegram WebApp инициализация
+        if (window.Telegram && window.Telegram.WebApp) {
+            const tg = window.Telegram.WebApp;
+            tg.ready();
+            tg.expand();
+            if (tg.initDataUnsafe?.user) {
+                document.getElementById('telegramBadge').style.display = 'inline-flex';
+            }
+        }
+
+        document.getElementById('copyBtn').addEventListener('click', copySubscription);
+        document.getElementById('shortLink').textContent = SUBSCRIPTION_URL.substring(0, 50) + '...';
     </script>
 </body>
 </html>

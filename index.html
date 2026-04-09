@@ -2,10 +2,9 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>KrolekVPNReborn — Установка подписки</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>KrolekVPNReborn — Установка</title>
     <style>
-        /* Полное копирование стиля Phonk VPN */
         * {
             margin: 0;
             padding: 0;
@@ -14,260 +13,209 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, sans-serif;
-            background: #000000;
-            color: #ffffff;
+            background: #ffffff;
+            color: #000000;
             line-height: 1.5;
-            min-height: 100vh;
-            padding: 0;
+            padding: 40px 20px;
         }
 
         .container {
-            max-width: 100%;
+            max-width: 600px;
             margin: 0 auto;
-            padding: 24px 20px 40px;
         }
 
         /* Заголовок */
-        .header {
-            text-align: center;
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #666;
             margin-bottom: 32px;
         }
 
-        .logo {
-            font-size: 64px;
-            margin-bottom: 12px;
-        }
-
-        h1 {
-            font-size: 28px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            background: linear-gradient(135deg, #ffffff, #ffaa66);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        /* Секции как на Phonk VPN */
+        /* Секции */
         .section {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 24px;
-            padding: 24px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            margin-bottom: 32px;
         }
 
-        .section-title {
+        .section h2 {
             font-size: 22px;
-            font-weight: 700;
+            font-weight: 600;
             margin-bottom: 16px;
-            color: #ffaa66;
         }
 
-        .section-text {
-            color: #ccc;
+        .section p {
             font-size: 16px;
-            margin-bottom: 20px;
-            line-height: 1.4;
+            color: #333;
+            margin-bottom: 16px;
         }
 
-        /* Кнопка как на Phonk VPN */
+        /* Шаги с эмодзи */
+        .step {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .step-emoji {
+            font-size: 24px;
+            min-width: 32px;
+        }
+
+        .step-text {
+            font-size: 16px;
+            color: #333;
+        }
+
+        .step-text strong {
+            font-weight: 600;
+            color: #000;
+        }
+
+        /* Кнопка */
         .button {
             display: block;
             width: 100%;
-            background: #ff6b35;
+            background: #000000;
             border: none;
-            border-radius: 60px;
-            padding: 16px 24px;
+            border-radius: 12px;
+            padding: 16px 20px;
             font-size: 18px;
-            font-weight: 600;
+            font-weight: 500;
             color: white;
             text-align: center;
             cursor: pointer;
-            transition: all 0.2s ease;
-            margin: 20px 0;
-            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+            transition: opacity 0.2s;
+            margin: 24px 0;
         }
 
         .button:active {
-            transform: scale(0.97);
+            opacity: 0.7;
         }
 
-        /* Информация о подписке */
-        .subscription-info {
-            background: rgba(255, 107, 53, 0.1);
-            border-radius: 16px;
-            padding: 16px;
-            text-align: center;
-            margin: 20px 0;
-            border: 1px solid rgba(255, 107, 53, 0.3);
-        }
-
-        .subscription-date {
-            font-size: 18px;
-            font-weight: 600;
-            color: #ffaa66;
-        }
-
-        /* Список серверов */
-        .server-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 16px;
-        }
-
-        .server-tag {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 40px;
-            padding: 6px 14px;
-            font-size: 13px;
-            color: #ddd;
-        }
-
+        /* Ссылки внизу */
         .footer {
             text-align: center;
-            margin-top: 32px;
+            margin-top: 40px;
             padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 12px;
-            color: #666;
+            border-top: 1px solid #eee;
+            font-size: 14px;
+            color: #888;
         }
 
-        a {
-            color: #ffaa66;
+        .footer a {
+            color: #000;
             text-decoration: none;
         }
 
-        /* Сообщение об ошибке/успехе */
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Уведомление */
         .toast {
             position: fixed;
             bottom: 30px;
             left: 20px;
             right: 20px;
-            background: #1a1a1a;
-            border-radius: 60px;
-            padding: 12px 20px;
+            background: #000000;
+            color: white;
+            border-radius: 12px;
+            padding: 14px 20px;
             text-align: center;
             font-size: 14px;
             z-index: 1000;
-            transition: opacity 0.3s;
             opacity: 0;
+            transition: opacity 0.3s;
             pointer-events: none;
-            border-left: 3px solid #ff6b35;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Шапка -->
-        <div class="header">
-            <div class="logo">🐇</div>
-            <h1>KrolekVPNReborn</h1>
-        </div>
+        <h1>KrolekVPNReborn</h1>
+        <div class="subtitle">Бесплатный VPN для обхода блокировок</div>
 
         <!-- Секция установки -->
         <div class="section">
-            <div class="section-title">Установка</div>
-            <div class="section-text">
-                Установите приложение <strong>NekoBox</strong> или <strong>v2rayNG</strong> (Happ) из Google Play / App Store. 
-                Запустите его, при необходимости разрешите создание VPN-конфигурации.
+            <h2>Установка</h2>
+            <div class="step">
+                <div class="step-emoji">📱</div>
+                <div class="step-text">Установите приложение <strong>NekoBox</strong> или <strong>v2rayNG</strong> (Happ) из <strong>Google Play</strong> / <strong>App Store</strong>.</div>
+            </div>
+            <div class="step">
+                <div class="step-emoji">🔑</div>
+                <div class="step-text">Запустите его, в окне разрешения VPN-конфигурации нажмите <strong>Allow</strong> и введите пароль (если потребуется).</div>
             </div>
         </div>
 
-        <!-- Информация о подписке -->
-        <div class="subscription-info">
-            <div>📅 Подписка активна до</div>
-            <div class="subscription-date" id="expiryDate">15 июля 2090 года</div>
-            <div style="font-size: 12px; margin-top: 8px;">✅ Безлимитный трафик · 15+ Мбит/с</div>
-        </div>
-
-        <!-- Секция добавления подписки -->
+        <!-- Секция добавления ключа -->
         <div class="section">
-            <div class="section-title">Добавление подписки</div>
-            <div class="section-text">
-                Нажмите на кнопку ниже — откроется приложение, и подписка добавится автоматически.
-                Если приложение не открылось, скопируйте ссылку и добавьте вручную.
-            </div>
+            <h2>Добавление ключа</h2>
+            <p>Нажмите на кнопку ниже — приложение откроется, и ключ добавится автоматически.</p>
             <button class="button" id="importBtn">
-                📡 Импортировать подписку
+                🔑 Добавить ключ
             </button>
-            <button class="button" id="copyBtn" style="background: rgba(255,255,255,0.1); box-shadow: none; margin-top: 0;">
-                🔗 Скопировать ссылку
-            </button>
+            <p style="font-size: 14px; color: #666; text-align: center;">
+                Если не открывается — <a href="#" id="copyLink" style="color: #000;">скопируйте ссылку</a> и добавьте вручную
+            </p>
         </div>
 
         <!-- Секция подключения -->
         <div class="section">
-            <div class="section-title">Подключение и использование</div>
-            <div class="section-text">
-                В приложении перейдите в раздел «Подписки», выберите добавленную подписку, затем нажмите «Обновить».
-                После появления серверов выберите любой и нажмите подключиться.
+            <h2>Подключение и использование</h2>
+            <div class="step">
+                <div class="step-emoji">🚀</div>
+                <div class="step-text">В главном разделе нажмите большую кнопку включения в центре для подключения к VPN.</div>
             </div>
-            <div class="server-list">
-                <span class="server-tag">🇷🇺 Россия</span>
-                <span class="server-tag">🇩🇪 Германия</span>
-                <span class="server-tag">🇵🇱 Польша</span>
-                <span class="server-tag">🇳🇱 Нидерланды</span>
+            <div class="step">
+                <div class="step-emoji">🌍</div>
+                <div class="step-text">При необходимости выберите другой сервер из списка серверов.</div>
             </div>
         </div>
 
         <div class="footer">
-            🔗 Подписка: <span id="shortLink">KrolekVPNReborn</span><br>
+            📅 Подписка активна до <strong>15 июля 2090 года</strong><br>
             📢 <a href="https://t.me/KrolekVPNReborn" target="_blank">Telegram-канал</a> · 
-            💬 <a href="https://t.me/Kr0l3k" target="_blank">Поддержка</a><br>
-            © 2025-2026 Бесплатный VPN для обхода блокировок
+            💬 <a href="https://t.me/Kr0l3k" target="_blank">Поддержка</a>
         </div>
     </div>
 
     <div id="toast" class="toast"></div>
 
     <script>
-        // ВАША ССЫЛКА НА ПОДПИСКУ
+        // ССЫЛКА НА ПОДПИСКУ (твой файл)
         const SUBSCRIPTION_URL = "https://raw.githubusercontent.com/kangaroo255075-collab/KrolekVPNReborn-Reborn-/refs/heads/main/Krolek.txt";
-        
-        // Показываем уведомление
-        function showToast(message, isError = false) {
+
+        function showToast(message) {
             const toast = document.getElementById('toast');
             toast.textContent = message;
-            toast.style.background = isError ? '#2a1a1a' : '#1a2a1a';
-            toast.style.borderLeftColor = isError ? '#ff4444' : '#4caf50';
             toast.style.opacity = '1';
             setTimeout(() => {
                 toast.style.opacity = '0';
-            }, 3000);
+            }, 2500);
         }
 
-        // ИМПОРТ ПОДПИСКИ — пробуем разные схемы для открытия в приложении
+        // Импорт подписки
         function importSubscription() {
-            // Пробуем открыть через универсальную схему
-            // Для NekoBox, v2rayNG, Happ, Hiddify и др.
-            
-            // Вариант 1: прямая ссылка (не всегда срабатывает в WebView)
-            // Вариант 2: пробуем через intent для Android
-            // Вариант 3: используем location.href как есть
-            
-            // Самый надёжный способ — скопировать и показать инструкцию
-            // Но попробуем сначала открыть
-            
-            const url = SUBSCRIPTION_URL;
-            
-            // Пытаемся открыть через location (сработает если приложение зарегистрировало схему)
-            window.location.href = url;
-            
-            // Запасной вариант — показываем инструкцию через 1 секунду, если не открылось
+            window.location.href = SUBSCRIPTION_URL;
             setTimeout(() => {
-                showToast('Если приложение не открылось — скопируйте ссылку и добавьте вручную в NekoBox/v2rayNG → «Новая подписка»');
+                showToast('📲 Если приложение не открылось — добавьте ссылку вручную');
             }, 800);
         }
 
         // Копирование ссылки
-        async function copyLink() {
+        async function copySubscription() {
             try {
                 await navigator.clipboard.writeText(SUBSCRIPTION_URL);
-                showToast('✅ Ссылка на подписку скопирована!');
+                showToast('✅ Ссылка скопирована!');
             } catch (err) {
-                // fallback
                 const textarea = document.createElement('textarea');
                 textarea.value = SUBSCRIPTION_URL;
                 document.body.appendChild(textarea);
@@ -278,15 +226,11 @@
             }
         }
 
-        // Фиксированная дата — 15 июля 2090 года (как вы и просили)
-        function setFixedDate() {
-            document.getElementById('expiryDate').innerHTML = '15 июля 2090 года';
-        }
-
-        // Инициализация
-        setFixedDate();
         document.getElementById('importBtn').addEventListener('click', importSubscription);
-        document.getElementById('copyBtn').addEventListener('click', copyLink);
+        document.getElementById('copyLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            copySubscription();
+        });
     </script>
 </body>
 </html>

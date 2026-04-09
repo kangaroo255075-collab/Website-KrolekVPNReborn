@@ -73,7 +73,6 @@
         .hero-image { flex: 1; text-align: center; }
         .hero-image i { font-size: 250px; color: rgba(255,107,53,0.2); }
         
-        /* Карточка подписки */
         .subscription-card {
             background: linear-gradient(135deg, rgba(255,107,53,0.1), rgba(255,159,74,0.05));
             border-radius: 30px;
@@ -84,7 +83,6 @@
         }
         .expire-date { font-size: 28px; font-weight: 700; color: #ff6b35; margin: 10px 0; }
         
-        /* Инструкция */
         .instructions {
             background: rgba(255,255,255,0.05);
             border-radius: 24px;
@@ -118,8 +116,14 @@
         .step-text strong {
             color: #ff9f4a;
         }
+        .step-text a {
+            color: #ff9f4a;
+            text-decoration: none;
+        }
+        .step-text a:hover {
+            text-decoration: underline;
+        }
         
-        /* Кнопка копирования */
         .copy-btn {
             background: linear-gradient(135deg, #ff6b35, #ff9f4a);
             border: none;
@@ -256,13 +260,16 @@
             </div>
         </div>
 
-        <!-- Инструкция по установке -->
+        <!-- Инструкция по установке (ИСПРАВЛЕННАЯ) -->
         <div class="instructions">
             <h3><i class="fas fa-book-open"></i> Инструкция по установке</h3>
             
             <div class="step">
                 <div class="step-icon">📱</div>
-                <div class="step-text">Установите приложение <strong>NekoBox</strong> или <strong>v2rayNG</strong> (Happ) из <strong>Google Play</strong> / <strong>App Store</strong></div>
+                <div class="step-text">Установите приложение <strong style="color: #ff6b35;">Happ</strong> из 
+                    <a href="https://play.google.com/store/apps/details?id=com.happproxy" target="_blank">Google Play</a> / 
+                    <a href="https://apps.apple.com/us/app/happ-proxy-utility/id6504287215" target="_blank">App Store</a>
+                </div>
             </div>
             
             <div class="step">
@@ -273,6 +280,11 @@
             <div class="step">
                 <div class="step-icon">🚀</div>
                 <div class="step-text">Обновите подписку, выберите сервер и нажмите <strong>«Подключиться»</strong></div>
+            </div>
+            
+            <div class="step">
+                <div class="step-icon">📡</div>
+                <div class="step-text">Поставьте пинг на <strong style="color: #ff6b35;">TCP</strong>. Чтобы поставить — зайдите в <strong>Настройки</strong>, потом <strong>тип пинга</strong> и выберите <strong>TCP</strong></div>
             </div>
             
             <!-- Кнопка копирования -->
@@ -321,7 +333,6 @@
                 await navigator.clipboard.writeText(SUBSCRIPTION_URL);
                 showToast('✅ Ссылка на подписку скопирована!');
             } catch (err) {
-                // fallback
                 const textarea = document.createElement('textarea');
                 textarea.value = SUBSCRIPTION_URL;
                 document.body.appendChild(textarea);
@@ -346,4 +357,4 @@
         document.getElementById('shortLink').textContent = SUBSCRIPTION_URL.substring(0, 50) + '...';
     </script>
 </body>
-</html>
+    </html>

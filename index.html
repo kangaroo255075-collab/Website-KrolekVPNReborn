@@ -53,43 +53,6 @@
             border: 1px solid rgba(255,107,53,0.3);
         }
         
-        /* СЕКТОРЫ НАСТРОЕНИЯ (7 штук) */
-        .mood-bar {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin: 25px 0;
-        }
-        .mood-sector {
-            width: 45px;
-            height: 45px;
-            border-radius: 14px;
-            background: rgba(255,255,255,0.08);
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-        .mood-sector.filled {
-            background: linear-gradient(135deg, #ff6b35, #ff9f4a);
-            box-shadow: 0 0 12px rgba(255,107,53,0.4);
-        }
-        .mood-sector.blink-warning {
-            animation: blinkWarning 1s infinite;
-            background: #ffaa00;
-        }
-        .mood-sector.blink-critical {
-            animation: blinkCritical 0.6s infinite;
-            background: #ff4444;
-        }
-        @keyframes blinkWarning {
-            0%, 100% { opacity: 1; background: #ffaa00; }
-            50% { opacity: 0.5; background: #ff8800; }
-        }
-        @keyframes blinkCritical {
-            0%, 100% { opacity: 1; background: #ff4444; transform: scale(1); }
-            50% { opacity: 0.6; background: #cc0000; transform: scale(0.95); }
-        }
-        
-        /* КНОПКА ПОКОРМИТЬ */
         .feed-button {
             background: linear-gradient(135deg, #ff6b35, #ff9f4a);
             border: none;
@@ -109,13 +72,6 @@
         }
         .feed-button:hover { transform: scale(1.02); box-shadow: 0 0 25px rgba(255,107,53,0.5); }
         .feed-button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-        .feed-button.pulsate {
-            animation: pulsate 1s infinite;
-        }
-        @keyframes pulsate {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,107,53,0.7); }
-            50% { transform: scale(1.02); box-shadow: 0 0 0 10px rgba(255,107,53,0); }
-        }
         
         .info-row {
             display: flex;
@@ -124,25 +80,10 @@
             padding: 12px 0;
             border-bottom: 1px solid rgba(255,255,255,0.05);
         }
-        .info-label {
-            color: #aaa;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .info-value {
-            color: #ff9f4a;
-            font-weight: 600;
-            font-size: 18px;
-        }
+        .info-label { color: #aaa; font-size: 14px; display: flex; align-items: center; gap: 8px; }
+        .info-value { color: #ff9f4a; font-weight: 600; font-size: 18px; }
         
-        .expire-date {
-            font-size: 22px;
-            font-weight: 700;
-            color: #ff6b35;
-            margin: 15px 0;
-        }
+        .expire-date { font-size: 24px; font-weight: 700; color: #ff6b35; margin: 15px 0; }
         
         .notification {
             position: fixed;
@@ -160,12 +101,6 @@
         }
         .notification.show { display: flex; animation: slideIn 0.3s ease; }
         @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        
-        @media (max-width: 768px) {
-            .navbar { flex-direction: column; text-align: center; }
-            .mood-sector { width: 35px; height: 35px; }
-            .feed-button { padding: 12px 20px; font-size: 14px; }
-        }
         
         .telegram-badge {
             background: #ff6b35;
@@ -190,14 +125,7 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
         
-        .hero {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 40px;
-            flex-wrap: wrap;
-            padding: 30px 0;
-        }
+        .hero { display: flex; align-items: center; justify-content: space-between; gap: 40px; flex-wrap: wrap; padding: 30px 0; }
         .hero-content { flex: 1; }
         .hero-badge {
             background: rgba(255,107,53,0.2);
@@ -232,12 +160,17 @@
             text-align: center;
             border: 1px solid rgba(255,107,53,0.2);
         }
-        .feature-card:hover { transform: translateY(-5px); border-color: #ff6b35; }
-        .feature-icon { font-size: 40px; color: #ff6b35; margin-bottom: 15px; }
         .feature-card h3 { margin-bottom: 10px; }
         .feature-card p { color: #aaa; font-size: 14px; }
+        .feature-icon { font-size: 40px; color: #ff6b35; margin-bottom: 15px; }
         
         .footer { text-align: center; padding: 30px 0; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 40px; color: #666; }
+        
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 32px; }
+            .navbar { flex-direction: column; text-align: center; }
+            .feed-button { padding: 12px 20px; font-size: 14px; }
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
@@ -272,32 +205,26 @@
 
         <div class="subscription-card">
             <h3>🐇 НАСТРОЕНИЕ КРОЛИКА</h3>
-            
-            <!-- Секторы настроения (7 штук) -->
-            <div class="mood-bar" id="moodBar"></div>
-            
-            <div class="expire-date" id="expireDate">8 мая 2026 г.</div>
+            <div class="expire-date" id="expireDate">Загрузка...</div>
             
             <div class="info-row">
                 <div class="info-label"><i class="fas fa-calendar-week"></i> Осталось дней</div>
-                <div class="info-value" id="daysLeft">29</div>
+                <div class="info-value" id="daysLeft">0</div>
             </div>
             <div class="info-row">
                 <div class="info-label"><i class="fas fa-carrot"></i> Морковок</div>
-                <div class="info-value" id="carrotsCount">25</div>
+                <div class="info-value" id="carrotsCount">5</div>
             </div>
             <div class="info-row">
                 <div class="info-label"><i class="fas fa-chart-line"></i> Статус</div>
-                <div class="info-value" id="statusText">🟢 АКТИВНА</div>
+                <div class="info-value" id="statusText">⚪ ЗАГРУЗКА</div>
             </div>
             
-            <!-- КНОПКА ПОКОРМИТЬ -->
             <button class="feed-button" id="feedBtn">
                 <i class="fas fa-carrot"></i> Покормить кролика (1🥕)
             </button>
-            
             <p style="font-size: 12px; color:#888; margin-top: 10px;">
-                🥕 Морковки даются за приглашение друзей в бота
+                🥕 +7 дней к подписке за каждое кормление!
             </p>
         </div>
 
@@ -313,269 +240,95 @@
 
         <div class="footer">
             <p>© 2025-2026 KrolekVPNReborn. Бесплатный VPN для обхода блокировок.</p>
-            <p><a href="https://t.me/KrolekVPNReborn" style="color:#666;">Канал</a> | <a href="https://t.me/KrolekVPNReborn_bot" style="color:#666;">Бот</a> | <a href="https://t.me/Kr0l3k" style="color:#666;">Поддержка</a></p>
         </div>
     </div>
 
     <div class="notification" id="notification"><i class="fas fa-carrot"></i><span id="notificationText"></span></div>
 
     <script>
-        const BOT_TOKEN = "8214032735:AAEjdPUQUUzvyit4OQWiQWvjM7aJ1_mMzAU";
-        let userId = null;
-        let userCarrots = 25;
-        let daysLeft = 29;
-        let expireDate = "8 мая 2026 г.";
-        let isLoading = false;
-        let isAnimating = false;
-        const TOTAL_SECTORS = 7;
+        const SUBSCRIPTION_URL = "https://raw.githubusercontent.com/kangaroo255075-collab/KrolekVPNReborn-Reborn-/refs/heads/main/Krolek.txt";
+        const tg = window.Telegram?.WebApp;
         
-        // ===== ИНИЦИАЛИЗАЦИЯ =====
+        let userId = null;
+        let userCarrots = 5; 
+        let expireTimestamp = 1775952000; // По умолчанию 12 апреля 2026
+        let isLoading = false;
+
         function initTelegram() {
-            if (window.Telegram && window.Telegram.WebApp) {
-                const tg = window.Telegram.WebApp;
+            if (tg) {
                 tg.ready();
                 tg.expand();
-                const user = tg.initDataUnsafe?.user;
-                if (user && user.id) {
-                    userId = user.id;
+                if (tg.initDataUnsafe?.user) {
+                    userId = tg.initDataUnsafe.user.id;
                     document.getElementById('telegramBadge').style.display = 'inline-flex';
-                    return true;
                 }
             }
-            return false;
         }
-        
-        // ===== ОБНОВЛЕНИЕ СЕКТОРОВ (как у BarryVPN) =====
-        function updateMoodSectors() {
-            const moodBar = document.getElementById('moodBar');
-            const displayDays = Math.min(daysLeft, TOTAL_SECTORS);
-            moodBar.innerHTML = '';
-            
-            for (let i = TOTAL_SECTORS - 1; i >= 0; i--) {
-                const sector = document.createElement('div');
-                sector.className = 'mood-sector';
-                const sectorValue = i + 1;
-                
-                if (displayDays >= sectorValue) {
-                    sector.classList.add('filled');
-                } else if (daysLeft === 0 && sectorValue === 1) {
-                    sector.classList.add('blink-critical');
-                } else if (daysLeft === 1 && sectorValue === TOTAL_SECTORS) {
-                    sector.classList.add('blink-warning');
-                }
-                
-                moodBar.appendChild(sector);
-            }
-        }
-        
-        // ===== ОБНОВЛЕНИЕ ТЕКСТА КНОПКИ (как у BarryVPN) =====
-        function updateButtonText() {
-            const feedBtn = document.getElementById('feedBtn');
-            if (userCarrots > 0) {
-                feedBtn.innerHTML = '<i class="fas fa-carrot"></i> Покормить кролика (1🥕)';
-                feedBtn.classList.remove('pulsate');
-            } else {
-                feedBtn.innerHTML = '<i class="fas fa-carrot"></i> Нет морковок — пригласи друзей! 🥕';
-                feedBtn.classList.add('pulsate');
-            }
-        }
-        
-        // ===== ОБНОВЛЕНИЕ ВСЕГО UI =====
+
         function updateUI() {
-            document.getElementById('daysLeft').textContent = daysLeft;
+            const date = new Date(expireTimestamp * 1000);
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('expireDate').textContent = date.toLocaleDateString('ru-RU', options);
+            
+            const days = Math.max(0, Math.ceil((expireTimestamp * 1000 - Date.now()) / (1000 * 60 * 60 * 24)));
+            document.getElementById('daysLeft').textContent = days.toLocaleString('ru-RU');
             document.getElementById('carrotsCount').textContent = userCarrots;
             
-            let statusIcon = "🟢", statusText = "АКТИВНА";
-            if (daysLeft <= 0) {
-                statusIcon = "🔴";
-                statusText = "ПРОСРОЧЕНА";
-            } else if (daysLeft <= 7) {
-                statusIcon = "🟡";
-                statusText = "СКОРО ЗАКОНЧИТСЯ";
-            }
-            document.getElementById('statusText').innerHTML = `${statusIcon} ${statusText}`;
+            let status = "🟢 АКТИВНА";
+            if (days <= 0) status = "🔴 ПРОСРОЧЕНА";
+            else if (days <= 7) status = "🟡 СКОРО ЗАКОНЧИТСЯ";
+            document.getElementById('statusText').innerHTML = status;
             
-            updateMoodSectors();
-            updateButtonText();
-            
-            const feedBtn = document.getElementById('feedBtn');
-            feedBtn.disabled = isLoading || isAnimating;
+            document.getElementById('feedBtn').disabled = userCarrots < 1 || isLoading;
         }
-        
-        // ===== АНИМАЦИЯ СЕКТОРОВ (как у BarryVPN при отсутствии морковок) =====
-        function animateSectors() {
-            return new Promise((resolve) => {
-                isAnimating = true;
+
+        async function loadData() {
+            try {
+                const res = await fetch(`${SUBSCRIPTION_URL}?t=${Date.now()}`);
+                const text = await res.text();
+                const match = text.match(/expire=(\d+)/);
+                if (match) expireTimestamp = parseInt(match[1]);
                 updateUI();
-                
-                const moodBar = document.getElementById('moodBar');
-                const sectors = moodBar.children;
-                const steps = [5, 4, 3, 2, 1, 0];
-                let currentStep = 0;
-                
-                function animateStep() {
-                    if (currentStep >= steps.length) {
-                        isAnimating = false;
-                        updateUI();
-                        resolve();
-                        return;
-                    }
-                    
-                    const targetFilled = steps[currentStep];
-                    for (let i = 0; i < sectors.length; i++) {
-                        const sectorValue = sectors.length - i;
-                        if (sectorValue <= targetFilled) {
-                            sectors[i].classList.add('filled');
-                        } else {
-                            sectors[i].classList.remove('filled');
-                        }
-                    }
-                    
-                    currentStep++;
-                    setTimeout(animateStep, 150);
-                }
-                
-                animateStep();
-            });
+            } catch (e) { console.error("Ошибка загрузки данных"); updateUI(); }
         }
-        
-        // ===== КОРМЛЕНИЕ (ПРОДЛЕНИЕ ПОДПИСКИ) =====
-        async function feedRabbit() {
-            if (isLoading || isAnimating) return;
-            
-            if (userCarrots < 1) {
-                await animateSectors();
-                showNotification('❌ Нет морковок! Пригласите друзей в бота 🥕', false);
-                return;
-            }
+
+        function feedRabbit() {
+            if (userCarrots < 1 || isLoading) return;
             
             isLoading = true;
-            const feedBtn = document.getElementById('feedBtn');
-            feedBtn.disabled = true;
-            feedBtn.innerHTML = '<span class="loading-spinner"></span> Кормлю...';
-            
-            try {
-                const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        chat_id: userId,
-                        text: '/api feed'
-                    })
-                });
-                
-                const result = await response.json();
-                
-                if (result.ok && result.result) {
-                    try {
-                        const data = JSON.parse(result.result);
-                        if (data.ok) {
-                            userCarrots = data.carrots;
-                            daysLeft = data.days_left;
-                            expireDate = data.expire_date;
-                            updateUI();
-                            showNotification(`✅ Кролик сыт! Подписка продлена до ${expireDate}! 🎉`, true);
-                        } else if (data.error === "NO_CARROTS") {
-                            await animateSectors();
-                            showNotification('❌ Не хватает морковок!', false);
-                        } else {
-                            showNotification('❌ Ошибка! Попробуйте позже.', false);
-                        }
-                    } catch(e) {
-                        localFeed();
-                    }
-                } else {
-                    localFeed();
-                }
-            } catch (error) {
-                console.error('Feed error:', error);
-                localFeed();
-            }
-            
-            isLoading = false;
-            updateUI();
-        }
-        
-        // ===== ЛОКАЛЬНОЕ КОРМЛЕНИЕ (резерв) =====
-        function localFeed() {
-            if (userCarrots < 1) return;
+            const btn = document.getElementById('feedBtn');
+            btn.innerHTML = '<span class="loading-spinner"></span> Ням-ням...';
+
+            // 1. Продлеваем на 7 дней (7 * 24 * 60 * 60 сек)
+            expireTimestamp += 604800;
             userCarrots--;
-            daysLeft += 7;
-            const newDate = new Date();
-            newDate.setDate(newDate.getDate() + daysLeft);
-            expireDate = newDate.toLocaleDateString('ru-RU', { year: 'numeric', month: 'long', day: 'numeric' });
             updateUI();
-            showNotification(`✅ Кролик сыт! Подписка продлена до ${expireDate}! 🎉`, true);
+
+            // 2. Отправляем данные боту для записи в GitHub
+            if (tg && tg.sendData) {
+                const payload = { action: "feed", new_expire: expireTimestamp, user_id: userId };
+                tg.sendData(JSON.stringify(payload));
+                showNotification("Кролик сыт! +7 дней добавлено ✅");
+            } else {
+                showNotification("Локальное продление выполнено! ✅");
+            }
+
+            setTimeout(() => {
+                isLoading = false;
+                btn.innerHTML = '<i class="fas fa-carrot"></i> Покормить кролика (1🥕)';
+            }, 1000);
         }
-        
-        function showNotification(msg, isSuccess = true) {
-            const notif = document.getElementById('notification');
+
+        function showNotification(msg) {
+            const n = document.getElementById('notification');
             document.getElementById('notificationText').textContent = msg;
-            notif.style.borderLeftColor = isSuccess ? '#4caf50' : '#ff6b35';
-            notif.classList.add('show');
-            setTimeout(() => notif.classList.remove('show'), 3000);
+            n.classList.add('show');
+            setTimeout(() => n.classList.remove('show'), 3000);
         }
-        
-        // ===== ЗАГРУЗКА ДАННЫХ ИЗ LOCALSTORAGE =====
-        function loadFromLocalStorage() {
-            if (!userId) return;
-            const saved = localStorage.getItem(`krolek_user_${userId}`);
-            if (saved) {
-                try {
-                    const data = JSON.parse(saved);
-                    userCarrots = data.carrots;
-                    daysLeft = data.days_left;
-                    expireDate = data.expire_date;
-                } catch(e) {}
-            }
-            updateUI();
-        }
-        
-        function saveToLocalStorage() {
-            if (!userId) return;
-            localStorage.setItem(`krolek_user_${userId}`, JSON.stringify({
-                carrots: userCarrots,
-                days_left: daysLeft,
-                expire_date: expireDate
-            }));
-        }
-        
-        // ===== СИНХРОНИЗАЦИЯ С БОТОМ =====
-        async function syncWithBot() {
-            if (!userId) return;
-            try {
-                const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        chat_id: userId,
-                        text: '/api get_data'
-                    })
-                });
-                const result = await response.json();
-                if (result.ok && result.result) {
-                    try {
-                        const data = JSON.parse(result.result);
-                        if (data.ok) {
-                            userCarrots = data.carrots;
-                            daysLeft = data.days_left;
-                            expireDate = data.expire_date;
-                            saveToLocalStorage();
-                            updateUI();
-                        }
-                    } catch(e) {}
-                }
-            } catch (error) {
-                console.error('Sync error:', error);
-            }
-        }
-        
-        // ===== ЗАПУСК =====
+
         initTelegram();
-        loadFromLocalStorage();
-        setTimeout(() => syncWithBot(), 500);
-        
+        loadData();
         document.getElementById('feedBtn').addEventListener('click', feedRabbit);
     </script>
 </body>
-    </html>
+</html>

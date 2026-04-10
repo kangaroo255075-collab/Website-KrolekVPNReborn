@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>KrolekVPNReborn — Бесплатный VPN</title>
+    <title>KrolekVPNReborn — Обход глушилок</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -73,6 +73,7 @@
         .hero-image { flex: 1; text-align: center; }
         .hero-image i { font-size: 250px; color: rgba(255,107,53,0.2); }
         
+        /* Карточка подписки (упрощённая) */
         .subscription-card {
             background: linear-gradient(135deg, rgba(255,107,53,0.1), rgba(255,159,74,0.05));
             border-radius: 30px;
@@ -83,13 +84,24 @@
         }
         .expire-date { font-size: 28px; font-weight: 700; color: #ff6b35; margin: 10px 0; }
         
-        .instructions {
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .info-label { color: #aaa; font-size: 14px; display: flex; align-items: center; gap: 8px; }
+        .info-value { color: #ff9f4a; font-weight: 600; font-size: 16px; }
+        
+        /* Инструкция */
+        .instructions, .rules {
             background: rgba(255,255,255,0.05);
             border-radius: 24px;
             padding: 24px;
             margin: 30px 0;
         }
-        .instructions h3 {
+        .instructions h3, .rules h3 {
             font-size: 20px;
             margin-bottom: 20px;
             color: #ff9f4a;
@@ -103,27 +115,27 @@
             background: rgba(0,0,0,0.3);
             border-radius: 16px;
         }
-        .step-icon {
-            font-size: 32px;
-            min-width: 50px;
-            text-align: center;
-        }
-        .step-text {
-            flex: 1;
-            font-size: 15px;
-            color: #ddd;
-        }
-        .step-text strong {
-            color: #ff9f4a;
-        }
-        .step-text a {
-            color: #ff9f4a;
-            text-decoration: none;
-        }
-        .step-text a:hover {
-            text-decoration: underline;
-        }
+        .step-icon { font-size: 32px; min-width: 50px; text-align: center; }
+        .step-text { flex: 1; font-size: 15px; color: #ddd; }
+        .step-text strong { color: #ff9f4a; }
+        .step-text a { color: #ff9f4a; text-decoration: none; }
+        .step-text a:hover { text-decoration: underline; }
         
+        /* Правила */
+        .rule-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 16px;
+            padding: 10px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+        }
+        .rule-icon { font-size: 22px; min-width: 40px; text-align: center; }
+        .rule-text { flex: 1; font-size: 14px; color: #ccc; line-height: 1.5; }
+        .rule-text strong { color: #ff6b35; }
+        
+        /* Кнопка копирования */
         .copy-btn {
             background: linear-gradient(135deg, #ff6b35, #ff9f4a);
             border: none;
@@ -142,16 +154,6 @@
             gap: 10px;
         }
         .copy-btn:hover { transform: scale(1.02); box-shadow: 0 0 20px rgba(255,107,53,0.5); }
-        
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-        .info-label { color: #aaa; font-size: 14px; display: flex; align-items: center; gap: 8px; }
-        .info-value { color: #ff9f4a; font-weight: 600; font-size: 16px; }
         
         .features { padding: 40px 0; }
         .section-title { text-align: center; font-size: 32px; margin-bottom: 40px; }
@@ -180,6 +182,7 @@
             .hero h1 { font-size: 36px; }
             .navbar { flex-direction: column; text-align: center; }
             .step { flex-wrap: wrap; text-align: center; justify-content: center; }
+            .rule-item { flex-wrap: wrap; text-align: center; justify-content: center; }
         }
         
         .telegram-badge {
@@ -231,7 +234,7 @@
                     <i class="fab fa-telegram"></i> Открыто через Telegram
                 </div>
                 <div class="hero-badge"><i class="fas fa-crown"></i> Бесплатно навсегда</div>
-                <h1>Обходи блокировки с <span>KrolekVPNReborn</span></h1>
+                <h1>Обход глушилок <span>KrolekVPNReborn</span></h1>
                 <p>Стабильная скорость 15 Мбит/с, поддержка 24/7 и никаких скрытых платежей.</p>
                 <div class="hero-stats">
                     <div class="stat"><div class="stat-number">100+</div><div class="stat-label">Активных пользователей</div></div>
@@ -242,10 +245,10 @@
             <div class="hero-image"><i class="fas fa-globe"></i></div>
         </div>
 
-        <!-- Карточка подписки -->
+        <!-- Карточка подписки (упрощённая, без сервисов) -->
         <div class="subscription-card">
             <h3>🔐 ВАША ПОДПИСКА</h3>
-            <div class="expire-date">15 июля 2090 г.</div>
+            <div class="expire-date">15 июля 2045 г.</div>
             <div class="info-row">
                 <div class="info-label"><i class="fas fa-infinity"></i> Лимит трафика</div>
                 <div class="info-value">∞ (Безлимит)</div>
@@ -254,13 +257,9 @@
                 <div class="info-label"><i class="fas fa-tachometer-alt"></i> Скорость</div>
                 <div class="info-value">До 15 Мбит/с</div>
             </div>
-            <div class="info-row">
-                <div class="info-label"><i class="fas fa-globe"></i> Серверы</div>
-                <div class="info-value">Россия, Германия, Польша, Нидерланды</div>
-            </div>
         </div>
 
-        <!-- Инструкция по установке (ИСПРАВЛЕННАЯ) -->
+        <!-- Инструкция по установке -->
         <div class="instructions">
             <h3><i class="fas fa-book-open"></i> Инструкция по установке</h3>
             
@@ -287,14 +286,50 @@
                 <div class="step-text">Поставьте пинг на <strong style="color: #ff6b35;">TCP</strong>. Чтобы поставить — зайдите в <strong>Настройки</strong>, потом <strong>тип пинга</strong> и выберите <strong>TCP</strong></div>
             </div>
             
-            <!-- Кнопка копирования -->
+            <!-- Кнопка копирования (без надписи "Ссылка:" после неё) -->
             <button class="copy-btn" id="copyBtn">
                 <i class="fas fa-copy"></i> Скопировать ссылку на подписку
             </button>
+        </div>
+
+        <!-- ПРАВИЛА ИСПОЛЬЗОВАНИЯ (после инструкции) -->
+        <div class="rules">
+            <h3><i class="fas fa-gavel"></i> Правила использования</h3>
             
-            <p style="font-size: 12px; color: #888; text-align: center; margin-top: 15px;">
-                🔗 Ссылка: <span id="shortLink">KrolekVPNReborn</span>
-            </p>
+            <div class="rule-item">
+                <div class="rule-icon">🚫</div>
+                <div class="rule-text"><strong>Запрещено</strong> использовать VPN для доступа к банковским приложениям и финансовым операциям.</div>
+            </div>
+            
+            <div class="rule-item">
+                <div class="rule-icon">🚫</div>
+                <div class="rule-text"><strong>Запрещено</strong> заходить в российские сервисы и приложения через VPN.</div>
+            </div>
+            
+            <div class="rule-item">
+                <div class="rule-icon">🚫</div>
+                <div class="rule-text"><strong>Запрещено</strong> использовать торренты и P2P-сети.</div>
+            </div>
+            
+            <div class="rule-item">
+                <div class="rule-icon">⚠️</div>
+                <div class="rule-text">VPN предназначен <strong>только для обхода блокировок</strong> и защиты трафика от глушилок.</div>
+            </div>
+            
+            <div class="rule-item">
+                <div class="rule-icon">🔒</div>
+                <div class="rule-text">Не передавайте свою подписку третьим лицам — это может привести к блокировке.</div>
+            </div>
+            
+            <div class="rule-item">
+                <div class="rule-icon">📢</div>
+                <div class="rule-text">О всех проблемах и неполадках сообщайте в <strong>поддержку</strong> (@Kr0l3k).</div>
+            </div>
+            
+            <div class="rule-item">
+                <div class="rule-icon">⏱️</div>
+                <div class="rule-text">Подписка <strong>бесплатна</strong> и действует до <strong>15 июля 2045 года</strong>. Продление не требуется.</div>
+            </div>
         </div>
 
         <div class="features" id="features">
@@ -354,7 +389,6 @@
         }
 
         document.getElementById('copyBtn').addEventListener('click', copySubscription);
-        document.getElementById('shortLink').textContent = SUBSCRIPTION_URL.substring(0, 50) + '...';
     </script>
 </body>
-    </html>
+</html>

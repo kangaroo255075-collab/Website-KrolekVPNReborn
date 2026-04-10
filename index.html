@@ -93,14 +93,14 @@
         .info-label { color: #aaa; font-size: 14px; display: flex; align-items: center; gap: 8px; }
         .info-value { color: #ff9f4a; font-weight: 600; font-size: 16px; }
         
-        .instructions, .rules, .proxy-help {
+        .instructions, .rules, .faq-section {
             background: rgba(255,255,255,0.05);
             border-radius: 24px;
             padding: 24px;
             margin: 30px 0;
             border: 1px solid rgba(255,107,53,0.2);
         }
-        .instructions h3, .rules h3, .proxy-help h3 {
+        .instructions h3, .rules h3, .faq-section h3 {
             font-size: 20px;
             margin-bottom: 20px;
             color: #ff9f4a;
@@ -133,7 +133,61 @@
         .rule-text { flex: 1; font-size: 14px; color: #ccc; line-height: 1.5; }
         .rule-text strong { color: #ff6b35; }
         
-        .copy-btn, .proxy-btn {
+        /* Стили для FAQ */
+        .faq-item {
+            margin-bottom: 12px;
+            border-radius: 16px;
+            background: rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        .faq-question {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: 500;
+            font-size: 16px;
+        }
+        .faq-question:hover {
+            background: rgba(255,107,53,0.1);
+        }
+        .faq-question .question-text {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .faq-question .arrow {
+            font-size: 18px;
+            transition: transform 0.3s ease;
+            color: #ff9f4a;
+        }
+        .faq-question .arrow.open {
+            transform: rotate(90deg);
+        }
+        .faq-answer {
+            max-height: 0;
+            padding: 0 20px;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            color: #bbb;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .faq-answer.open {
+            max-height: 300px;
+            padding: 0 20px 16px 20px;
+        }
+        .faq-answer a {
+            color: #ff9f4a;
+            text-decoration: none;
+        }
+        .faq-answer a:hover {
+            text-decoration: underline;
+        }
+        
+        .faq-button {
             background: linear-gradient(135deg, #ff6b35, #ff9f4a);
             border: none;
             padding: 14px 28px;
@@ -150,7 +204,26 @@
             justify-content: center;
             gap: 10px;
         }
-        .copy-btn:hover, .proxy-btn:hover { transform: scale(1.02); box-shadow: 0 0 20px rgba(255,107,53,0.5); }
+        .faq-button:hover { transform: scale(1.02); box-shadow: 0 0 20px rgba(255,107,53,0.5); }
+        
+        .copy-btn {
+            background: linear-gradient(135deg, #ff6b35, #ff9f4a);
+            border: none;
+            padding: 14px 28px;
+            border-radius: 50px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 16px;
+            width: 100%;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .copy-btn:hover { transform: scale(1.02); box-shadow: 0 0 20px rgba(255,107,53,0.5); }
         
         .features { padding: 40px 0; }
         .section-title { text-align: center; font-size: 32px; margin-bottom: 40px; }
@@ -215,7 +288,6 @@
 </head>
 <body>
     <div class="container">
-        <!-- Шапка сайта (без изменений) -->
         <nav class="navbar">
             <div class="logo"><i class="fas fa-shield-alt"></i><span>KrolekVPN<span style="color:#fff">Reborn</span></span></div>
             <div class="nav-links">
@@ -226,7 +298,6 @@
             <a href="https://t.me/KrolekVPNReborn_bot" class="btn-bot" target="_blank"><i class="fab fa-telegram"></i> Перейти в бот</a>
         </nav>
 
-        <!-- Герой (без изменений) -->
         <div class="hero">
             <div class="hero-content">
                 <div class="telegram-badge" id="telegramBadge" style="display: none;">
@@ -261,6 +332,7 @@
         <!-- Инструкция по установке -->
         <div class="instructions">
             <h3><i class="fas fa-book-open"></i> Инструкция по установке</h3>
+            
             <div class="step">
                 <div class="step-icon">📱</div>
                 <div class="step-text">Установите приложение <strong style="color: #ff6b35;">Happ</strong> из 
@@ -268,18 +340,22 @@
                     <a href="https://apps.apple.com/us/app/happ-proxy-utility/id6504287215" target="_blank">App Store</a>
                 </div>
             </div>
+            
             <div class="step">
                 <div class="step-icon">🔗</div>
                 <div class="step-text">Нажмите <strong>«Скопировать ссылку»</strong> ниже, затем в приложении выберите <strong>«Новая подписка»</strong> и вставьте ссылку</div>
             </div>
+            
             <div class="step">
                 <div class="step-icon">🚀</div>
                 <div class="step-text">Обновите подписку, выберите сервер и нажмите <strong>«Подключиться»</strong></div>
             </div>
+            
             <div class="step">
                 <div class="step-icon">📡</div>
                 <div class="step-text">Поставьте пинг на <strong style="color: #ff6b35;">TCP</strong>. Чтобы поставить — зайдите в <strong>Настройки</strong>, потом <strong>тип пинга</strong> и выберите <strong>TCP</strong></div>
             </div>
+            
             <button class="copy-btn" id="copyBtn">
                 <i class="fas fa-copy"></i> Скопировать ссылку на подписку
             </button>
@@ -288,56 +364,99 @@
         <!-- Правила использования -->
         <div class="rules">
             <h3><i class="fas fa-gavel"></i> Правила использования</h3>
+            
             <div class="rule-item">
                 <div class="rule-icon">🎯</div>
                 <div class="rule-text">VPN предназначен <strong>только для обхода глушилок</strong> и защиты трафика от блокировок.</div>
             </div>
+            
             <div class="rule-item">
                 <div class="rule-icon">⚠️</div>
                 <div class="rule-text">VPN конфигурации мы добавляем <strong>частично</strong>, но не полностью.</div>
             </div>
+            
             <div class="rule-item">
                 <div class="rule-icon">🚫</div>
                 <div class="rule-text"><strong>Запрещено</strong> использовать VPN для доступа к банковским приложениям и финансовым операциям.</div>
             </div>
+            
             <div class="rule-item">
                 <div class="rule-icon">🚫</div>
                 <div class="rule-text"><strong>Запрещено</strong> заходить в российские сервисы и приложения через VPN.</div>
             </div>
+            
             <div class="rule-item">
                 <div class="rule-icon">🚫</div>
                 <div class="rule-text"><strong>Запрещено</strong> использовать торренты и P2P-сети.</div>
             </div>
+            
             <div class="rule-item">
                 <div class="rule-icon">🔒</div>
                 <div class="rule-text">Не передавайте свою подписку третьим лицам — это может привести к блокировке.</div>
             </div>
+            
             <div class="rule-item">
                 <div class="rule-icon">📢</div>
                 <div class="rule-text">О всех проблемах и неполадках сообщайте в <strong>поддержку</strong> (@Kr0l3k).</div>
             </div>
+            
             <div class="rule-item">
                 <div class="rule-icon">⏱️</div>
                 <div class="rule-text">Подписка <strong>бесплатна</strong> и действует до <strong>15 июля 2045 года</strong>. Продление не требуется.</div>
             </div>
         </div>
 
-        <!-- НОВЫЙ БЛОК: ПОМОЩЬ С ПРОКСИ ДЛЯ TELEGRAM -->
-        <div class="proxy-help">
-            <h3><i class="fab fa-telegram"></i> Помощь с доступом к Telegram</h3>
-            <div class="rule-item" style="background: none; padding: 0 0 16px 0;">
-                <div class="rule-icon">⚠️</div>
-                <div class="rule-text">
-                    Если у вас возникли проблемы с Telegram из-за действий Роскомнадзора, мы готовы помочь. 
-                    Нажмите на кнопку ниже, чтобы подключить бесплатный прокси для Telegram.
+        <!-- КНОПКА FAQ -->
+        <button class="faq-button" id="faqButton">
+            <i class="fas fa-question-circle"></i> Частые вопросы
+        </button>
+
+        <!-- СКРЫТЫЙ БЛОК FAQ (появляется при нажатии на кнопку) -->
+        <div id="faqContainer" style="display: none;">
+            <div class="faq-section">
+                <h3><i class="fas fa-question-circle"></i> Часто задаваемые вопросы</h3>
+                
+                <!-- Вопрос 1 -->
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <div class="question-text">
+                            <span>😕</span> Почему VPN не работает?
+                        </div>
+                        <div class="arrow">›</div>
+                    </div>
+                    <div class="faq-answer">
+                        Если у вас появились проблемы с работой нашего VPN, советую написать в поддержку. Если у вас пока нет возможности написать нам, то дождитесь следующего обновления. Все обновления сначала публикуются в нашем <a href="https://t.me/KrolekVPNReborn" target="_blank">канале</a>, а затем реализуются 🐇
+                    </div>
+                </div>
+                
+                <!-- Вопрос 2 -->
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <div class="question-text">
+                            <span>🤔</span> Как подключиться?
+                        </div>
+                        <div class="arrow">›</div>
+                    </div>
+                    <div class="faq-answer">
+                        Пожалуйста, прочитайте инструкцию, которая находится на главной странице после карточки с датой подписки и скоростью 🐇
+                    </div>
+                </div>
+                
+                <!-- Вопрос 3 -->
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <div class="question-text">
+                            <span>🪤</span> Бесплатный сыр только в мышеловке?
+                        </div>
+                        <div class="arrow">›</div>
+                    </div>
+                    <div class="faq-answer">
+                        Я уверен, что многие это говорили, считая, что бесплатные VPN сливают ваши личные данные. Но на самом деле это не так. Есть и более хорошие VPN, которые не отдают данные третьим лицам. Сливание данных третьим лицам — нарушение закона Российской Федерации 🐇
+                    </div>
                 </div>
             </div>
-            <button class="proxy-btn" id="proxyBtn">
-                <i class="fab fa-telegram"></i> Подключить прокси
-            </button>
         </div>
 
-        <!-- Преимущества и футер (без изменений) -->
         <div class="features" id="features">
             <h2 class="section-title">Почему <span>KrolekVPNReborn</span>?</h2>
             <div class="features-grid">
@@ -357,10 +476,8 @@
     <div id="toast" class="toast"></div>
 
     <script>
-        // Ваша основная ссылка на подписку
         const SUBSCRIPTION_URL = "https://raw.githubusercontent.com/kangaroo255075-collab/KrolekVPNReborn-Reborn-/refs/heads/main/Krolek.txt";
-        // Ссылка на прокси для Telegram
-        const PROXY_URL = "https://t.me/proxy?server=t.yagosuslugi.ru&port=443&secret=7sOoCAXNXuXSRczqYP8no1djbG91ZC55YW5kZXgucnU";
+        let faqVisible = false;
 
         function showToast(message) {
             const toast = document.getElementById('toast');
@@ -371,7 +488,6 @@
             }, 2500);
         }
 
-        // Копирование ссылки на подписку
         async function copySubscription() {
             try {
                 await navigator.clipboard.writeText(SUBSCRIPTION_URL);
@@ -387,13 +503,34 @@
             }
         }
 
-        // Открытие прокси для Telegram
-        function openProxy() {
-            window.open(PROXY_URL, '_blank');
-            showToast('🔓 Открываем страницу для подключения прокси...');
+        // Функция для раскрытия/закрытия ответа в FAQ
+        function toggleFaq(element) {
+            const answer = element.nextElementSibling;
+            const arrow = element.querySelector('.arrow');
+            
+            answer.classList.toggle('open');
+            arrow.classList.toggle('open');
         }
 
-        // Инициализация Telegram WebApp
+        // Показать/скрыть блок FAQ при нажатии на кнопку
+        function toggleFaqContainer() {
+            const faqContainer = document.getElementById('faqContainer');
+            const faqButton = document.getElementById('faqButton');
+            
+            if (faqVisible) {
+                faqContainer.style.display = 'none';
+                faqButton.style.opacity = '0.7';
+                faqVisible = false;
+            } else {
+                faqContainer.style.display = 'block';
+                faqButton.style.opacity = '1';
+                // Плавный скролл к FAQ
+                faqContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                faqVisible = true;
+            }
+        }
+
+        // Telegram WebApp инициализация
         if (window.Telegram && window.Telegram.WebApp) {
             const tg = window.Telegram.WebApp;
             tg.ready();
@@ -403,9 +540,11 @@
             }
         }
 
-        // Назначаем обработчики кнопок
         document.getElementById('copyBtn').addEventListener('click', copySubscription);
-        document.getElementById('proxyBtn').addEventListener('click', openProxy);
+        document.getElementById('faqButton').addEventListener('click', toggleFaqContainer);
+        
+        // Делаем функцию глобальной для onclick в HTML
+        window.toggleFaq = toggleFaq;
     </script>
 </body>
-                        </html>
+    </html>

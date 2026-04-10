@@ -44,6 +44,26 @@
         }
         .btn-bot:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(255,107,53,0.4); }
         
+        /* ССЫЛКА "ЧАСТЫЕ ВОПРОСЫ" ВВЕРХУ СТРАНИЦЫ */
+        .faq-link {
+            text-align: right;
+            margin-bottom: 10px;
+        }
+        .faq-link a {
+            color: #ff9f4a;
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .faq-link a:hover {
+            color: #ff6b35;
+            text-decoration: underline;
+        }
+        
         .hero {
             display: flex;
             align-items: center;
@@ -187,25 +207,6 @@
             text-decoration: underline;
         }
         
-        .faq-button {
-            background: linear-gradient(135deg, #ff6b35, #ff9f4a);
-            border: none;
-            padding: 14px 28px;
-            border-radius: 50px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.3s;
-            font-size: 16px;
-            width: 100%;
-            margin: 10px 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        .faq-button:hover { transform: scale(1.02); box-shadow: 0 0 20px rgba(255,107,53,0.5); }
-        
         .copy-btn {
             background: linear-gradient(135deg, #ff6b35, #ff9f4a);
             border: none;
@@ -253,6 +254,7 @@
             .navbar { flex-direction: column; text-align: center; }
             .step { flex-wrap: wrap; text-align: center; justify-content: center; }
             .rule-item { flex-wrap: wrap; text-align: center; justify-content: center; }
+            .faq-link { text-align: center; }
         }
         
         .telegram-badge {
@@ -297,6 +299,13 @@
             </div>
             <a href="https://t.me/KrolekVPNReborn_bot" class="btn-bot" target="_blank"><i class="fab fa-telegram"></i> Перейти в бот</a>
         </nav>
+
+        <!-- ССЫЛКА "ЧАСТЫЕ ВОПРОСЫ" ВВЕРХУ (НЕ ОРАНЖЕВАЯ) -->
+        <div class="faq-link">
+            <a id="faqLink">
+                <i class="fas fa-question-circle"></i> Частые вопросы
+            </a>
+        </div>
 
         <div class="hero">
             <div class="hero-content">
@@ -406,12 +415,7 @@
             </div>
         </div>
 
-        <!-- КНОПКА FAQ -->
-        <button class="faq-button" id="faqButton">
-            <i class="fas fa-question-circle"></i> Частые вопросы
-        </button>
-
-        <!-- СКРЫТЫЙ БЛОК FAQ (появляется при нажатии на кнопку) -->
+        <!-- СКРЫТЫЙ БЛОК FAQ (появляется при нажатии на ссылку "Частые вопросы") -->
         <div id="faqContainer" style="display: none;">
             <div class="faq-section">
                 <h3><i class="fas fa-question-circle"></i> Часто задаваемые вопросы</h3>
@@ -512,21 +516,21 @@
             arrow.classList.toggle('open');
         }
 
-        // Показать/скрыть блок FAQ при нажатии на кнопку
+        // Показать/скрыть блок FAQ при нажатии на ссылку
         function toggleFaqContainer() {
             const faqContainer = document.getElementById('faqContainer');
-            const faqButton = document.getElementById('faqButton');
+            const faqLink = document.getElementById('faqLink');
             
             if (faqVisible) {
                 faqContainer.style.display = 'none';
-                faqButton.style.opacity = '0.7';
                 faqVisible = false;
             } else {
                 faqContainer.style.display = 'block';
-                faqButton.style.opacity = '1';
-                // Плавный скролл к FAQ
-                faqContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 faqVisible = true;
+                // Плавный скролл к FAQ
+                setTimeout(() => {
+                    faqContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
             }
         }
 
@@ -541,10 +545,10 @@
         }
 
         document.getElementById('copyBtn').addEventListener('click', copySubscription);
-        document.getElementById('faqButton').addEventListener('click', toggleFaqContainer);
+        document.getElementById('faqLink').addEventListener('click', toggleFaqContainer);
         
         // Делаем функцию глобальной для onclick в HTML
         window.toggleFaq = toggleFaq;
     </script>
 </body>
-    </html>
+                                                                                              </html>

@@ -73,7 +73,6 @@
         .hero-image { flex: 1; text-align: center; }
         .hero-image i { font-size: 250px; color: rgba(255,107,53,0.2); }
         
-        /* Карточка подписки (упрощённая) */
         .subscription-card {
             background: linear-gradient(135deg, rgba(255,107,53,0.1), rgba(255,159,74,0.05));
             border-radius: 30px;
@@ -94,14 +93,14 @@
         .info-label { color: #aaa; font-size: 14px; display: flex; align-items: center; gap: 8px; }
         .info-value { color: #ff9f4a; font-weight: 600; font-size: 16px; }
         
-        /* Инструкция */
-        .instructions, .rules {
+        .instructions, .rules, .proxy-help {
             background: rgba(255,255,255,0.05);
             border-radius: 24px;
             padding: 24px;
             margin: 30px 0;
+            border: 1px solid rgba(255,107,53,0.2);
         }
-        .instructions h3, .rules h3 {
+        .instructions h3, .rules h3, .proxy-help h3 {
             font-size: 20px;
             margin-bottom: 20px;
             color: #ff9f4a;
@@ -121,7 +120,6 @@
         .step-text a { color: #ff9f4a; text-decoration: none; }
         .step-text a:hover { text-decoration: underline; }
         
-        /* Правила */
         .rule-item {
             display: flex;
             align-items: flex-start;
@@ -135,8 +133,7 @@
         .rule-text { flex: 1; font-size: 14px; color: #ccc; line-height: 1.5; }
         .rule-text strong { color: #ff6b35; }
         
-        /* Кнопка копирования */
-        .copy-btn {
+        .copy-btn, .proxy-btn {
             background: linear-gradient(135deg, #ff6b35, #ff9f4a);
             border: none;
             padding: 14px 28px;
@@ -153,7 +150,7 @@
             justify-content: center;
             gap: 10px;
         }
-        .copy-btn:hover { transform: scale(1.02); box-shadow: 0 0 20px rgba(255,107,53,0.5); }
+        .copy-btn:hover, .proxy-btn:hover { transform: scale(1.02); box-shadow: 0 0 20px rgba(255,107,53,0.5); }
         
         .features { padding: 40px 0; }
         .section-title { text-align: center; font-size: 32px; margin-bottom: 40px; }
@@ -218,6 +215,7 @@
 </head>
 <body>
     <div class="container">
+        <!-- Шапка сайта (без изменений) -->
         <nav class="navbar">
             <div class="logo"><i class="fas fa-shield-alt"></i><span>KrolekVPN<span style="color:#fff">Reborn</span></span></div>
             <div class="nav-links">
@@ -228,6 +226,7 @@
             <a href="https://t.me/KrolekVPNReborn_bot" class="btn-bot" target="_blank"><i class="fab fa-telegram"></i> Перейти в бот</a>
         </nav>
 
+        <!-- Герой (без изменений) -->
         <div class="hero">
             <div class="hero-content">
                 <div class="telegram-badge" id="telegramBadge" style="display: none;">
@@ -245,7 +244,7 @@
             <div class="hero-image"><i class="fas fa-globe"></i></div>
         </div>
 
-        <!-- Карточка подписки (упрощённая, без сервисов) -->
+        <!-- Карточка подписки -->
         <div class="subscription-card">
             <h3>🔐 ВАША ПОДПИСКА</h3>
             <div class="expire-date">15 июля 2045 г.</div>
@@ -262,7 +261,6 @@
         <!-- Инструкция по установке -->
         <div class="instructions">
             <h3><i class="fas fa-book-open"></i> Инструкция по установке</h3>
-            
             <div class="step">
                 <div class="step-icon">📱</div>
                 <div class="step-text">Установите приложение <strong style="color: #ff6b35;">Happ</strong> из 
@@ -270,68 +268,76 @@
                     <a href="https://apps.apple.com/us/app/happ-proxy-utility/id6504287215" target="_blank">App Store</a>
                 </div>
             </div>
-            
             <div class="step">
                 <div class="step-icon">🔗</div>
                 <div class="step-text">Нажмите <strong>«Скопировать ссылку»</strong> ниже, затем в приложении выберите <strong>«Новая подписка»</strong> и вставьте ссылку</div>
             </div>
-            
             <div class="step">
                 <div class="step-icon">🚀</div>
                 <div class="step-text">Обновите подписку, выберите сервер и нажмите <strong>«Подключиться»</strong></div>
             </div>
-            
             <div class="step">
                 <div class="step-icon">📡</div>
                 <div class="step-text">Поставьте пинг на <strong style="color: #ff6b35;">TCP</strong>. Чтобы поставить — зайдите в <strong>Настройки</strong>, потом <strong>тип пинга</strong> и выберите <strong>TCP</strong></div>
             </div>
-            
-            <!-- Кнопка копирования (без надписи "Ссылка:" после неё) -->
             <button class="copy-btn" id="copyBtn">
                 <i class="fas fa-copy"></i> Скопировать ссылку на подписку
             </button>
         </div>
 
-        <!-- ПРАВИЛА ИСПОЛЬЗОВАНИЯ (после инструкции) -->
+        <!-- Правила использования -->
         <div class="rules">
             <h3><i class="fas fa-gavel"></i> Правила использования</h3>
-            
+            <div class="rule-item">
+                <div class="rule-icon">🎯</div>
+                <div class="rule-text">VPN предназначен <strong>только для обхода глушилок</strong> и защиты трафика от блокировок.</div>
+            </div>
+            <div class="rule-item">
+                <div class="rule-icon">⚠️</div>
+                <div class="rule-text">VPN конфигурации мы добавляем <strong>частично</strong>, но не полностью.</div>
+            </div>
             <div class="rule-item">
                 <div class="rule-icon">🚫</div>
                 <div class="rule-text"><strong>Запрещено</strong> использовать VPN для доступа к банковским приложениям и финансовым операциям.</div>
             </div>
-            
             <div class="rule-item">
                 <div class="rule-icon">🚫</div>
                 <div class="rule-text"><strong>Запрещено</strong> заходить в российские сервисы и приложения через VPN.</div>
             </div>
-            
             <div class="rule-item">
                 <div class="rule-icon">🚫</div>
                 <div class="rule-text"><strong>Запрещено</strong> использовать торренты и P2P-сети.</div>
             </div>
-            
-            <div class="rule-item">
-                <div class="rule-icon">⚠️</div>
-                <div class="rule-text">VPN предназначен <strong>только для обхода блокировок</strong> и защиты трафика от глушилок.</div>
-            </div>
-            
             <div class="rule-item">
                 <div class="rule-icon">🔒</div>
                 <div class="rule-text">Не передавайте свою подписку третьим лицам — это может привести к блокировке.</div>
             </div>
-            
             <div class="rule-item">
                 <div class="rule-icon">📢</div>
                 <div class="rule-text">О всех проблемах и неполадках сообщайте в <strong>поддержку</strong> (@Kr0l3k).</div>
             </div>
-            
             <div class="rule-item">
                 <div class="rule-icon">⏱️</div>
                 <div class="rule-text">Подписка <strong>бесплатна</strong> и действует до <strong>15 июля 2045 года</strong>. Продление не требуется.</div>
             </div>
         </div>
 
+        <!-- НОВЫЙ БЛОК: ПОМОЩЬ С ПРОКСИ ДЛЯ TELEGRAM -->
+        <div class="proxy-help">
+            <h3><i class="fab fa-telegram"></i> Помощь с доступом к Telegram</h3>
+            <div class="rule-item" style="background: none; padding: 0 0 16px 0;">
+                <div class="rule-icon">⚠️</div>
+                <div class="rule-text">
+                    Если у вас возникли проблемы с Telegram из-за действий Роскомнадзора, мы готовы помочь. 
+                    Нажмите на кнопку ниже, чтобы подключить бесплатный прокси для Telegram.
+                </div>
+            </div>
+            <button class="proxy-btn" id="proxyBtn">
+                <i class="fab fa-telegram"></i> Подключить прокси
+            </button>
+        </div>
+
+        <!-- Преимущества и футер (без изменений) -->
         <div class="features" id="features">
             <h2 class="section-title">Почему <span>KrolekVPNReborn</span>?</h2>
             <div class="features-grid">
@@ -351,8 +357,10 @@
     <div id="toast" class="toast"></div>
 
     <script>
-        // ССЫЛКА НА ПОДПИСКУ
+        // Ваша основная ссылка на подписку
         const SUBSCRIPTION_URL = "https://raw.githubusercontent.com/kangaroo255075-collab/KrolekVPNReborn-Reborn-/refs/heads/main/Krolek.txt";
+        // Ссылка на прокси для Telegram
+        const PROXY_URL = "https://t.me/proxy?server=t.yagosuslugi.ru&port=443&secret=7sOoCAXNXuXSRczqYP8no1djbG91ZC55YW5kZXgucnU";
 
         function showToast(message) {
             const toast = document.getElementById('toast');
@@ -363,6 +371,7 @@
             }, 2500);
         }
 
+        // Копирование ссылки на подписку
         async function copySubscription() {
             try {
                 await navigator.clipboard.writeText(SUBSCRIPTION_URL);
@@ -378,7 +387,13 @@
             }
         }
 
-        // Telegram WebApp инициализация
+        // Открытие прокси для Telegram
+        function openProxy() {
+            window.open(PROXY_URL, '_blank');
+            showToast('🔓 Открываем страницу для подключения прокси...');
+        }
+
+        // Инициализация Telegram WebApp
         if (window.Telegram && window.Telegram.WebApp) {
             const tg = window.Telegram.WebApp;
             tg.ready();
@@ -388,7 +403,9 @@
             }
         }
 
+        // Назначаем обработчики кнопок
         document.getElementById('copyBtn').addEventListener('click', copySubscription);
+        document.getElementById('proxyBtn').addEventListener('click', openProxy);
     </script>
 </body>
-</html>
+                        </html>

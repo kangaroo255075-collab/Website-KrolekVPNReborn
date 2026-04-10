@@ -14,52 +14,6 @@
             line-height: 1.6;
             min-height: 100vh;
         }
-        /* Основной контент — будет затемнён/заблокирован при пасхалке */
-        .main-content {
-            transition: filter 0.2s ease, opacity 0.2s ease;
-        }
-        /* Блюр и блокировка кликов для контента, когда пасхалка активна */
-        body.easter-active .main-content {
-            filter: blur(4px);
-            opacity: 0.6;
-            pointer-events: none;
-            user-select: none;
-        }
-        /* Контейнер пасхалки (оверлей поверх всего) */
-        .easter-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.92);
-            backdrop-filter: blur(8px);
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            visibility: hidden;
-            opacity: 0;
-            transition: visibility 0.2s, opacity 0.2s ease;
-            cursor: pointer;
-        }
-        body.easter-active .easter-overlay {
-            visibility: visible;
-            opacity: 1;
-        }
-        /* Фотография в оригинальном размере (не растягивается) */
-        .easter-image {
-            max-width: 90vw;
-            max-height: 90vh;
-            width: auto;
-            height: auto;
-            object-fit: contain;
-            border-radius: 24px;
-            box-shadow: 0 25px 45px rgba(0,0,0,0.5), 0 0 0 4px rgba(255,107,53,0.3);
-            background: #0a0a0a;
-            display: block;
-        }
-        /* Остальные стили (интерфейс полностью сохранён) */
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
         
         .navbar {
@@ -70,26 +24,9 @@
             flex-wrap: wrap;
             gap: 15px;
         }
-        /* Логотип — триггер пасхалки (без изменения внешнего вида) */
-        .logo { 
-            display: flex; 
-            align-items: center; 
-            gap: 10px; 
-            font-size: 24px; 
-            font-weight: 700; 
-            cursor: pointer;
-            transition: transform 0.2s ease, filter 0.2s;
-            border-radius: 12px;
-            padding: 4px 8px;
-            margin: -4px -8px;
-        }
-        .logo:hover {
-            transform: scale(1.02);
-            filter: drop-shadow(0 0 6px rgba(255,107,53,0.6));
-            background: rgba(255,107,53,0.1);
-        }
-        .logo i { color: #ff6b35; font-size: 32px; pointer-events: none; }
-        .logo span { background: linear-gradient(135deg, #ff6b35, #ff9f4a); -webkit-background-clip: text; background-clip: text; color: transparent; pointer-events: none; }
+        .logo { display: flex; align-items: center; gap: 10px; font-size: 24px; font-weight: 700; }
+        .logo i { color: #ff6b35; font-size: 32px; }
+        .logo span { background: linear-gradient(135deg, #ff6b35, #ff9f4a); -webkit-background-clip: text; background-clip: text; color: transparent; }
         .nav-links { display: flex; gap: 30px; }
         .nav-links a { color: #fff; text-decoration: none; transition: 0.3s; font-weight: 500; }
         .nav-links a:hover { color: #ff6b35; }
@@ -107,6 +44,7 @@
         }
         .btn-bot:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(255,107,53,0.4); }
         
+        /* ССЫЛКА "ЧАСТЫЕ ВОПРОСЫ" ВВЕРХУ СТРАНИЦЫ */
         .faq-link {
             text-align: right;
             margin-bottom: 10px;
@@ -215,6 +153,7 @@
         .rule-text { flex: 1; font-size: 14px; color: #ccc; line-height: 1.5; }
         .rule-text strong { color: #ff6b35; }
         
+        /* Стили для FAQ */
         .faq-item {
             margin-bottom: 12px;
             border-radius: 16px;
@@ -350,148 +289,191 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
-    <!-- Оверлей пасхалки (кликабельный — закрывает пасхалку и перезагружает страницу) -->
-    <div class="easter-overlay" id="easterOverlay">
-        <img class="easter-image" id="easterImage" alt="пасхалка" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 900'%3E%3Crect width='800' height='900' fill='%231a0a00'/%3E%3Ctext x='50%25' y='20%25' font-size='48' font-weight='bold' fill='%23ff6b35' text-anchor='middle' font-family='monospace'%3EЧУАО!%3C/text%3E%3Ctext x='50%25' y='35%25' font-size='36' fill='%23ff9f4a' text-anchor='middle' font-family='monospace'%3EЧЕРЕП ЛОЧКИ%3C/text%3E%3Ctext x='50%25' y='48%25' font-size='44' fill='%23ffffff' text-anchor='middle' font-family='monospace'%3EРАСКОЛОТСЯ,%3C/text%3E%3Ctext x='50%25' y='60%25' font-size='40' fill='%23ff6b35' text-anchor='middle' font-family='monospace'%3EКАК%3C/text%3E%3Ctext x='50%25' y='72%25' font-size='48' fill='%23ffaa66' text-anchor='middle' font-family='monospace' font-weight='bold'%3EСТР. 26%3C/text%3E%3Ctext x='50%25' y='86%25' font-size='30' fill='%23ff8866' text-anchor='middle' font-family='monospace'%3EЧУАО! ВЕРНУТЬ НАЧАЛОВА%3C/text%3E%3Ctext x='50%25' y='94%25' font-size='26' fill='%23ffaa88' text-anchor='middle' font-family='monospace'%3EКОЛЯ Началова%3C/text%3E%3C/svg%3E" />
-    </div>
-
-    <div class="main-content">
-        <div class="container">
-            <nav class="navbar">
-                <!-- Логотип — триггер пасхалки (на надпись KrolekVPNReborn) -->
-                <div class="logo" id="easterEggTrigger">
-                    <i class="fas fa-shield-alt"></i><span>KrolekVPN<span style="color:#fff">Reborn</span></span>
-                </div>
-                <div class="nav-links">
-                    <a href="#features">Преимущества</a>
-                    <a href="https://t.me/KrolekVPNReborn" target="_blank">Канал</a>
-                    <a href="https://t.me/KrolekVPNReborn_bot" target="_blank">Бот</a>
-                </div>
-                <a href="https://t.me/KrolekVPNReborn_bot" class="btn-bot" target="_blank"><i class="fab fa-telegram"></i> Перейти в бот</a>
-            </nav>
-
-            <div class="faq-link">
-                <a id="faqLink">
-                    <i class="fas fa-question-circle"></i> Частые вопросы
-                </a>
+    <div class="container">
+        <nav class="navbar">
+            <div class="logo"><i class="fas fa-shield-alt"></i><span>KrolekVPN<span style="color:#fff">Reborn</span></span></div>
+            <div class="nav-links">
+                <a href="#features">Преимущества</a>
+                <a href="https://t.me/KrolekVPNReborn" target="_blank">Канал</a>
+                <a href="https://t.me/KrolekVPNReborn_bot" target="_blank">Бот</a>
             </div>
+            <a href="https://t.me/KrolekVPNReborn_bot" class="btn-bot" target="_blank"><i class="fab fa-telegram"></i> Перейти в бот</a>
+        </nav>
 
-            <div class="hero">
-                <div class="hero-content">
-                    <div class="telegram-badge" id="telegramBadge" style="display: none;">
-                        <i class="fab fa-telegram"></i> Открыто через Telegram
-                    </div>
-                    <div class="hero-badge"><i class="fas fa-crown"></i> Бесплатно навсегда</div>
-                    <h1>Обход глушилок <span>KrolekVPNReborn</span></h1>
-                    <p>Стабильная скорость 15 Мбит/с, поддержка 24/7 и никаких скрытых платежей.</p>
-                    <div class="hero-stats">
-                        <div class="stat"><div class="stat-number">100+</div><div class="stat-label">Активных пользователей</div></div>
-                        <div class="stat"><div class="stat-number">3+</div><div class="stat-label">Серверов</div></div>
-                        <div class="stat"><div class="stat-number">24/7</div><div class="stat-label">Поддержка</div></div>
-                    </div>
-                </div>
-                <div class="hero-image"><i class="fas fa-globe"></i></div>
-            </div>
+        <!-- ССЫЛКА "ЧАСТЫЕ ВОПРОСЫ" ВВЕРХУ (НЕ ОРАНЖЕВАЯ) -->
+        <div class="faq-link">
+            <a id="faqLink">
+                <i class="fas fa-question-circle"></i> Частые вопросы
+            </a>
+        </div>
 
-            <div class="subscription-card">
-                <h3>🔐 ВАША ПОДПИСКА</h3>
-                <div class="expire-date">15 июля 2045 г.</div>
-                <div class="info-row">
-                    <div class="info-label"><i class="fas fa-infinity"></i> Лимит трафика</div>
-                    <div class="info-value">∞ (Безлимит)</div>
+        <div class="hero">
+            <div class="hero-content">
+                <div class="telegram-badge" id="telegramBadge" style="display: none;">
+                    <i class="fab fa-telegram"></i> Открыто через Telegram
                 </div>
-                <div class="info-row">
-                    <div class="info-label"><i class="fas fa-tachometer-alt"></i> Скорость</div>
-                    <div class="info-value">До 15 Мбит/с</div>
+                <div class="hero-badge"><i class="fas fa-crown"></i> Бесплатно навсегда</div>
+                <h1>Обход глушилок <span>KrolekVPNReborn</span></h1>
+                <p>Стабильная скорость 15 Мбит/с, поддержка 24/7 и никаких скрытых платежей.</p>
+                <div class="hero-stats">
+                    <div class="stat"><div class="stat-number">100+</div><div class="stat-label">Активных пользователей</div></div>
+                    <div class="stat"><div class="stat-number">3+</div><div class="stat-label">Серверов</div></div>
+                    <div class="stat"><div class="stat-number">24/7</div><div class="stat-label">Поддержка</div></div>
                 </div>
             </div>
+            <div class="hero-image"><i class="fas fa-globe"></i></div>
+        </div>
 
-            <div class="instructions">
-                <h3><i class="fas fa-book-open"></i> Инструкция по установке</h3>
-                
-                <div class="step">
-                    <div class="step-icon">📱</div>
-                    <div class="step-text">Установите приложение <strong style="color: #ff6b35;">Happ</strong> из 
-                        <a href="https://play.google.com/store/apps/details?id=com.happproxy" target="_blank">Google Play</a> / 
-                        <a href="https://apps.apple.com/us/app/happ-proxy-utility/id6504287215" target="_blank">App Store</a>
-                    </div>
-                </div>
-                
-                <div class="step">
-                    <div class="step-icon">🔗</div>
-                    <div class="step-text">Нажмите <strong>«Скопировать ссылку»</strong> ниже, затем в приложении выберите <strong>«Новая подписка»</strong> и вставьте ссылку</div>
-                </div>
-                
-                <div class="step">
-                    <div class="step-icon">🚀</div>
-                    <div class="step-text">Обновите подписку, выберите сервер и нажмите <strong>«Подключиться»</strong></div>
-                </div>
-                
-                <div class="step">
-                    <div class="step-icon">📡</div>
-                    <div class="step-text">Поставьте пинг на <strong style="color: #ff6b35;">TCP</strong>. Чтобы поставить — зайдите в <strong>Настройки</strong>, потом <strong>тип пинга</strong> и выберите <strong>TCP</strong></div>
-                </div>
-                
-                <button class="copy-btn" id="copyBtn">
-                    <i class="fas fa-copy"></i> Скопировать ссылку на подписку
-                </button>
+        <!-- Карточка подписки -->
+        <div class="subscription-card">
+            <h3>🔐 ВАША ПОДПИСКА</h3>
+            <div class="expire-date">15 июля 2045 г.</div>
+            <div class="info-row">
+                <div class="info-label"><i class="fas fa-infinity"></i> Лимит трафика</div>
+                <div class="info-value">∞ (Безлимит)</div>
             </div>
-
-            <div class="rules">
-                <h3><i class="fas fa-gavel"></i> Правила использования</h3>
-                
-                <div class="rule-item"><div class="rule-icon">🎯</div><div class="rule-text">VPN предназначен <strong>только для обхода глушилок</strong> и защиты трафика от блокировок.</div></div>
-                <div class="rule-item"><div class="rule-icon">⚠️</div><div class="rule-text">VPN конфигурации мы добавляем <strong>частично</strong>, но не полностью.</div></div>
-                <div class="rule-item"><div class="rule-icon">🚫</div><div class="rule-text"><strong>Запрещено</strong> использовать VPN для доступа к банковским приложениям и финансовым операциям.</div></div>
-                <div class="rule-item"><div class="rule-icon">🚫</div><div class="rule-text"><strong>Запрещено</strong> заходить в российские сервисы и приложения через VPN.</div></div>
-                <div class="rule-item"><div class="rule-icon">🚫</div><div class="rule-text"><strong>Запрещено</strong> использовать торренты и P2P-сети.</div></div>
-                <div class="rule-item"><div class="rule-icon">🔒</div><div class="rule-text">Не передавайте свою подписку третьим лицам — это может привести к блокировке.</div></div>
-                <div class="rule-item"><div class="rule-icon">📢</div><div class="rule-text">О всех проблемах и неполадках сообщайте в <strong>поддержку</strong> (@Kr0l3k).</div></div>
-                <div class="rule-item"><div class="rule-icon">⏱️</div><div class="rule-text">Подписка <strong>бесплатна</strong> и действует до <strong>15 июля 2045 года</strong>. Продление не требуется.</div></div>
+            <div class="info-row">
+                <div class="info-label"><i class="fas fa-tachometer-alt"></i> Скорость</div>
+                <div class="info-value">До 15 Мбит/с</div>
             </div>
+        </div>
 
-            <div id="faqContainer" style="display: none;">
-                <div class="faq-section">
-                    <h3><i class="fas fa-question-circle"></i> Часто задаваемые вопросы</h3>
-                    
-                    <div class="faq-item">
-                        <div class="faq-question" onclick="toggleFaq(this)">
-                            <div class="question-text"><span>😕</span> Почему VPN не работает?</div>
-                            <div class="arrow">›</div>
+        <!-- Инструкция по установке -->
+        <div class="instructions">
+            <h3><i class="fas fa-book-open"></i> Инструкция по установке</h3>
+            
+            <div class="step">
+                <div class="step-icon">📱</div>
+                <div class="step-text">Установите приложение <strong style="color: #ff6b35;">Happ</strong> из 
+                    <a href="https://play.google.com/store/apps/details?id=com.happproxy" target="_blank">Google Play</a> / 
+                    <a href="https://apps.apple.com/us/app/happ-proxy-utility/id6504287215" target="_blank">App Store</a>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-icon">🔗</div>
+                <div class="step-text">Нажмите <strong>«Скопировать ссылку»</strong> ниже, затем в приложении выберите <strong>«Новая подписка»</strong> и вставьте ссылку</div>
+            </div>
+            
+            <div class="step">
+                <div class="step-icon">🚀</div>
+                <div class="step-text">Обновите подписку, выберите сервер и нажмите <strong>«Подключиться»</strong></div>
+            </div>
+            
+            <div class="step">
+                <div class="step-icon">📡</div>
+                <div class="step-text">Поставьте пинг на <strong style="color: #ff6b35;">TCP</strong>. Чтобы поставить — зайдите в <strong>Настройки</strong>, потом <strong>тип пинга</strong> и выберите <strong>TCP</strong></div>
+            </div>
+            
+            <button class="copy-btn" id="copyBtn">
+                <i class="fas fa-copy"></i> Скопировать ссылку на подписку
+            </button>
+        </div>
+
+        <!-- Правила использования -->
+        <div class="rules">
+            <h3><i class="fas fa-gavel"></i> Правила использования</h3>
+            
+            <div class="rule-item">
+                <div class="rule-icon">🎯</div>
+                <div class="rule-text">VPN предназначен <strong>только для обхода глушилок</strong> и защиты трафика от блокировок.</div>
+            </div>
+            
+            <div class="rule-item">
+                <div class="rule-icon">⚠️</div>
+                <div class="rule-text">VPN конфигурации мы добавляем <strong>частично</strong>, но не полностью.</div>
+            </div>
+            
+            <div class="rule-item">
+                <div class="rule-icon">🚫</div>
+                <div class="rule-text"><strong>Запрещено</strong> использовать VPN для доступа к банковским приложениям и финансовым операциям.</div>
+            </div>
+            
+            <div class="rule-item">
+                <div class="rule-icon">🚫</div>
+                <div class="rule-text"><strong>Запрещено</strong> заходить в российские сервисы и приложения через VPN.</div>
+            </div>
+            
+            <div class="rule-item">
+                <div class="rule-icon">🚫</div>
+                <div class="rule-text"><strong>Запрещено</strong> использовать торренты и P2P-сети.</div>
+            </div>
+            
+            <div class="rule-item">
+                <div class="rule-icon">🔒</div>
+                <div class="rule-text">Не передавайте свою подписку третьим лицам — это может привести к блокировке.</div>
+            </div>
+            
+            <div class="rule-item">
+                <div class="rule-icon">📢</div>
+                <div class="rule-text">О всех проблемах и неполадках сообщайте в <strong>поддержку</strong> (@Kr0l3k).</div>
+            </div>
+            
+            <div class="rule-item">
+                <div class="rule-icon">⏱️</div>
+                <div class="rule-text">Подписка <strong>бесплатна</strong> и действует до <strong>15 июля 2045 года</strong>. Продление не требуется.</div>
+            </div>
+        </div>
+
+        <!-- СКРЫТЫЙ БЛОК FAQ (появляется при нажатии на ссылку "Частые вопросы") -->
+        <div id="faqContainer" style="display: none;">
+            <div class="faq-section">
+                <h3><i class="fas fa-question-circle"></i> Часто задаваемые вопросы</h3>
+                
+                <!-- Вопрос 1 -->
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <div class="question-text">
+                            <span>😕</span> Почему VPN не работает?
                         </div>
-                        <div class="faq-answer">Если у вас появились проблемы с работой нашего VPN, советую написать в поддержку. Если у вас пока нет возможности написать нам, то дождитесь следующего обновления. Все обновления сначала публикуются в нашем <a href="https://t.me/KrolekVPNReborn" target="_blank">канале</a>, а затем реализуются 🐇</div>
+                        <div class="arrow">›</div>
                     </div>
-                    <div class="faq-item">
-                        <div class="faq-question" onclick="toggleFaq(this)">
-                            <div class="question-text"><span>🤔</span> Как подключиться?</div>
-                            <div class="arrow">›</div>
-                        </div>
-                        <div class="faq-answer">Пожалуйста, прочитайте инструкцию, которая находится на главной странице после карточки с датой подписки и скоростью 🐇</div>
+                    <div class="faq-answer">
+                        Если у вас появились проблемы с работой нашего VPN, советую написать в поддержку. Если у вас пока нет возможности написать нам, то дождитесь следующего обновления. Все обновления сначала публикуются в нашем <a href="https://t.me/KrolekVPNReborn" target="_blank">канале</a>, а затем реализуются 🐇
                     </div>
-                    <div class="faq-item">
-                        <div class="faq-question" onclick="toggleFaq(this)">
-                            <div class="question-text"><span>🪤</span> Бесплатный сыр только в мышеловке?</div>
-                            <div class="arrow">›</div>
+                </div>
+                
+                <!-- Вопрос 2 -->
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <div class="question-text">
+                            <span>🤔</span> Как подключиться?
                         </div>
-                        <div class="faq-answer">Я уверен, что многие это говорили, считая, что бесплатные VPN сливают ваши личные данные. Но на самом деле это не так. Есть и более хорошие VPN, которые не отдают данные третьим лицам. Сливание данных третьим лицам — нарушение закона Российской Федерации 🐇</div>
+                        <div class="arrow">›</div>
+                    </div>
+                    <div class="faq-answer">
+                        Пожалуйста, прочитайте инструкцию, которая находится на главной странице после карточки с датой подписки и скоростью 🐇
+                    </div>
+                </div>
+                
+                <!-- Вопрос 3 -->
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <div class="question-text">
+                            <span>🪤</span> Бесплатный сыр только в мышеловке?
+                        </div>
+                        <div class="arrow">›</div>
+                    </div>
+                    <div class="faq-answer">
+                        Я уверен, что многие это говорили, считая, что бесплатные VPN сливают ваши личные данные. Но на самом деле это не так. Есть и более хорошие VPN, которые не отдают данные третьим лицам. Сливание данных третьим лицам — нарушение закона Российской Федерации 🐇
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="features" id="features">
-                <h2 class="section-title">Почему <span>KrolekVPNReborn</span>?</h2>
-                <div class="features-grid">
-                    <div class="feature-card"><div class="feature-icon"><i class="fas fa-bolt"></i></div><h3>Высокая скорость</h3><p>Стабильные 15 Мбит/с</p></div>
-                    <div class="feature-card"><div class="feature-icon"><i class="fas fa-headset"></i></div><h3>Поддержка 24/7</h3><p>Живые люди отвечают в любое время</p></div>
-                    <div class="feature-card"><div class="feature-icon"><i class="fas fa-lock"></i></div><h3>Обход глушилок</h3><p>Работает там, где остальные падают</p></div>
-                    <div class="feature-card"><div class="feature-icon"><i class="fas fa-gem"></i></div><h3>Совершенно бесплатно</h3><p>Навсегда. Без скрытых подписок</p></div>
-                </div>
+        <div class="features" id="features">
+            <h2 class="section-title">Почему <span>KrolekVPNReborn</span>?</h2>
+            <div class="features-grid">
+                <div class="feature-card"><div class="feature-icon"><i class="fas fa-bolt"></i></div><h3>Высокая скорость</h3><p>Стабильные 15 Мбит/с</p></div>
+                <div class="feature-card"><div class="feature-icon"><i class="fas fa-headset"></i></div><h3>Поддержка 24/7</h3><p>Живые люди отвечают в любое время</p></div>
+                <div class="feature-card"><div class="feature-icon"><i class="fas fa-lock"></i></div><h3>Обход глушилок</h3><p>Работает там, где остальные падают</p></div>
+                <div class="feature-card"><div class="feature-icon"><i class="fas fa-gem"></i></div><h3>Совершенно бесплатно</h3><p>Навсегда. Без скрытых подписок</p></div>
             </div>
+        </div>
 
-            <div class="footer">
-                <p>© 2025-2026 KrolekVPNReborn. Бесплатный VPN для обхода блокировок.</p>
-                <p><a href="https://t.me/KrolekVPNReborn" style="color:#666;">Канал</a> | <a href="https://t.me/KrolekVPNReborn_bot" style="color:#666;">Бот</a> | <a href="https://t.me/Kr0l3k" style="color:#666;">Поддержка</a></p>
-            </div>
+        <div class="footer">
+            <p>© 2025-2026 KrolekVPNReborn. Бесплатный VPN для обхода блокировок.</p>
+            <p><a href="https://t.me/KrolekVPNReborn" style="color:#666;">Канал</a> | <a href="https://t.me/KrolekVPNReborn_bot" style="color:#666;">Бот</a> | <a href="https://t.me/Kr0l3k" style="color:#666;">Поддержка</a></p>
         </div>
     </div>
 
@@ -525,37 +507,31 @@
             }
         }
 
+        // Функция для раскрытия/закрытия ответа в FAQ
         function toggleFaq(element) {
             const answer = element.nextElementSibling;
             const arrow = element.querySelector('.arrow');
+            
             answer.classList.toggle('open');
             arrow.classList.toggle('open');
         }
 
+        // Показать/скрыть блок FAQ при нажатии на ссылку
         function toggleFaqContainer() {
             const faqContainer = document.getElementById('faqContainer');
             const faqLink = document.getElementById('faqLink');
+            
             if (faqVisible) {
                 faqContainer.style.display = 'none';
                 faqVisible = false;
             } else {
                 faqContainer.style.display = 'block';
                 faqVisible = true;
+                // Плавный скролл к FAQ
                 setTimeout(() => {
                     faqContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }, 100);
             }
-        }
-
-        // Пасхалка: показать оверлей с фотографией, заблокировать весь интерфейс
-        function activateEasterEgg() {
-            // Добавляем класс на body, который блокирует main-content через CSS (blur + pointer-events)
-            document.body.classList.add('easter-active');
-        }
-
-        // Закрытие пасхалки: перезагрузка страницы (по клику на оверлей)
-        function deactivateEasterEggAndReload() {
-            location.reload(); // жёсткая перезагрузка, как просили: "Чтобы убрать пасхалку нужно перезагрузить сайт"
         }
 
         // Telegram WebApp инициализация
@@ -568,22 +544,11 @@
             }
         }
 
-        // Кнопка копирования
         document.getElementById('copyBtn').addEventListener('click', copySubscription);
-        // Ссылка "частые вопросы"
         document.getElementById('faqLink').addEventListener('click', toggleFaqContainer);
-        // Триггер пасхалки: клик по логотипу KrolekVPNReborn
-        const trigger = document.getElementById('easterEggTrigger');
-        if (trigger) {
-            trigger.addEventListener('click', activateEasterEgg);
-        }
-        // Оверлей: клик по нему вызывает перезагрузку (убираем пасхалку)
-        const overlay = document.getElementById('easterOverlay');
-        if (overlay) {
-            overlay.addEventListener('click', deactivateEasterEggAndReload);
-        }
-
+        
+        // Делаем функцию глобальной для onclick в HTML
         window.toggleFaq = toggleFaq;
     </script>
 </body>
-</html>
+                    </html>

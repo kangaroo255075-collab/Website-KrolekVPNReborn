@@ -83,53 +83,6 @@
         }
         .expire-date { font-size: 28px; font-weight: 700; color: #ff6b35; margin: 10px 0; }
         
-        .traffic-block {
-            background: rgba(0,0,0,0.4);
-            border-radius: 20px;
-            padding: 15px;
-            margin: 15px 0;
-            text-align: center;
-        }
-        .traffic-bar {
-            background: rgba(255,255,255,0.1);
-            border-radius: 20px;
-            height: 20px;
-            overflow: hidden;
-            margin: 10px 0;
-        }
-        .traffic-fill {
-            background: linear-gradient(90deg, #ff6b35, #ff9f4a);
-            width: 0%;
-            height: 100%;
-            border-radius: 20px;
-            transition: width 0.3s;
-        }
-        .traffic-text {
-            font-size: 24px;
-            font-weight: 700;
-            margin: 10px 0;
-        }
-        .traffic-warning {
-            background: rgba(255,0,0,0.2);
-            border: 1px solid #ff0000;
-            border-radius: 15px;
-            padding: 10px;
-            margin: 10px 0;
-            color: #ff6666;
-        }
-        .renew-btn {
-            background: linear-gradient(135deg, #ff6b35, #ff9f4a);
-            border: none;
-            padding: 10px 20px;
-            border-radius: 30px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 10px;
-            display: inline-block;
-            text-decoration: none;
-        }
-        
         .info-row {
             display: flex;
             justify-content: space-between;
@@ -361,26 +314,10 @@
             <div class="hero-image"><i class="fas fa-globe"></i></div>
         </div>
 
-        <!-- Карточка подписки с трафиком -->
-        <div class="subscription-card" id="subscriptionCard">
+        <!-- Карточка подписки -->
+        <div class="subscription-card">
             <h3>🔐 ВАША ПОДПИСКА</h3>
             <div class="expire-date">15 июля 2045 г.</div>
-            
-            <!-- Блок с трафиком -->
-            <div class="traffic-block">
-                <div class="traffic-text" id="trafficText">0.00 / 15 GB</div>
-                <div class="traffic-bar">
-                    <div class="traffic-fill" id="trafficFill"></div>
-                </div>
-                <div id="trafficWarning" style="display: none;" class="traffic-warning">
-                    🚨 Трафик исчерпан<br>
-                    🚨 Продлите трафик в боте
-                </div>
-                <a href="https://t.me/KrolekVPNReborn_bot" class="renew-btn" id="renewBtn" style="display: none;">
-                    <i class="fab fa-telegram"></i> Продлить трафик
-                </a>
-            </div>
-            
             <div class="info-row">
                 <div class="info-label"><i class="fas fa-infinity"></i> Лимит трафика</div>
                 <div class="info-value">∞ (Безлимит)</div>
@@ -525,9 +462,7 @@
 
     <script>
         const SUBSCRIPTION_URL = "https://raw.githubusercontent.com/kangaroo255075-collab/KrolekVPNReborn-Reborn-/refs/heads/main/Krolek.txt";
-        const TRAFFIC_LIMIT_GB = 15;
         let faqVisible = false;
-        let currentUserId = null;
         
         // ЗВУК КЛИКА МЫШКИ
         const clickSound = new Audio("https://www.soundjay.com/misc/sounds/button-click-1.mp3");
@@ -541,123 +476,13 @@
             }, 2500);
         }
 
-        // Получение ID пользователя из Telegram WebApp
-        function getTelegramUserId() {
-            if (window.Telegram && window.Telegram.WebApp) {
-                const tg = window.Telegram.WebApp;
-                tg.ready();
-                tg.expand();
-                if (tg.initDataUnsafe?.user) {
-                    document.getElementById('telegramBadge').style.display = 'inline-flex';
-                    return tg.initDataUnsafe.user.id;
-                }
-            }
-            return null;
-        }
-
-        // Получение ключа для localStorage
-        function getStorageKey() {
-            if (currentUserId) {
-                return `traffic_${currentUserId}`;
-            }
-            return `traffic_guest`;
-        }
-
-        // Загрузка данных трафика
-        function loadTraffic() {
-            const key = getStorageKey();
-            const saved = localStorage.getItem(key);
-            if (saved) {
-                try {
-                    const data = JSON.parse(saved);
-                    return data.used_gb || 0;
-                } catch(e) {
-                    return 0;
-                }
-            }
-            return 0;
-        }
-
-        // Сохранение данных трафика
-        function saveTraffic(used_gb) {
-            const key = getStorageKey();
-            localStorage.setItem(key, JSON.stringify({
-                used_gb: used_gb,
-                updated_at: Date.now()
-            }));
-        }
-
-        // Обновление интерфейса трафика
-        function updateTrafficUI(used_gb) {
-            const remaining_gb = Math.max(0, TRAFFIC_LIMIT_GB - used_gb);
-            const percent = (used_gb / TRAFFIC_LIMIT_GB) * 100;
-            
-            document.getElementById('trafficText').innerHTML = `${used_gb.toFixed(2)} / ${TRAFFIC_LIMIT_GB} GB`;
-            document.getElementById('trafficFill').style.width = `${Math.min(100, percent)}%`;
-            
-            // Изменение цвета при接近 лимите
-            if (percent >= 90) {
-                document.getElementById('trafficFill').style.background = "linear-gradient(90deg, #ff4444, #ff6666)";
-            } else {
-                document.getElementById('trafficFill').style.background = "linear-gradient(90deg, #ff6b35, #ff9f4a)";
-            }
-            
-            // Проверка на исчерпание трафика
-            if (remaining_gb <= 0) {
-                document.getElementById('trafficWarning').style.display = 'block';
-                document.getElementById('renewBtn').style.display = 'inline-block';
-                // Блокируем кнопку копирования
-                document.getElementById('copyBtn').disabled = true;
-                document.getElementById('copyBtn').style.opacity = '0.5';
-                document.getElementById('copyBtn').style.cursor = 'not-allowed';
-            } else {
-                document.getElementById('trafficWarning').style.display = 'none';
-                document.getElementById('renewBtn').style.display = 'none';
-                document.getElementById('copyBtn').disabled = false;
-                document.getElementById('copyBtn').style.opacity = '1';
-                document.getElementById('copyBtn').style.cursor = 'pointer';
-            }
-        }
-
-        // Списание трафика (вызывается при копировании ссылки)
-        function deductTraffic(gb_to_deduct = 0.1) { // По умолчанию 100 МБ
-            let current_used = loadTraffic();
-            let new_used = current_used + gb_to_deduct;
-            
-            if (new_used >= TRAFFIC_LIMIT_GB) {
-                new_used = TRAFFIC_LIMIT_GB;
-            }
-            
-            saveTraffic(new_used);
-            updateTrafficUI(new_used);
-            return new_used;
-        }
-
-        // Сброс трафика (для админа или продления)
-        function resetTraffic() {
-            saveTraffic(0);
-            updateTrafficUI(0);
-            showToast('✅ Трафик обновлён! 15 GB доступно');
-        }
-
         async function copySubscription() {
-            // Проверяем, есть ли трафик
-            const used_gb = loadTraffic();
-            if (used_gb >= TRAFFIC_LIMIT_GB) {
-                showToast('🚨 Трафик исчерпан! Продлите подписку в боте');
-                return;
-            }
-            
             // Проигрываем звук клика
             clickSound.play().catch(e => console.log('Звук не воспроизведён'));
             
-            // Списываем трафик (100 МБ за одно подключение)
-            deductTraffic(0.1);
-            
             try {
                 await navigator.clipboard.writeText(SUBSCRIPTION_URL);
-                const remaining = TRAFFIC_LIMIT_GB - loadTraffic();
-                showToast(`✅ Ссылка скопирована! Осталось ${remaining.toFixed(2)} GB`);
+                showToast('✅ Ссылка на подписку скопирована!');
             } catch (err) {
                 const textarea = document.createElement('textarea');
                 textarea.value = SUBSCRIPTION_URL;
@@ -665,8 +490,7 @@
                 textarea.select();
                 document.execCommand('copy');
                 document.body.removeChild(textarea);
-                const remaining = TRAFFIC_LIMIT_GB - loadTraffic();
-                showToast(`✅ Ссылка скопирована! Осталось ${remaining.toFixed(2)} GB`);
+                showToast('✅ Ссылка скопирована!');
             }
         }
 
@@ -691,19 +515,19 @@
             }
         }
 
-        // Инициализация
-        currentUserId = getTelegramUserId();
-        const current_used = loadTraffic();
-        updateTrafficUI(current_used);
-        
-        // Для отладки - кнопка сброса (только для админа, можно убрать)
-        // Если нужно сбросить трафик - раскомментируйте
-        // window.resetTraffic = resetTraffic;
-        
+        if (window.Telegram && window.Telegram.WebApp) {
+            const tg = window.Telegram.WebApp;
+            tg.ready();
+            tg.expand();
+            if (tg.initDataUnsafe?.user) {
+                document.getElementById('telegramBadge').style.display = 'inline-flex';
+            }
+        }
+
         document.getElementById('copyBtn').addEventListener('click', copySubscription);
         document.getElementById('faqLink').addEventListener('click', toggleFaqContainer);
         
         window.toggleFaq = toggleFaq;
     </script>
 </body>
-                                                                                                                                                                                                                                           </html>
+    </html>

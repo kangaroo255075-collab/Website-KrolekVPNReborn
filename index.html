@@ -1,533 +1,436 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>KrolekVPNReborn — Обход глушилок</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a00 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', Roboto, Helvetica, Arial, sans-serif;
+            background: #000000;
             color: #fff;
-            line-height: 1.6;
-            min-height: 100vh;
+            line-height: 1.5;
+            padding-bottom: 85px;
         }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-        
-        .navbar {
+
+        /* Контейнер */
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px 16px 32px;
+        }
+
+        /* ===== ВКЛАДКИ СНИЗУ (TAB BAR) ===== */
+        .bottom-tabs {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 0.5px solid rgba(255, 255, 255, 0.1);
             display: flex;
-            justify-content: space-between;
+            justify-content: space-around;
             align-items: center;
-            padding: 20px 0;
-            flex-wrap: wrap;
-            gap: 15px;
+            padding: 10px 20px 25px;
+            z-index: 1000;
         }
-        .logo { display: flex; align-items: center; gap: 10px; font-size: 24px; font-weight: 700; }
-        .logo i { color: #ff6b35; font-size: 32px; }
-        .logo span { background: linear-gradient(135deg, #ff6b35, #ff9f4a); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        .nav-links { display: flex; gap: 30px; }
-        .nav-links a { color: #fff; text-decoration: none; transition: 0.3s; font-weight: 500; }
-        .nav-links a:hover { color: #ff6b35; }
-        .btn-bot {
-            background: linear-gradient(135deg, #ff6b35, #ff9f4a);
-            padding: 10px 24px;
+
+        .tab-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 12px;
+            font-weight: 500;
+            transition: 0.2s;
+            cursor: pointer;
+            padding: 6px 12px;
             border-radius: 30px;
-            color: #fff;
-            text-decoration: none;
+        }
+
+        .tab-item i {
+            font-size: 24px;
+        }
+
+        .tab-item.active {
+            color: #ff6b35;
+            background: rgba(255, 107, 53, 0.12);
+        }
+
+        /* Карточки */
+        .card {
+            background: rgba(20, 20, 25, 0.8);
+            backdrop-filter: blur(4px);
+            border-radius: 28px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 0.5px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Заголовки */
+        .section-title {
+            font-size: 20px;
             font-weight: 600;
-            transition: 0.3s;
-            display: inline-flex;
+            margin-bottom: 16px;
+            display: flex;
             align-items: center;
             gap: 8px;
         }
-        .btn-bot:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(255,107,53,0.4); }
-        
-        .hero {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            min-height: 50vh;
-            gap: 40px;
-            flex-wrap: wrap;
-            padding: 40px 0;
-        }
-        .hero-content { flex: 1; }
-        .hero-badge {
-            background: rgba(255,107,53,0.2);
-            border: 1px solid rgba(255,107,53,0.5);
+
+        .badge {
+            background: rgba(255, 107, 53, 0.2);
+            padding: 4px 12px;
             border-radius: 30px;
-            padding: 5px 15px;
-            display: inline-block;
-            font-size: 14px;
-            margin-bottom: 20px;
+            font-size: 12px;
             color: #ff9f4a;
         }
-        .hero h1 { font-size: 52px; font-weight: 700; margin-bottom: 20px; line-height: 1.2; }
-        .hero h1 span { color: #ff6b35; }
-        .hero p { font-size: 18px; color: #aaa; margin-bottom: 30px; max-width: 500px; }
-        .hero-stats { display: flex; gap: 30px; margin-top: 30px; }
-        .stat-number { font-size: 32px; font-weight: 700; color: #ff6b35; }
-        .stat-label { font-size: 14px; color: #888; }
-        .hero-image { flex: 1; text-align: center; }
-        .hero-image i { font-size: 250px; color: rgba(255,107,53,0.2); }
-        
-        .subscription-card {
-            background: linear-gradient(135deg, rgba(255,107,53,0.1), rgba(255,159,74,0.05));
-            border-radius: 30px;
-            padding: 25px;
-            margin: 20px 0;
-            text-align: center;
-            border: 1px solid rgba(255,107,53,0.3);
-        }
-        .expire-date { font-size: 28px; font-weight: 700; color: #ff6b35; margin: 10px 0; }
-        
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-        .info-label { color: #aaa; font-size: 14px; display: flex; align-items: center; gap: 8px; }
-        .info-value { color: #ff9f4a; font-weight: 600; font-size: 16px; }
-        
-        .instructions, .rules, .faq-section {
-            background: rgba(255,255,255,0.05);
-            border-radius: 24px;
-            padding: 24px;
-            margin: 30px 0;
-            border: 1px solid rgba(255,107,53,0.2);
-        }
-        .instructions h3, .rules h3, .faq-section h3 {
-            font-size: 20px;
+
+        /* Тарифная карточка */
+        .tariff-card {
+            background: linear-gradient(135deg, #1a1a1a, #0d0d0d);
+            border-radius: 28px;
+            padding: 20px;
             margin-bottom: 20px;
-            color: #ff9f4a;
+            border: 0.5px solid rgba(255, 107, 53, 0.3);
         }
-        .step {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-            padding: 12px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 16px;
+
+        .tariff-name {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 8px;
         }
-        .step-icon { font-size: 32px; min-width: 50px; text-align: center; }
-        .step-text { flex: 1; font-size: 15px; color: #ddd; }
-        .step-text strong { color: #ff9f4a; }
-        .step-text a { color: #ff9f4a; text-decoration: none; }
-        .step-text a:hover { text-decoration: underline; }
-        
-        .rule-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 15px;
-            margin-bottom: 16px;
-            padding: 10px;
-            background: rgba(0,0,0,0.2);
-            border-radius: 12px;
-        }
-        .rule-icon { font-size: 22px; min-width: 40px; text-align: center; }
-        .rule-text { flex: 1; font-size: 14px; color: #ccc; line-height: 1.5; }
-        .rule-text strong { color: #ff6b35; }
-        
-        .faq-item {
-            margin-bottom: 12px;
-            border-radius: 16px;
-            background: rgba(0,0,0,0.2);
+
+        .traffic-progress {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            height: 10px;
+            margin: 16px 0;
             overflow: hidden;
         }
-        .faq-question {
+
+        .traffic-fill {
+            background: linear-gradient(90deg, #ff6b35, #ff9f4a);
+            width: 0%;
+            height: 100%;
+            border-radius: 20px;
+        }
+
+        .traffic-stats {
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            padding: 16px 20px;
-            cursor: pointer;
-            transition: 0.2s;
-            font-weight: 500;
-            font-size: 16px;
-        }
-        .faq-question:hover {
-            background: rgba(255,107,53,0.1);
-        }
-        .faq-question .question-text {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .faq-question .arrow {
-            font-size: 18px;
-            transition: transform 0.3s ease;
-            color: #ff9f4a;
-        }
-        .faq-question .arrow.open {
-            transform: rotate(90deg);
-        }
-        .faq-answer {
-            max-height: 0;
-            padding: 0 20px;
-            overflow: hidden;
-            transition: max-height 0.3s ease, padding 0.3s ease;
-            color: #bbb;
             font-size: 14px;
-            line-height: 1.6;
+            margin-bottom: 8px;
         }
-        .faq-answer.open {
-            max-height: 300px;
-            padding: 0 20px 16px 20px;
+
+        .warning-text {
+            color: #ff6666;
+            font-size: 13px;
+            margin-top: 12px;
         }
-        
-        .copy-btn {
+
+        /* Кнопки */
+        .connect-btn {
             background: linear-gradient(135deg, #ff6b35, #ff9f4a);
-            border: none;
-            padding: 14px 28px;
-            border-radius: 50px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.3s;
-            font-size: 16px;
             width: 100%;
-            margin: 10px 0;
+            padding: 16px;
+            border: none;
+            border-radius: 60px;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-        }
-        .copy-btn:hover { transform: scale(1.02); box-shadow: 0 0 20px rgba(255,107,53,0.5); }
-        
-        .faq-link {
-            text-align: right;
-            margin-bottom: 10px;
-        }
-        .faq-link a {
-            color: #ff9f4a;
-            text-decoration: none;
-            font-size: 14px;
+            margin: 20px 0;
             cursor: pointer;
-            transition: 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
+            transition: 0.2s;
         }
-        .faq-link a:hover {
-            color: #ff6b35;
-            text-decoration: underline;
+
+        .connect-btn:active {
+            transform: scale(0.97);
         }
-        
-        .features { padding: 40px 0; }
-        .section-title { text-align: center; font-size: 32px; margin-bottom: 40px; }
-        .section-title span { color: #ff6b35; }
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
+
+        /* Список локаций */
+        .location-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 12px;
         }
-        .feature-card {
-            background: rgba(255,255,255,0.05);
-            border-radius: 20px;
-            padding: 25px;
-            text-align: center;
-            border: 1px solid rgba(255,107,53,0.2);
-            transition: 0.3s;
-        }
-        .feature-card:hover { transform: translateY(-5px); border-color: #ff6b35; }
-        .feature-icon { font-size: 40px; color: #ff6b35; margin-bottom: 15px; }
-        .feature-card h3 { margin-bottom: 10px; }
-        .feature-card p { color: #aaa; font-size: 14px; }
-        
-        .footer { text-align: center; padding: 30px 0; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 40px; color: #666; }
-        
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 36px; }
-            .navbar { flex-direction: column; text-align: center; }
-            .step { flex-wrap: wrap; text-align: center; justify-content: center; }
-            .rule-item { flex-wrap: wrap; text-align: center; justify-content: center; }
-            .faq-link { text-align: center; }
-        }
-        
-        .telegram-badge {
-            background: #ff6b35;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            margin-bottom: 15px;
-        }
-        
-        .toast {
-            position: fixed;
-            bottom: 30px;
-            left: 20px;
-            right: 20px;
-            background: #1a1a1a;
-            border-left: 4px solid #4caf50;
-            border-radius: 12px;
-            padding: 12px 20px;
-            text-align: center;
+
+        .location-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 8px 16px;
+            border-radius: 40px;
             font-size: 14px;
-            z-index: 1000;
-            opacity: 0;
-            transition: opacity 0.3s;
-            pointer-events: none;
+            color: #ccc;
+        }
+
+        .location-item.active {
+            background: rgba(255, 107, 53, 0.2);
+            color: #ff9f4a;
+            border: 0.5px solid rgba(255, 107, 53, 0.4);
+        }
+
+        /* Устройства */
+        .device-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 0.5px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Скрытие вкладок */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #555;
+        }
+
+        hr {
+            border-color: rgba(255, 255, 255, 0.05);
+            margin: 16px 0;
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <nav class="navbar">
-            <div class="logo"><i class="fas fa-shield-alt"></i><span>KrolekVPN<span style="color:#fff">Reborn</span></span></div>
-            <div class="nav-links">
-                <a href="#features">Преимущества</a>
-                <a href="https://t.me/KrolekVPNReborn" target="_blank">Канал</a>
-                <a href="https://t.me/KrolekVPNReborn_bot" target="_blank">Бот</a>
-            </div>
-            <a href="https://t.me/KrolekVPNReborn_bot" class="btn-bot" target="_blank"><i class="fab fa-telegram"></i> Перейти в бот</a>
-        </nav>
 
-        <div class="faq-link">
-            <a id="faqLink">
-                <i class="fas fa-question-circle"></i> Частые вопросы
-            </a>
-        </div>
+<div class="container">
+    <!-- Вкладка: ПОДКЛЮЧЕНИЕ -->
+    <div id="tab-connect" class="tab-content active">
+        <div class="tariff-card">
+            <div class="tariff-name">Тариф Free</div>
+            <div class="badge" style="display: inline-block; margin-bottom: 12px;">Дата сброса трафика: 03.05.2026</div>
+            
+            <div class="traffic-stats">
+                <span>📊 15.1 / 15 GB</span>
+                <span style="color:#ff6b35;">Сделать трафик безлимитным →</span>
+            </div>
+            <div class="traffic-progress">
+                <div class="traffic-fill" style="width: 100%;"></div>
+            </div>
 
-        <div class="hero">
-            <div class="hero-content">
-                <div class="telegram-badge" id="telegramBadge" style="display: none;">
-                    <i class="fab fa-telegram"></i> Открыто через Telegram
-                </div>
-                <div class="hero-badge"><i class="fas fa-crown"></i> Бесплатно навсегда</div>
-                <h1>Обход глушилок <span>KrolekVPNReborn</span></h1>
-                <p>Стабильная скорость 15 Мбит/с, поддержка 24/7 и никаких скрытых платежей.</p>
-                <div class="hero-stats">
-                    <div class="stat"><div class="stat-number">100+</div><div class="stat-label">Активных пользователей</div></div>
-                    <div class="stat"><div class="stat-number">3+</div><div class="stat-label">Серверов</div></div>
-                    <div class="stat"><div class="stat-number">24/7</div><div class="stat-label">Поддержка</div></div>
-                </div>
-            </div>
-            <div class="hero-image"><i class="fas fa-globe"></i></div>
-        </div>
+            <div class="warning-text">🚨 Ваше соединение не защищено<br>Все устройства отключены</div>
 
-        <!-- Карточка подписки -->
-        <div class="subscription-card">
-            <h3>🔐 ВАША ПОДПИСКА</h3>
-            <div class="expire-date">15 июля 2045 г.</div>
-            <div class="info-row">
-                <div class="info-label"><i class="fas fa-infinity"></i> Лимит трафика</div>
-                <div class="info-value">∞ (Безлимит)</div>
-            </div>
-            <div class="info-row">
-                <div class="info-label"><i class="fas fa-tachometer-alt"></i> Скорость</div>
-                <div class="info-value">До 15 Мбит/с</div>
-            </div>
-        </div>
-
-        <!-- Инструкция по установке -->
-        <div class="instructions">
-            <h3><i class="fas fa-book-open"></i> Инструкция по установке</h3>
-            
-            <div class="step">
-                <div class="step-icon">📱</div>
-                <div class="step-text">Установите приложение <strong style="color: #ff6b35;">Happ</strong> из 
-                    <a href="https://play.google.com/store/apps/details?id=com.happproxy" target="_blank">Google Play</a> / 
-                    <a href="https://apps.apple.com/us/app/happ-proxy-utility/id6504287215" target="_blank">App Store</a>
-                </div>
-            </div>
-            
-            <div class="step">
-                <div class="step-icon">🔗</div>
-                <div class="step-text">Нажмите <strong>«Скопировать ссылку»</strong> ниже, затем в приложении выберите <strong>«Новая подписка»</strong> и вставьте ссылку</div>
-            </div>
-            
-            <div class="step">
-                <div class="step-icon">🚀</div>
-                <div class="step-text">Обновите подписку, выберите сервер и нажмите <strong>«Подключиться»</strong></div>
-            </div>
-            
-            <div class="step">
-                <div class="step-icon">📡</div>
-                <div class="step-text">Поставьте пинг на <strong style="color: #ff6b35;">TCP</strong>. Чтобы поставить — зайдите в <strong>Настройки</strong>, потом <strong>тип пинга</strong> и выберите <strong>TCP</strong></div>
-            </div>
-            
-            <button class="copy-btn" id="copyBtn">
-                <i class="fas fa-copy"></i> Скопировать ссылку на подписку
+            <button class="connect-btn" id="mainConnectBtn">
+                <i class="fas fa-plug"></i> Нажмите для подключения
             </button>
         </div>
 
-        <!-- Правила использования -->
-        <div class="rules">
-            <h3><i class="fas fa-gavel"></i> Правила использования</h3>
-            
-            <div class="rule-item">
-                <div class="rule-icon">🎯</div>
-                <div class="rule-text">VPN предназначен <strong>только для обхода глушилок</strong> и защиты трафика от блокировок.</div>
-            </div>
-            
-            <div class="rule-item">
-                <div class="rule-icon">⚠️</div>
-                <div class="rule-text">VPN конфигурации мы добавляем <strong>частично</strong>, но не полностью.</div>
-            </div>
-            
-            <div class="rule-item">
-                <div class="rule-icon">🚫</div>
-                <div class="rule-text"><strong>Запрещено</strong> использовать VPN для доступа к банковским приложениям и финансовым операциям.</div>
-            </div>
-            
-            <div class="rule-item">
-                <div class="rule-icon">🚫</div>
-                <div class="rule-text"><strong>Запрещено</strong> заходить в российские сервисы и приложения через VPN.</div>
-            </div>
-            
-            <div class="rule-item">
-                <div class="rule-icon">🚫</div>
-                <div class="rule-text"><strong>Запрещено</strong> использовать торренты и P2P-сети.</div>
-            </div>
-            
-            <div class="rule-item">
-                <div class="rule-icon">🔒</div>
-                <div class="rule-text">Не передавайте свою подписку третьим лицам — это может привести к блокировке.</div>
-            </div>
-            
-            <div class="rule-item">
-                <div class="rule-icon">📢</div>
-                <div class="rule-text">О всех проблемах и неполадках сообщайте в <strong>поддержку</strong> (@Kr0l3k).</div>
-            </div>
-            
-            <div class="rule-item">
-                <div class="rule-icon">⏱️</div>
-                <div class="rule-text">Подписка <strong>бесплатна</strong> и действует до <strong>15 июля 2045 года</strong>. Продление не требуется.</div>
-            </div>
+        <div class="card">
+            <div class="section-title">🌍 Как выбрать локацию?</div>
+            <div><strong>⚡ Быстрейшая скорость</strong><br>По нашим замерам, Финляндия — лучший пинг для большинства пользователей.</div>
+            <hr>
+            <div><strong>🎬 Киноманам и игроманам</strong><br>Любите смотреть фильмы, аниме или испытывать удачу? Выбирайте Турцию.</div>
+            <hr>
+            <div><strong>🔒 Максимум анонимности</strong><br>Если для вас важна максимальная анонимность, выбирайте Нидерланды.</div>
+            <hr>
+            <div><strong>🔄 Бесперебойное соединение</strong><br>Нужна стабильная работа? Выбирайте любой вариант — алгоритм всё подберёт.</div>
         </div>
 
-        <!-- СКРЫТЫЙ БЛОК FAQ -->
-        <div id="faqContainer" style="display: none;">
-            <div class="faq-section">
-                <h3><i class="fas fa-question-circle"></i> Часто задаваемые вопросы</h3>
-                
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <div class="question-text"><span>😕</span> Почему VPN не работает?</div>
-                        <div class="arrow">›</div>
-                    </div>
-                    <div class="faq-answer">
-                        Если у вас появились проблемы с работой нашего VPN, советую написать в поддержку. Если у вас пока нет возможности написать нам, то дождитесь следующего обновления. Все обновления сначала публикуются в нашем <a href="https://t.me/KrolekVPNReborn" target="_blank">канале</a>, а затем реализуются 🐇
-                    </div>
-                </div>
-                
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <div class="question-text"><span>🤔</span> Как подключиться?</div>
-                        <div class="arrow">›</div>
-                    </div>
-                    <div class="faq-answer">
-                        Пожалуйста, прочитайте инструкцию, которая находится на главной странице после карточки с датой подписки и скоростью 🐇
-                    </div>
-                </div>
-                
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <div class="question-text"><span>🪤</span> Бесплатный сыр только в мышеловке?</div>
-                        <div class="arrow">›</div>
-                    </div>
-                    <div class="faq-answer">
-                        Я уверен, что многие это говорили, считая, что бесплатные VPN сливают ваши личные данные. Но на самом деле это не так. Есть и более хорошие VPN, которые не отдают данные третьим лицам. Сливание данных третьим лицам — нарушение закона Российской Федерации 🐇
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="features" id="features">
-            <h2 class="section-title">Почему <span>KrolekVPNReborn</span>?</h2>
-            <div class="features-grid">
-                <div class="feature-card"><div class="feature-icon"><i class="fas fa-bolt"></i></div><h3>Высокая скорость</h3><p>Стабильные 15 Мбит/с</p></div>
-                <div class="feature-card"><div class="feature-icon"><i class="fas fa-headset"></i></div><h3>Поддержка 24/7</h3><p>Живые люди отвечают в любое время</p></div>
-                <div class="feature-card"><div class="feature-icon"><i class="fas fa-lock"></i></div><h3>Обход глушилок</h3><p>Работает там, где остальные падают</p></div>
-                <div class="feature-card"><div class="feature-icon"><i class="fas fa-gem"></i></div><h3>Совершенно бесплатно</h3><p>Навсегда. Без скрытых подписок</p></div>
-            </div>
-        </div>
-
-        <div class="footer">
-            <p>© 2025-2026 KrolekVPNReborn. Бесплатный VPN для обхода блокировок.</p>
-            <p><a href="https://t.me/KrolekVPNReborn" style="color:#666;">Канал</a> | <a href="https://t.me/KrolekVPNReborn_bot" style="color:#666;">Бот</a> | <a href="https://t.me/Kr0l3k" style="color:#666;">Поддержка</a></p>
+        <div class="card">
+            <div class="section-title">🎁 Приглашайте друзей</div>
+            <p>и получайте неделю Premium бесплатно</p>
+            <div class="badge">Реферальная система →</div>
         </div>
     </div>
 
-    <div id="toast" class="toast"></div>
+    <!-- Вкладка: МОЯ ПОДПИСКА -->
+    <div id="tab-subscription" class="tab-content">
+        <div class="tariff-card">
+            <div class="tariff-name">Текущий тариф</div>
+            <div class="badge">Бесплатный тариф</div>
+            <div class="traffic-stats" style="margin-top: 12px;">
+                <span>📅 Дата сброса трафика: 03.05.2026</span>
+            </div>
+            <div class="traffic-stats">
+                <span>📊 15.1 / 15 GB</span>
+            </div>
+            <div class="traffic-progress">
+                <div class="traffic-fill" style="width: 100%;"></div>
+            </div>
+            <ul style="margin-top: 16px; list-style: none;">
+                <li>✅ Абсолютно бесплатно</li>
+                <li>❌ Ограниченный трафик 15 ГБ/мес</li>
+                <li>❌ Только 3 активных устройства</li>
+                <li>❌ Базовые методы обхода</li>
+            </ul>
+            <div class="badge" style="margin-top: 12px;">💎 Премиум от 149 ₽/месяц →</div>
+        </div>
 
-    <script>
-        const SUBSCRIPTION_URL = "https://raw.githubusercontent.com/kangaroo255075-collab/KrolekVPNReborn-Reborn-/refs/heads/main/Krolek.txt";
-        let faqVisible = false;
-        
-        // ЗВУК КЛИКА МЫШКИ
-        const clickSound = new Audio("https://www.soundjay.com/misc/sounds/button-click-1.mp3");
+        <div class="card">
+            <div class="section-title">📱 Ваши устройства 2/3</div>
+            <div class="device-item">
+                <span>📱 24117RN760</span>
+                <span style="color:#888;">Добавлен 12.04.2026</span>
+            </div>
+            <div class="device-item">
+                <span>📱 24117RN760</span>
+                <span style="color:#888;">Добавлен 03.04.2026</span>
+            </div>
+            <div class="badge" style="margin-top: 12px;">Управлять устройствами →</div>
+        </div>
 
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.style.opacity = '1';
-            setTimeout(() => {
-                toast.style.opacity = '0';
-            }, 2500);
-        }
+        <div class="card">
+            <div class="section-title">🌍 Доступные локации</div>
+            <div class="location-list">
+                <span class="location-item active">🇬🇧 Великобритания</span>
+                <span class="location-item">🇫🇮 Финляндия</span>
+                <span class="location-item">🇸🇪 Швеция</span>
+                <span class="location-item">🇪🇪 Эстония</span>
+                <span class="location-item">🇳🇱 Нидерланды</span>
+                <span class="location-item">🇩🇪 Германия</span>
+                <span class="location-item">🇱🇻 Латвия</span>
+            </div>
+        </div>
+    </div>
 
-        async function copySubscription() {
-            // Проигрываем звук клика
-            clickSound.play().catch(e => console.log('Звук не воспроизведён'));
+    <!-- Вкладка: ПРОФИЛЬ -->
+    <div id="tab-profile" class="tab-content">
+        <div class="tariff-card">
+            <div class="section-title">👤 Кролэк | Менеджер</div>
+            <div>@KrOl3k • ID 7232337396</div>
+            <div class="traffic-stats" style="margin-top: 12px;">
+                <span>💰 Текущий баланс: 0 ₽ +</span>
+            </div>
+            <hr>
+            <div>🌐 Язык интерфейса</div>
+            <div>📋 Управление подпиской</div>
+            <div>📜 История транзакций</div>
+        </div>
+
+        <div class="card">
+            <div class="section-title">📊 Статистика</div>
+            <div class="traffic-stats"><span>📡 Всего трафика:</span><span>16.1 ГБ</span></div>
+            <div class="traffic-stats"><span>📅 Дней с нами:</span><span>18</span></div>
+        </div>
+
+        <div class="card">
+            <div class="section-title">🔗 Полезные ссылки</div>
+            <div>🏠 Главная</div>
+            <div>📚 База знаний</div>
+            <div>📦 Подписка</div>
+            <div>💰 Заработок</div>
+            <div>👤 Профиль</div>
+        </div>
+    </div>
+</div>
+
+<!-- Нижние вкладки -->
+<div class="bottom-tabs">
+    <button class="tab-item active" data-tab="connect">
+        <i class="fas fa-plug"></i>
+        <span>Подключение</span>
+    </button>
+    <button class="tab-item" data-tab="subscription">
+        <i class="fas fa-ticket-alt"></i>
+        <span>Моя подписка</span>
+    </button>
+    <button class="tab-item" data-tab="profile">
+        <i class="fas fa-user"></i>
+        <span>Профиль</span>
+    </button>
+</div>
+
+<script>
+    const SUBSCRIPTION_URL = "https://raw.githubusercontent.com/kangaroo255075-collab/KrolekVPNReborn-Reborn-/refs/heads/main/Krolek.txt";
+
+    // Переключение вкладок
+    const tabs = document.querySelectorAll('.tab-item');
+    const contents = {
+        connect: document.getElementById('tab-connect'),
+        subscription: document.getElementById('tab-subscription'),
+        profile: document.getElementById('tab-profile')
+    };
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const target = tab.getAttribute('data-tab');
             
-            try {
-                await navigator.clipboard.writeText(SUBSCRIPTION_URL);
-                showToast('✅ Ссылка на подписку скопирована!');
-            } catch (err) {
-                const textarea = document.createElement('textarea');
-                textarea.value = SUBSCRIPTION_URL;
-                document.body.appendChild(textarea);
-                textarea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textarea);
-                showToast('✅ Ссылка скопирована!');
-            }
-        }
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            
+            Object.values(contents).forEach(c => c.classList.remove('active'));
+            contents[target].classList.add('active');
+        });
+    });
 
-        function toggleFaq(element) {
-            const answer = element.nextElementSibling;
-            const arrow = element.querySelector('.arrow');
-            answer.classList.toggle('open');
-            arrow.classList.toggle('open');
-        }
+    // Функция копирования + звук
+    const clickSound = new Audio("https://www.soundjay.com/misc/sounds/button-click-1.mp3");
 
-        function toggleFaqContainer() {
-            const faqContainer = document.getElementById('faqContainer');
-            if (faqVisible) {
-                faqContainer.style.display = 'none';
-                faqVisible = false;
-            } else {
-                faqContainer.style.display = 'block';
-                faqVisible = true;
-                setTimeout(() => {
-                    faqContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 100);
-            }
-        }
+    function showToast(msg) {
+        let toast = document.createElement('div');
+        toast.innerText = msg;
+        toast.style.position = 'fixed';
+        toast.style.bottom = '80px';
+        toast.style.left = '20px';
+        toast.style.right = '20px';
+        toast.style.background = '#1a1a1a';
+        toast.style.color = '#fff';
+        toast.style.padding = '12px';
+        toast.style.borderRadius = '16px';
+        toast.style.textAlign = 'center';
+        toast.style.zIndex = '9999';
+        toast.style.borderLeft = '4px solid #ff6b35';
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 2500);
+    }
 
-        if (window.Telegram && window.Telegram.WebApp) {
-            const tg = window.Telegram.WebApp;
-            tg.ready();
-            tg.expand();
-            if (tg.initDataUnsafe?.user) {
-                document.getElementById('telegramBadge').style.display = 'inline-flex';
-            }
+    async function copyLink() {
+        clickSound.play().catch(e => console.log('sound blocked'));
+        try {
+            await navigator.clipboard.writeText(SUBSCRIPTION_URL);
+            showToast('✅ Ссылка на подписку скопирована!');
+        } catch {
+            let textarea = document.createElement('textarea');
+            textarea.value = SUBSCRIPTION_URL;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            showToast('✅ Ссылка скопирована!');
         }
+    }
 
-        document.getElementById('copyBtn').addEventListener('click', copySubscription);
-        document.getElementById('faqLink').addEventListener('click', toggleFaqContainer);
-        
-        window.toggleFaq = toggleFaq;
-    </script>
+    // Вешаем на кнопку "Нажмите для подключения"
+    const connectBtn = document.getElementById('mainConnectBtn');
+    if (connectBtn) {
+        connectBtn.addEventListener('click', copyLink);
+    }
+
+    // Telegram WebApp
+    if (window.Telegram && window.Telegram.WebApp) {
+        const tg = window.Telegram.WebApp;
+        tg.ready();
+        tg.expand();
+    }
+</script>
+
 </body>
     </html>

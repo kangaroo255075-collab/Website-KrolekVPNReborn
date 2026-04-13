@@ -15,130 +15,339 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: #000000;
+            background: #0a0a0a;
             color: #fff;
             line-height: 1.5;
             padding-bottom: 85px;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* Анимированный фон */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(255,107,53,0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(255,159,74,0.05) 0%, transparent 50%);
+            z-index: -2;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(45deg, rgba(255,107,53,0.02) 0px, rgba(255,107,53,0.02) 2px, transparent 2px, transparent 8px);
+            z-index: -1;
+        }
+
+        /* Плавный градиентный фон */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(125deg, #0a0a0a 0%, #1a0a00 50%, #0d0d0d 100%);
+            background-size: 200% 200%;
+            animation: gradientShift 15s ease infinite;
+            z-index: -3;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 100% 100%; }
+            100% { background-position: 0% 0%; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,107,53,0.7); }
+            70% { transform: scale(1.02); box-shadow: 0 0 0 15px rgba(255,107,53,0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,107,53,0); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0px); }
         }
 
         .container {
             max-width: 600px;
             margin: 0 auto;
             padding: 20px 16px 32px;
+            animation: fadeInUp 0.6s ease-out;
         }
 
-        /* Карточки */
+        /* Карточки с эффектом стекла */
         .card {
-            background: rgba(18, 18, 22, 0.9);
-            border-radius: 28px;
-            padding: 20px;
+            background: rgba(20, 20, 28, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 32px;
+            padding: 24px;
             margin-bottom: 20px;
-            border: 0.5px solid rgba(255, 255, 255, 0.06);
+            border: 0.5px solid rgba(255, 255, 255, 0.08);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: rgba(255, 107, 53, 0.3);
+            transform: translateY(-2px);
         }
 
         /* Заголовки */
-        .section-title {
-            font-size: 20px;
-            font-weight: 700;
+        .main-title {
+            font-size: 32px;
+            font-weight: 800;
+            line-height: 1.2;
             margin-bottom: 12px;
+            background: linear-gradient(135deg, #fff, #ff9f4a);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
-        .badge-row {
-            display: flex;
-            justify-content: center;
-            gap: 24px;
-            margin: 20px 0;
-            font-size: 14px;
+        .sub-text {
             color: #aaa;
+            font-size: 14px;
+            margin-bottom: 24px;
         }
 
-        .badge-item {
+        /* Статистика */
+        .stats-row {
+            display: flex;
+            justify-content: space-between;
             text-align: center;
+            margin: 24px 0;
+            padding: 20px 0;
+            border-top: 0.5px solid rgba(255,255,255,0.08);
+            border-bottom: 0.5px solid rgba(255,255,255,0.08);
         }
 
-        .badge-number {
+        .stat-item {
+            flex: 1;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: scale(1.05);
+        }
+
+        .stat-number {
             font-size: 22px;
             font-weight: 700;
-            color: #ff6b35;
+            background: linear-gradient(135deg, #ff6b35, #ff9f4a);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
-        /* Круглая кнопка включения */
+        .stat-label {
+            font-size: 12px;
+            color: #888;
+        }
+
+        /* Круглая кнопка */
         .power-circle {
-            width: 120px;
-            height: 120px;
+            width: 130px;
+            height: 130px;
             background: linear-gradient(135deg, #ff6b35, #ff9f4a);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 20px auto;
+            margin: 30px auto;
             cursor: pointer;
-            transition: 0.2s;
-            box-shadow: 0 0 20px rgba(255, 107, 53, 0.4);
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+            box-shadow: 0 0 30px rgba(255,107,53,0.5);
         }
 
         .power-circle:active {
-            transform: scale(0.95);
+            transform: scale(0.94);
+            animation: none;
         }
 
         .power-circle i {
-            font-size: 50px;
+            font-size: 55px;
             color: white;
+            transition: transform 0.2s ease;
         }
 
-        /* Инструкция (изначально скрыта) */
-        .instruction-modal {
+        .power-circle:hover i {
+            transform: scale(1.05);
+        }
+
+        /* Информационные блоки */
+        .info-block {
+            margin: 28px 0;
+            animation: fadeInUp 0.5s ease-out;
+            animation-fill-mode: backwards;
+        }
+
+        .info-block:nth-child(1) { animation-delay: 0.1s; }
+        .info-block:nth-child(2) { animation-delay: 0.2s; }
+
+        .info-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-title i {
+            color: #ff6b35;
+            font-size: 24px;
+        }
+
+        .info-text {
+            color: #bbb;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        /* Модальное окно */
+        .modal {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.95);
-            z-index: 1000;
+            background: rgba(0,0,0,0.97);
+            backdrop-filter: blur(12px);
+            z-index: 2000;
             overflow-y: auto;
             padding: 20px;
+            animation: fadeInUp 0.3s ease;
         }
 
-        .instruction-card {
-            background: #111;
-            border-radius: 32px;
-            padding: 24px;
-            margin-top: 40px;
-            margin-bottom: 40px;
-            border: 1px solid rgba(255,107,53,0.3);
+        .modal-card {
+            background: linear-gradient(135deg, #141418, #0a0a0c);
+            border-radius: 40px;
+            padding: 28px 24px;
+            margin-top: 50px;
+            margin-bottom: 50px;
+            border: 0.5px solid rgba(255,107,53,0.4);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
         }
 
-        .close-btn {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 28px;
-            float: right;
-            cursor: pointer;
+        .modal-title {
+            font-size: 26px;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 28px;
+            background: linear-gradient(135deg, #ff6b35, #ff9f4a);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
-        .step {
+        .instruction-step {
+            margin-bottom: 24px;
+            padding: 16px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 20px;
+            font-size: 15px;
+            color: #ddd;
+            transition: all 0.3s ease;
+        }
+
+        .instruction-step:hover {
+            background: rgba(255,107,53,0.08);
+            transform: translateX(5px);
+        }
+
+        .instruction-step strong {
+            color: #ff6b35;
+        }
+
+        .rules-section {
+            margin: 24px 0;
+            padding: 16px;
+            background: rgba(255,107,53,0.05);
+            border-radius: 20px;
+            border-left: 3px solid #ff6b35;
+        }
+
+        .rules-title {
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #ff9f4a;
+        }
+
+        .rule-item {
             display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-            padding: 12px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 16px;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
+            font-size: 13px;
+            color: #bbb;
         }
 
         .copy-btn {
             background: linear-gradient(135deg, #ff6b35, #ff9f4a);
             border: none;
-            padding: 14px 28px;
-            border-radius: 50px;
+            padding: 16px;
+            border-radius: 60px;
             color: white;
-            font-weight: 600;
-            cursor: pointer;
+            font-weight: 700;
             width: 100%;
-            margin-top: 20px;
+            margin-top: 24px;
             font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .copy-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(255,107,53,0.5);
+        }
+
+        .copy-btn:active {
+            transform: scale(0.98);
+        }
+
+        .close-modal {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: #fff;
+            width: 40px;
+            height: 40px;
+            border-radius: 30px;
+            float: right;
+            cursor: pointer;
+            margin-top: -10px;
+            margin-right: -10px;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            background: rgba(255,107,53,0.3);
+            transform: rotate(90deg);
         }
 
         /* Нижние вкладки */
@@ -147,12 +356,11 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(0, 0, 0, 0.95);
+            background: rgba(8, 8, 10, 0.95);
             backdrop-filter: blur(20px);
-            border-top: 0.5px solid rgba(255, 255, 255, 0.1);
+            border-top: 0.5px solid rgba(255,107,53,0.2);
             display: flex;
             justify-content: space-around;
-            align-items: center;
             padding: 10px 16px 25px;
             z-index: 100;
         }
@@ -168,20 +376,28 @@
             font-size: 12px;
             font-weight: 500;
             cursor: pointer;
-            padding: 6px 12px;
-            border-radius: 30px;
+            padding: 8px 16px;
+            border-radius: 40px;
+            transition: all 0.3s ease;
         }
 
         .tab-item i {
             font-size: 22px;
+            transition: transform 0.2s ease;
+        }
+
+        .tab-item:hover i {
+            transform: translateY(-2px);
         }
 
         .tab-item.active {
             color: #ff6b35;
+            background: rgba(255,107,53,0.12);
         }
 
         .tab-content {
             display: none;
+            animation: fadeInUp 0.4s ease;
         }
 
         .tab-content.active {
@@ -189,63 +405,141 @@
         }
 
         /* Профиль */
-        .profile-header {
-            background: linear-gradient(135deg, #ff6b35, #b13e0f);
-            border-radius: 32px;
-            padding: 30px 20px;
+        .profile-card {
+            background: linear-gradient(135deg, rgba(255,107,53,0.15), rgba(255,107,53,0.05));
+            border-radius: 40px;
+            padding: 32px 20px;
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
+            border: 0.5px solid rgba(255,107,53,0.25);
+            backdrop-filter: blur(10px);
         }
 
-        .avatar {
-            width: 80px;
-            height: 80px;
-            background: #fff;
+        .profile-avatar {
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, #ff6b35, #ff9f4a);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 12px;
+            margin: 0 auto 16px;
+            transition: transform 0.3s ease;
         }
 
-        .avatar i {
+        .profile-avatar:hover {
+            transform: scale(1.05);
+        }
+
+        .profile-avatar i {
             font-size: 50px;
-            color: #ff6b35;
+            color: white;
         }
 
+        .profile-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin-top: 8px;
+        }
+
+        /* Промо карточка */
         .promo-card {
-            background: rgba(255, 107, 53, 0.1);
-            border: 1px solid rgba(255, 107, 53, 0.3);
-            border-radius: 24px;
-            padding: 20px;
+            background: linear-gradient(135deg, rgba(255,107,53,0.08), rgba(255,107,53,0.02));
+            border-radius: 32px;
+            padding: 24px;
             text-align: center;
+            border: 0.5px solid rgba(255,107,53,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .promo-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255,107,53,0.4);
         }
 
         .invite-btn {
             background: linear-gradient(135deg, #ff6b35, #ff9f4a);
             border: none;
-            padding: 14px;
-            border-radius: 50px;
+            padding: 14px 24px;
+            border-radius: 60px;
             color: white;
             font-weight: 600;
-            width: 100%;
-            margin-top: 16px;
+            margin-top: 20px;
             cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .traffic-progress {
+        .invite-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(255,107,53,0.4);
+        }
+
+        /* Подписка */
+        .tariff-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+            border-radius: 40px;
+            padding: 32px 24px;
+            text-align: center;
+            border: 0.5px solid rgba(255,255,255,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .tariff-card:hover {
+            border-color: rgba(255,107,53,0.3);
+        }
+
+        .tariff-date {
+            font-size: 26px;
+            font-weight: 700;
+            margin: 16px 0;
+            background: linear-gradient(135deg, #ff6b35, #ff9f4a);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .tariff-traffic {
+            font-size: 32px;
+            font-weight: 800;
+            margin: 20px 0;
+        }
+
+        .traffic-bar {
             background: rgba(255,255,255,0.1);
             border-radius: 20px;
             height: 8px;
-            margin: 12px 0;
+            width: 100%;
+            margin: 16px 0;
             overflow: hidden;
         }
 
         .traffic-fill {
             background: linear-gradient(90deg, #ff6b35, #ff9f4a);
             width: 0%;
-            height: 100%;
+            height: 8px;
             border-radius: 20px;
+            transition: width 0.5s ease;
+        }
+
+        /* Всплывающее уведомление */
+        .toast {
+            position: fixed;
+            bottom: 100px;
+            left: 20px;
+            right: 20px;
+            background: #1a1a1a;
+            border-left: 4px solid #4caf50;
+            border-radius: 16px;
+            padding: 14px 20px;
+            text-align: center;
+            font-size: 14px;
+            z-index: 3000;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
         }
 
         hr {
@@ -256,121 +550,117 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
+<div class="animated-bg"></div>
 
 <div class="container">
-    <!-- Вкладка: ПОДКЛЮЧЕНИЕ (главная) -->
+    <!-- Вкладка: ПОДКЛЮЧЕНИЕ -->
     <div id="tab-connect" class="tab-content active">
-        <h1 style="font-size: 28px; font-weight: 800; margin-bottom: 8px;">Обход глушилок<br>KrolekVPNReborn</h1>
-        <p style="color: #aaa; margin-bottom: 20px;">Стабильная скорость 15 Мбит/с, поддержка 24/7 и никаких скрытых платежей.</p>
+        <div class="main-title">Обход глушилок<br>KrolekVPNReborn</div>
+        <div class="sub-text">Стабильная скорость 15 Мбит/с, поддержка 24/7 и никаких скрытых платежей.</div>
 
-        <div class="badge-row">
-            <div class="badge-item"><span class="badge-number">100+</span><br>пользователей</div>
-            <div class="badge-item"><span class="badge-number">15 Мбит/с</span><br>скорость</div>
-            <div class="badge-item"><span class="badge-number">Бесплатно</span><br>навсегда</div>
+        <div class="stats-row">
+            <div class="stat-item"><div class="stat-number">100+</div><div class="stat-label">пользователей</div></div>
+            <div class="stat-item"><div class="stat-number">15 Мбит/с</div><div class="stat-label">скорость</div></div>
+            <div class="stat-item"><div class="stat-number">Бесплатно</div><div class="stat-label">навсегда</div></div>
         </div>
 
-        <!-- Большая круглая кнопка -->
         <div class="power-circle" id="powerCircle">
             <i class="fas fa-power-off"></i>
         </div>
 
-        <!-- Модальное окно с инструкцией -->
-        <div id="instructionModal" class="instruction-modal">
-            <div class="instruction-card">
-                <button class="close-btn" id="closeModal">✕</button>
-                <h3 style="margin-bottom: 20px;">📖 Инструкция по установке</h3>
-                <div class="step">📱 Установите приложение <strong style="color:#ff6b35;">Happ</strong> из Google Play / App Store</div>
-                <div class="step">🔗 Нажмите <strong>«Скопировать ссылку»</strong> ниже, затем в Happ выберите <strong>«Новая подписка»</strong> и вставьте ссылку</div>
-                <div class="step">🚀 Обновите подписку, выберите сервер и нажмите <strong>«Подключиться»</strong></div>
-                <div class="step">📡 Поставьте пинг на <strong style="color:#ff6b35;">TCP</strong> (Настройки → тип пинга → TCP)</div>
-                <button class="copy-btn" id="modalCopyBtn">📋 Скопировать ссылку на подписку</button>
-            </div>
+        <div class="info-block">
+            <div class="info-title"><i class="fas fa-shield-hart"></i> Обход глушилок</div>
+            <div class="info-text">Если вы хотите обойти глушилки или белые списки заходя в Telegram, пользуясь DeepSeek, смотреть TikTok на мобильном интернете — выбирайте конфигурацию с надписью <strong style="color:#ff6b35;">LTE</strong></div>
         </div>
 
-        <div class="card">
-            <div class="section-title">Обход глушилок</div>
-            <p>Если вы хотите обойти глушилки или белые списки заходя в Telegram, пользуясь DeepSeek, смотреть TikTok на мобильном интернете — выбирайте конфигурацию с надписью <strong style="color:#ff6b35;">LTE</strong></p>
-        </div>
-
-        <div class="card">
-            <div class="section-title">Обход блокировок</div>
-            <p>Если вы хотите обойти блокировку Roblox, смотреть YouTube, общаться с друзьями в Discord, выкладывать сторисы в Telegram и в Instagram, то вам нужно активировать конфигурацию с надписью <strong style="color:#ff6b35;">VPN</strong></p>
+        <div class="info-block">
+            <div class="info-title"><i class="fas fa-globe"></i> Обход блокировок</div>
+            <div class="info-text">Если вы хотите обойти блокировку Roblox, смотреть YouTube, общаться с друзьями в Discord, выкладывать сторисы в Telegram и в Instagram, то вам нужно активировать конфигурацию с надписью <strong style="color:#ff6b35;">VPN</strong></div>
         </div>
     </div>
 
     <!-- Вкладка: МОЯ ПОДПИСКА -->
     <div id="tab-subscription" class="tab-content">
-        <div class="card" style="text-align: center;">
-            <div class="section-title">Текущий тариф</div>
-            <div style="background: rgba(255,107,53,0.1); border-radius: 20px; padding: 20px;">
-                <p style="color: #ff9f4a; margin-bottom: 16px;">Активирован бесплатный тариф до:</p>
-                <p style="font-size: 24px; font-weight: 700; margin-bottom: 24px;">15 июля 2045 года</p>
-                <p style="color: #aaa;">Общий трафик вашей подписки:</p>
-                <p style="font-size: 32px; font-weight: 800; color: #ff6b35;">0 GB / 15 GB</p>
-                <div class="traffic-progress"><div class="traffic-fill" style="width: 0%;"></div></div>
-            </div>
+        <div class="tariff-card">
+            <div class="info-title" style="justify-content: center; margin-bottom: 16px;">Текущий тариф</div>
+            <div style="color: #aaa; font-size: 14px;">Активирован бесплатный тариф до:</div>
+            <div class="tariff-date">15 июля 2045 года</div>
+            <div style="color: #aaa; font-size: 14px; margin-top: 20px;">Общий трафик вашей подписки:</div>
+            <div class="tariff-traffic">0 GB / 15 GB</div>
+            <div class="traffic-bar"><div class="traffic-fill" style="width: 0%;"></div></div>
         </div>
     </div>
 
     <!-- Вкладка: ПРОФИЛЬ -->
     <div id="tab-profile" class="tab-content">
-        <div class="profile-header">
-            <div class="avatar"><i class="fab fa-telegram-plane"></i></div>
-            <h3 id="profileName">Загрузка...</h3>
-            <p id="profileUsername" style="opacity: 0.8;">@username</p>
-            <p id="profileId" style="font-size: 12px; opacity: 0.6;">ID: ...</p>
+        <div class="profile-card">
+            <div class="profile-avatar"><i class="fab fa-telegram-plane"></i></div>
+            <div class="profile-name" id="profileName">Гость</div>
+            <div id="profileUsername" style="color: #aaa;">@guest</div>
+            <div id="profileId" style="font-size: 12px; color: #666; margin-top: 4px;">ID: не определён</div>
         </div>
 
         <div class="promo-card">
             <div style="font-size: 32px; margin-bottom: 8px;">‼️</div>
-            <div class="section-title" style="font-size: 18px;">Доступна акция</div>
-            <p style="margin: 12px 0;">Пригласи друга — получай буквально ничего! А если серьёзно, приглашение друзей нужно для распространения нашего VPN!</p>
-            <button class="invite-btn" id="inviteFriendBtn">
-                🎁 Пригласить друзей ‼️
-            </button>
+            <div class="info-title" style="font-size: 20px; justify-content: center;">Доступна акция</div>
+            <p style="font-size: 14px; margin: 16px 0; color: #bbb;">Пригласи друга — получай буквально ничего! А если серьёзно, приглашение друзей нужно для распространения нашего VPN!</p>
+            <button class="invite-btn" id="inviteBtn"><i class="fas fa-gift"></i> 🎉 Пригласить друзей 🎉</button>
         </div>
     </div>
 </div>
 
 <!-- Нижние вкладки -->
 <div class="bottom-tabs">
-    <button class="tab-item active" data-tab="connect">
-        <i class="fas fa-plug"></i>
-        <span>Подключение</span>
-    </button>
-    <button class="tab-item" data-tab="subscription">
-        <i class="fas fa-ticket-alt"></i>
-        <span>Моя подписка</span>
-    </button>
-    <button class="tab-item" data-tab="profile">
-        <i class="fas fa-user"></i>
-        <span>Профиль</span>
-    </button>
+    <button class="tab-item active" data-tab="connect"><i class="fas fa-plug"></i><span>Подключение</span></button>
+    <button class="tab-item" data-tab="subscription"><i class="fas fa-ticket-alt"></i><span>Моя подписка</span></button>
+    <button class="tab-item" data-tab="profile"><i class="fas fa-user"></i><span>Профиль</span></button>
 </div>
+
+<!-- Модальное окно с инструкцией и правилами -->
+<div id="instructionModal" class="modal">
+    <div class="modal-card">
+        <button class="close-modal" id="closeModal">✕</button>
+        <div class="modal-title">📖 Инструкция по установке</div>
+        
+        <div class="instruction-step">📱 <strong>Шаг 1:</strong> Установите приложение <strong style="color:#ff6b35;">Happ</strong> из Google Play / App Store</div>
+        <div class="instruction-step">🔗 <strong>Шаг 2:</strong> Нажмите на кнопку <strong style="color:#ff6b35;">«Скопировать ссылку»</strong> ниже, затем в приложении выберите <strong style="color:#ff6b35;">«Новая подписка»</strong> и вставьте ссылку</div>
+        <div class="instruction-step">🚀 <strong>Шаг 3:</strong> Обновите подписку, выберите сервер и нажмите <strong style="color:#ff6b35;">«Подключиться»</strong></div>
+        <div class="instruction-step">📡 <strong>Шаг 4:</strong> Поставьте пинг на <strong style="color:#ff6b35;">TCP</strong> (Настройки → тип пинга → TCP)</div>
+        
+        <div class="rules-section">
+            <div class="rules-title">📜 Правила использования KrolekVPNReborn:</div>
+            <div class="rule-item">🎯 VPN предназначен <strong>только для обхода глушилок</strong> и защиты трафика от блокировок.</div>
+            <div class="rule-item">⚠️ VPN конфигурации мы добавляем <strong>частично</strong>, но не полностью.</div>
+            <div class="rule-item">🚫 <strong>Запрещено</strong> использовать VPN для доступа к банковским приложениям и финансовым операциям.</div>
+            <div class="rule-item">🚫 <strong>Запрещено</strong> заходить в российские сервисы и приложения через VPN.</div>
+            <div class="rule-item">🚫 <strong>Запрещено</strong> использовать торренты и P2P-сети.</div>
+            <div class="rule-item">🔒 Не передавайте свою подписку третьим лицам — это может привести к блокировке.</div>
+            <div class="rule-item">📢 О всех проблемах сообщайте в поддержку <strong>@Kr0l3k</strong></div>
+            <div class="rule-item">⏱️ Подписка <strong>бесплатна</strong> и действует до <strong>15 июля 2045 года</strong></div>
+        </div>
+        
+        <button class="copy-btn" id="modalCopyBtn"><i class="fas fa-copy"></i> Скопировать ссылку на подписку</button>
+    </div>
+</div>
+
+<div id="toast" class="toast"></div>
 
 <script>
     const SUBSCRIPTION_URL = "https://raw.githubusercontent.com/kangaroo255075-collab/KrolekVPNReborn-Reborn-/refs/heads/main/Krolek.txt";
-    
-    // Данные Telegram
+    let botUsername = "KrolekVPNReborn_bot";
     let tgUser = null;
+
+    // Telegram WebApp
     if (window.Telegram && window.Telegram.WebApp) {
         const tg = window.Telegram.WebApp;
         tg.ready();
         tg.expand();
         if (tg.initDataUnsafe?.user) {
             tgUser = tg.initDataUnsafe.user;
+            document.getElementById('profileName').innerText = tgUser.first_name || tgUser.username || 'Гость';
+            document.getElementById('profileUsername').innerText = tgUser.username ? '@' + tgUser.username : '@guest';
+            document.getElementById('profileId').innerText = 'ID: ' + tgUser.id;
         }
-    }
-
-    // Заполняем профиль
-    if (tgUser) {
-        document.getElementById('profileName').innerText = tgUser.first_name || tgUser.username || 'Пользователь';
-        document.getElementById('profileUsername').innerText = tgUser.username ? '@' + tgUser.username : '@username';
-        document.getElementById('profileId').innerText = 'ID: ' + tgUser.id;
-    } else {
-        document.getElementById('profileName').innerText = 'Гость';
-        document.getElementById('profileUsername').innerText = '@guest';
-        document.getElementById('profileId').innerText = 'ID: не определён';
     }
 
     // Переключение вкладок
@@ -391,16 +681,16 @@
         });
     });
 
-    // Модальное окно с инструкцией
+    // Модальное окно
     const modal = document.getElementById('instructionModal');
     const powerBtn = document.getElementById('powerCircle');
-    const closeModal = document.getElementById('closeModal');
+    const closeModalBtn = document.getElementById('closeModal');
 
     powerBtn.addEventListener('click', () => {
-        modal.style.display = 'block';
+        modal.style.display = 'flex';
     });
 
-    closeModal.addEventListener('click', () => {
+    closeModalBtn.addEventListener('click', () => {
         modal.style.display = 'none';
     });
 
@@ -408,34 +698,25 @@
         if (e.target === modal) modal.style.display = 'none';
     });
 
-    // Звук и копирование
+    // Звук и уведомления
     const clickSound = new Audio("https://www.soundjay.com/misc/sounds/button-click-1.mp3");
-
-    function showToast(msg) {
-        let toast = document.createElement('div');
-        toast.innerText = msg;
-        toast.style.position = 'fixed';
-        toast.style.bottom = '90px';
-        toast.style.left = '20px';
-        toast.style.right = '20px';
-        toast.style.background = '#1a1a1a';
-        toast.style.color = '#fff';
-        toast.style.padding = '12px';
-        toast.style.borderRadius = '16px';
-        toast.style.textAlign = 'center';
-        toast.style.zIndex = '9999';
-        toast.style.borderLeft = '4px solid #ff6b35';
-        document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 2500);
+    
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.style.opacity = '1';
+        setTimeout(() => {
+            toast.style.opacity = '0';
+        }, 2500);
     }
 
     async function copyLink() {
-        clickSound.play().catch(e => console.log('sound blocked'));
+        clickSound.play().catch(e => console.log('Звук не воспроизведён'));
         try {
             await navigator.clipboard.writeText(SUBSCRIPTION_URL);
             showToast('✅ Ссылка на подписку скопирована!');
-        } catch {
-            let textarea = document.createElement('textarea');
+        } catch (err) {
+            const textarea = document.createElement('textarea');
             textarea.value = SUBSCRIPTION_URL;
             document.body.appendChild(textarea);
             textarea.select();
@@ -445,24 +726,22 @@
         }
     }
 
-    // Кнопка копирования внутри модалки
     document.getElementById('modalCopyBtn').addEventListener('click', () => {
         copyLink();
         setTimeout(() => modal.style.display = 'none', 500);
     });
 
     // Реферальная ссылка
-    let botUsername = 'KrolekVPNReborn_bot';
     let refLink = `https://t.me/${botUsername}?start=ref_${tgUser ? tgUser.id : 'guest'}`;
     let refText = `Лучший бесплатный VPN с обходом глушилок и блокировок: ${refLink}`;
-
-    document.getElementById('inviteFriendBtn').addEventListener('click', async () => {
-        clickSound.play().catch(e => console.log('sound blocked'));
+    
+    document.getElementById('inviteBtn').addEventListener('click', async () => {
+        clickSound.play().catch(e => console.log('Звук не воспроизведён'));
         try {
             await navigator.clipboard.writeText(refText);
-            showToast('✅ Реферальный текст скопирован! Поделись с друзьями');
-        } catch {
-            let textarea = document.createElement('textarea');
+            showToast('✅ Реферальный текст скопирован! Поделитесь с друзьями');
+        } catch (err) {
+            const textarea = document.createElement('textarea');
             textarea.value = refText;
             document.body.appendChild(textarea);
             textarea.select();
@@ -473,4 +752,4 @@
     });
 </script>
 </body>
-</html>
+                </html>

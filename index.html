@@ -16,6 +16,7 @@
             color: #fff;
             line-height: 1.6;
             min-height: 100vh;
+            padding-bottom: 85px;
         }
 
         @keyframes gradientShift {
@@ -24,111 +25,64 @@
             100% { background-position: 0% 0%; }
         }
         
-        .container { max-width: 600px; margin: 0 auto; padding: 20px 20px 40px; }
+        .container { max-width: 600px; margin: 0 auto; padding: 0 20px; }
         
-        /* Стили для профиля (как на картинке) */
-        .profile-header {
-            text-align: center;
-            margin-bottom: 30px;
+        /* ===== ВКЛАДКИ СНИЗУ ===== */
+        .bottom-tabs {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 0.5px solid rgba(255, 107, 53, 0.3);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 10px 20px 25px;
+            z-index: 1000;
         }
-        .profile-avatar {
-            font-size: 80px;
-            margin-bottom: 10px;
-        }
-        .profile-name {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-        .profile-username {
-            color: #ff9f4a;
-            font-size: 16px;
-            margin-bottom: 5px;
-        }
-        .profile-id {
+
+        .tab-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            background: none;
+            border: none;
             color: #888;
             font-size: 12px;
-        }
-        
-        .card {
-            background: rgba(20, 20, 28, 0.7);
-            backdrop-filter: blur(10px);
-            border-radius: 28px;
-            padding: 24px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(255, 107, 53, 0.2);
-        }
-        
-        .section-title {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 16px;
-            text-align: center;
-        }
-        
-        .tariff-name {
-            font-size: 18px;
-            font-weight: 600;
-            text-align: center;
-            margin-bottom: 16px;
-            color: #ff9f4a;
-        }
-        
-        .info-line {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-        
-        .info-label {
-            color: #aaa;
-            font-size: 14px;
-        }
-        
-        .info-value {
-            color: #ff9f4a;
-            font-weight: 600;
-        }
-        
-        .traffic-block {
-            text-align: center;
-            padding: 20px 0;
-        }
-        
-        .traffic-number {
-            font-size: 36px;
-            font-weight: 800;
-            color: #ff9f4a;
-        }
-        
-        .promo-card {
-            background: rgba(255, 107, 53, 0.08);
-            border-radius: 24px;
-            padding: 20px;
-            text-align: center;
-            border: 1px solid rgba(255, 107, 53, 0.2);
-        }
-        
-        .invite-btn {
-            background: linear-gradient(135deg, #ff6b35, #ff9f4a);
-            border: none;
-            padding: 14px 24px;
-            border-radius: 50px;
-            color: white;
-            font-weight: 600;
-            font-size: 16px;
+            font-weight: 500;
             cursor: pointer;
-            margin-top: 16px;
-            width: 100%;
+            padding: 6px 16px;
+            border-radius: 30px;
             transition: 0.2s;
         }
-        
-        .invite-btn:active {
-            transform: scale(0.97);
+
+        .tab-item i {
+            font-size: 22px;
         }
-        
-        /* Стили для обычного сайта (когда не в Telegram) */
+
+        .tab-item.active {
+            color: #ff6b35;
+            background: rgba(255, 107, 53, 0.12);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== СТИЛИ ДЛЯ ВКЛАДКИ ПОДКЛЮЧЕНИЕ ===== */
         .navbar {
             display: flex;
             justify-content: space-between;
@@ -361,10 +315,95 @@
             .rule-item { flex-wrap: wrap; text-align: center; justify-content: center; }
             .faq-link { text-align: center; }
         }
+
+        /* ===== СТИЛИ ДЛЯ ПРОФИЛЯ (как на картинке) ===== */
+        .profile-header {
+            text-align: center;
+            margin: 40px 0 20px;
+        }
+        .profile-avatar {
+            font-size: 80px;
+            margin-bottom: 10px;
+        }
+        .profile-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        .profile-username {
+            color: #ff9f4a;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        .profile-id {
+            color: #888;
+            font-size: 12px;
+        }
         
+        .card {
+            background: rgba(20, 20, 28, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 28px;
+            padding: 24px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 107, 53, 0.2);
+        }
+        
+        .tariff-name {
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 16px;
+            color: #ff9f4a;
+        }
+        
+        .info-line {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        .traffic-block {
+            text-align: center;
+            padding: 20px 0;
+        }
+        
+        .traffic-number {
+            font-size: 36px;
+            font-weight: 800;
+            color: #ff9f4a;
+        }
+        
+        .promo-card {
+            background: rgba(255, 107, 53, 0.08);
+            border-radius: 24px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 107, 53, 0.2);
+        }
+        
+        .invite-btn {
+            background: linear-gradient(135deg, #ff6b35, #ff9f4a);
+            border: none;
+            padding: 14px 24px;
+            border-radius: 50px;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 16px;
+            width: 100%;
+            transition: 0.2s;
+        }
+        
+        .invite-btn:active {
+            transform: scale(0.97);
+        }
+
         .toast {
             position: fixed;
-            bottom: 30px;
+            bottom: 100px;
             left: 20px;
             right: 20px;
             background: #1a1a1a;
@@ -383,8 +422,8 @@
 </head>
 <body>
 
-<!-- ========== ОБЫЧНЫЙ САЙТ (когда не в Telegram) ========== -->
-<div id="normalSite">
+<!-- Вкладка: ПОДКЛЮЧЕНИЕ -->
+<div id="tab-connect" class="tab-content active">
     <div class="container">
         <nav class="navbar">
             <div class="logo"><i class="fas fa-shield-alt"></i><span>KrolekVPN<span style="color:#fff">Reborn</span></span></div>
@@ -474,10 +513,9 @@
     </div>
 </div>
 
-<!-- ========== ПРОФИЛЬ (когда открыто через Telegram) ========== -->
-<div id="profileSite" style="display: none;">
+<!-- Вкладка: ПРОФИЛЬ (как на картинке) -->
+<div id="tab-profile" class="tab-content">
     <div class="container">
-        <!-- Шапка профиля как на картинке -->
         <div class="profile-header">
             <div class="profile-avatar">👑</div>
             <div class="profile-name" id="profileName">Кролэк | Менеджер</div>
@@ -485,9 +523,8 @@
             <div class="profile-id" id="profileId">ID 7232337396</div>
         </div>
 
-        <!-- Текущий тариф -->
         <div class="card">
-            <div class="section-title">📋 Текущий тариф</div>
+            <div class="section-title" style="font-size: 20px;">📋 Текущий тариф</div>
             <div class="tariff-name">Бесплатный тариф</div>
             <div class="info-line">
                 <span class="info-label">📅 Активирован до:</span>
@@ -499,7 +536,6 @@
             </div>
         </div>
 
-        <!-- Акция -->
         <div class="promo-card">
             <div style="font-size: 28px; margin-bottom: 8px;">‼️</div>
             <div class="section-title" style="font-size: 18px; margin-bottom: 12px;">Доступна акция</div>
@@ -507,6 +543,18 @@
             <button class="invite-btn" id="inviteBtn"><i class="fas fa-gift"></i> 🎉 Пригласить друзей 🎉</button>
         </div>
     </div>
+</div>
+
+<!-- Нижние вкладки -->
+<div class="bottom-tabs">
+    <button class="tab-item active" data-tab="connect">
+        <i class="fas fa-plug"></i>
+        <span>Подключение</span>
+    </button>
+    <button class="tab-item" data-tab="profile">
+        <i class="fas fa-user"></i>
+        <span>Профиль</span>
+    </button>
 </div>
 
 <div id="toast" class="toast"></div>
@@ -573,30 +621,38 @@
         }
     }
 
-    // Рефералка
-    const botUsername = "KrolekVPNReborn_bot";
-    let refLink = `https://t.me/${botUsername}?start=ref_${tgUser ? tgUser.id : 'guest'}`;
-    let refText = `Лучший бесплатный VPN с обходом глушилок и блокировок: ${refLink}`;
-    
-    // Проверка: открыт ли сайт через Telegram WebApp
+    // Переключение вкладок
+    const tabs = document.querySelectorAll('.tab-item');
+    const contents = {
+        connect: document.getElementById('tab-connect'),
+        profile: document.getElementById('tab-profile')
+    };
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const target = tab.getAttribute('data-tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            Object.values(contents).forEach(c => c.classList.remove('active'));
+            contents[target].classList.add('active');
+        });
+    });
+
+    // Получаем данные из Telegram
     if (window.Telegram && window.Telegram.WebApp) {
         const tg = window.Telegram.WebApp;
         tg.ready();
         tg.expand();
-        
         if (tg.initDataUnsafe?.user) {
             tgUser = tg.initDataUnsafe.user;
-            // Показываем профиль, скрываем обычный сайт
-            document.getElementById('normalSite').style.display = 'none';
-            document.getElementById('profileSite').style.display = 'block';
-            
-            // Обновляем реферальную ссылку с реальным ID
-            refLink = `https://t.me/${botUsername}?start=ref_${tgUser.id}`;
-            refText = `Лучший бесплатный VPN с обходом глушилок и блокировок: ${refLink}`;
         }
     }
+
+    // Реферальная ссылка
+    const botUsername = "KrolekVPNReborn_bot";
+    let refLink = `https://t.me/${botUsername}?start=ref_${tgUser ? tgUser.id : 'guest'}`;
+    let refText = `Лучший бесплатный VPN с обходом глушилок и блокировок: ${refLink}`;
     
-    // Назначаем обработчики для профильной кнопки
     const inviteBtn = document.getElementById('inviteBtn');
     if (inviteBtn) {
         inviteBtn.addEventListener('click', async () => {

@@ -278,7 +278,7 @@
             pointer-events: none;
         }
 
-        /* Нижние вкладки */
+        /* Нижние вкладки (2 шт) */
         .bottom-tabs {
             position: fixed;
             bottom: 0;
@@ -327,32 +327,16 @@
             display: block;
         }
 
-        /* Счётчик трафика */
-        .traffic-block {
-            background: rgba(0,0,0,0.4);
-            border-radius: 20px;
-            padding: 15px;
-            margin: 15px 0;
-            text-align: center;
+        /* Стили для профиля */
+        .traffic-infinity {
+            font-size: 32px;
+            font-weight: 800;
+            margin: 16px 0;
+            color: #ff9f4a;
         }
-        .traffic-text {
-            font-size: 24px;
-            font-weight: 700;
-            margin: 10px 0;
-        }
-        .traffic-bar {
-            background: rgba(255,255,255,0.1);
-            border-radius: 20px;
-            height: 10px;
-            overflow: hidden;
-            margin: 10px 0;
-        }
-        .traffic-fill {
-            background: linear-gradient(90deg, #ff6b35, #ff9f4a);
-            width: 0%;
-            height: 100%;
-            border-radius: 20px;
-            transition: width 0.3s;
+        .infinity-symbol {
+            font-size: 36px;
+            margin-right: 8px;
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -540,40 +524,31 @@
     </div>
 </div>
 
-<!-- Вкладка: МОЯ ПОДПИСКА -->
-<div id="tab-subscription" class="tab-content">
+<!-- Вкладка: ПРОФИЛЬ (новый дизайн как на скрине) -->
+<div id="tab-profile" class="tab-content">
     <div class="container">
-        <div class="subscription-card" style="margin-top: 40px;">
+        <!-- Карточка менеджера -->
+        <div class="subscription-card" style="margin-top: 40px; text-align: center;">
+            <div style="font-size: 48px; margin-bottom: 8px;">👑</div>
+            <h3>Кролэк | Менеджер</h3>
+            <div style="color: #ff9f4a; margin-bottom: 8px;">@Kr0l3k • ID 7232337396</div>
+        </div>
+
+        <!-- Текущий тариф -->
+        <div class="subscription-card" style="text-align: center;">
             <h3>📋 Текущий тариф</h3>
-            <div class="expire-date">Бесплатный тариф</div>
-            <div class="info-row">
+            <div class="expire-date" style="font-size: 24px;">Бесплатный тариф</div>
+            <div class="info-row" style="justify-content: center; gap: 10px; border-bottom: none;">
                 <div class="info-label"><i class="fas fa-calendar"></i> Активирован до:</div>
                 <div class="info-value">15 июля 2045 года</div>
             </div>
-            <div class="traffic-block">
-                <div class="traffic-text" id="trafficText">0.00 / 15 GB</div>
-                <div class="traffic-bar">
-                    <div class="traffic-fill" id="trafficFill"></div>
-                </div>
+            <div class="traffic-infinity">
+                <span class="infinity-symbol">∞</span> / ♾️
             </div>
-            <div class="info-row">
-                <div class="info-label"><i class="fas fa-tachometer-alt"></i> Лимит трафика</div>
-                <div class="info-value">15 GB / месяц</div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Вкладка: ПРОФИЛЬ -->
-<div id="tab-profile" class="tab-content">
-    <div class="container">
-        <div class="subscription-card" style="margin-top: 40px; text-align: center;">
-            <div style="font-size: 64px; margin-bottom: 16px;">👤</div>
-            <h3 id="profileName">Гость</h3>
-            <div id="profileUsername" style="color: #ff9f4a; margin-bottom: 8px;">@guest</div>
-            <div id="profileId" style="color: #888; font-size: 12px;">ID: не определён</div>
+            <div style="color: #aaa; font-size: 12px;">Безлимитный трафик</div>
         </div>
 
+        <!-- Акция -->
         <div class="rules" style="text-align: center;">
             <h3><i class="fas fa-gift"></i> Доступна акция</h3>
             <p style="margin-bottom: 16px;">Пригласи друга — получай буквально ничего! А если серьёзно, приглашение друзей нужно для распространения нашего VPN!</p>
@@ -584,15 +559,11 @@
     </div>
 </div>
 
-<!-- Нижние вкладки -->
+<!-- Нижние вкладки (только 2) -->
 <div class="bottom-tabs">
     <button class="tab-item active" data-tab="connect">
         <i class="fas fa-plug"></i>
         <span>Подключение</span>
-    </button>
-    <button class="tab-item" data-tab="subscription">
-        <i class="fas fa-ticket-alt"></i>
-        <span>Моя подписка</span>
     </button>
     <button class="tab-item" data-tab="profile">
         <i class="fas fa-user"></i>
@@ -617,9 +588,6 @@
         tg.expand();
         if (tg.initDataUnsafe?.user) {
             tgUser = tg.initDataUnsafe.user;
-            document.getElementById('profileName').innerText = tgUser.first_name || tgUser.username || 'Гость';
-            document.getElementById('profileUsername').innerText = tgUser.username ? '@' + tgUser.username : '@guest';
-            document.getElementById('profileId').innerText = 'ID: ' + tgUser.id;
         }
     }
 
@@ -673,7 +641,6 @@
     const tabs = document.querySelectorAll('.tab-item');
     const contents = {
         connect: document.getElementById('tab-connect'),
-        subscription: document.getElementById('tab-subscription'),
         profile: document.getElementById('tab-profile')
     };
 
@@ -721,4 +688,4 @@
     window.toggleFaq = toggleFaq;
 </script>
 </body>
-    </html>
+</html>

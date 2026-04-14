@@ -9,21 +9,47 @@
         
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a0800 25%, #ff4500 50%, #1a0800 75%, #0a0a0a 100%);
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0800 25%, #2a0a00 50%, #1a0800 75%, #0a0a0a 100%);
             background-size: 400% 400%;
-            animation: gradientShift 8s ease infinite;
+            animation: gradientShift 12s ease infinite;
             color: #fff;
             line-height: 1.6;
             min-height: 100vh;
         }
 
+        /* Анимация фона — плавное переливание чёрный ↔ оранжевый */
         @keyframes gradientShift {
             0% { background-position: 0% 0%; }
-            25% { background-position: 50% 50%; }
             50% { background-position: 100% 100%; }
-            75% { background-position: 50% 50%; }
             100% { background-position: 0% 0%; }
         }
+
+        /* Анимация появления меню */
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Каждый блок появляется с задержкой */
+        .navbar, .faq-link, .hero, .subscription-card, .instructions, .rules, .features, .footer {
+            animation: fadeInUp 0.6s ease forwards;
+            opacity: 0;
+        }
+
+        .navbar { animation-delay: 0.1s; }
+        .faq-link { animation-delay: 0.15s; }
+        .hero { animation-delay: 0.2s; }
+        .subscription-card { animation-delay: 0.3s; }
+        .instructions { animation-delay: 0.4s; }
+        .rules { animation-delay: 0.5s; }
+        .features { animation-delay: 0.6s; }
+        .footer { animation-delay: 0.7s; }
         
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
         

@@ -17,14 +17,12 @@
             min-height: 100vh;
         }
 
-        /* Анимация фона — плавное переливание чёрный ↔ оранжевый */
         @keyframes gradientShift {
             0% { background-position: 0% 0%; }
             50% { background-position: 100% 100%; }
             100% { background-position: 0% 0%; }
         }
 
-        /* Анимация появления меню */
         @keyframes fadeInUp {
             0% {
                 opacity: 0;
@@ -36,7 +34,6 @@
             }
         }
 
-        /* Каждый блок появляется с задержкой */
         .navbar, .faq-link, .hero, .subscription-card, .instructions, .rules, .features, .footer {
             animation: fadeInUp 0.6s ease forwards;
             opacity: 0;
@@ -217,7 +214,7 @@
             padding: 0 20px 16px 20px;
         }
         
-        .copy-btn {
+        .connect-btn {
             background: linear-gradient(135deg, #ff6b35, #ff9f4a);
             border: none;
             padding: 14px 28px;
@@ -234,11 +231,7 @@
             justify-content: center;
             gap: 10px;
         }
-        .copy-btn:active { transform: scale(0.97); }
-        .copy-btn.copied {
-            background: #4caf50;
-            transform: scale(1.01);
-        }
+        .connect-btn:active { transform: scale(0.97); }
         
         .faq-link {
             text-align: right;
@@ -351,12 +344,25 @@
         </div>
 
         <div class="instructions">
-            <h3><i class="fas fa-book-open"></i> Инструкция по установке</h3>
-            <div class="step"><div class="step-icon">📱</div><div class="step-text">Установите приложение <strong>Happ</strong> из Google Play / App Store</div></div>
-            <div class="step"><div class="step-icon">🔗</div><div class="step-text">Нажмите <strong>«Скопировать ссылку»</strong> ниже, затем в приложении выберите <strong>«Новая подписка»</strong> и вставьте ссылку</div></div>
-            <div class="step"><div class="step-icon">🚀</div><div class="step-text">Обновите подписку, выберите сервер и нажмите <strong>«Подключиться»</strong></div></div>
-            <div class="step"><div class="step-icon">📡</div><div class="step-text">Поставьте пинг на <strong>TCP</strong> (Настройки → тип пинга → TCP)</div></div>
-            <button class="copy-btn" id="copyBtn"><i class="fas fa-copy"></i> Скопировать ссылку на подписку</button>
+            <h3><i class="fas fa-book-open"></i> Подключение к VPN</h3>
+            <div class="step">
+                <div class="step-icon">📱</div>
+                <div class="step-text">Установите приложение <strong style="color: #ff6b35;">Happ</strong> из 
+                    <a href="https://play.google.com/store/apps/details?id=com.happproxy" target="_blank">Google Play</a> / 
+                    <a href="https://apps.apple.com/us/app/happ-proxy-utility/id6504287215" target="_blank">App Store</a>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-icon">🔌</div>
+                <div class="step-text">Нажмите на кнопку <strong>«Подключиться к VPN»</strong> ниже</div>
+            </div>
+            <div class="step">
+                <div class="step-icon">✅</div>
+                <div class="step-text">Готово! Приложение откроется автоматически</div>
+            </div>
+            <button class="connect-btn" id="connectBtn">
+                <i class="fas fa-plug"></i> Подключиться к VPN
+            </button>
         </div>
 
         <div class="rules">
@@ -375,7 +381,7 @@
             <div class="faq-section">
                 <h3><i class="fas fa-question-circle"></i> Часто задаваемые вопросы</h3>
                 <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)"><div class="question-text"><span>😕</span> Почему VPN не работает?</div><div class="arrow">›</div></div><div class="faq-answer">Если у вас появились проблемы с работой нашего VPN, советую написать в поддержку.</div></div>
-                <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)"><div class="question-text"><span>🤔</span> Как подключиться?</div><div class="arrow">›</div></div><div class="faq-answer">Пожалуйста, прочитайте инструкцию выше 🐇</div></div>
+                <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)"><div class="question-text"><span>🤔</span> Как подключиться?</div><div class="arrow">›</div></div><div class="faq-answer">Установите Happ, нажмите кнопку «Подключиться к VPN» на этом сайте 🐇</div></div>
                 <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)"><div class="question-text"><span>🪤</span> Бесплатный сыр только в мышеловке?</div><div class="arrow">›</div></div><div class="faq-answer">Нет, мы не сливаем данные. Это нарушение закона РФ 🐇</div></div>
             </div>
         </div>
@@ -399,7 +405,7 @@
     <div id="toast" class="toast"></div>
 
     <script>
-        const SUBSCRIPTION_URL = "https://raw.githubusercontent.com/kangaroo255075-collab/KrolekVPNReborn-Reborn-/refs/heads/main/Krolek.txt";
+        const HAPP_URL = "happ://crypt5/iaii7KEPGEJTlqIM6h210Cvtn67jxkq4BV9eFjZujZfC/mATElUmpDTCSP1jHFj+N9sXBK/FGh6r8TY2JafnT4jOl3r5sMzsr3eu4uzlA70TRF527xhr316m9GsvLTCfdKb9Z0KGIs1of9CwqmIAk1V/mEKGMEy05ZERoGNmS4ugQJob23OUT7GuR9zg7hHJ5t7mZqWUZr87jWQ7AiVZ1lh4dtlCmhlrOB2pM1eQ==3g8kpUJXU9EM02PST+9ZtNNdVBEAyi4YF3xFuN+mviOTZ9AgKvc/SVa9kZG/HkHeqqkHbadIt9YX/AxI13gKI+QUu2j7G0/5EVROm0PbJmzXkyJU7xdnctbGKs4ucRw1hELOFUv5T9BKoUwq5KgrcMHTDplZriFI2Hm4YybOtyhacyXHla7OyOipziQBrWPy0BElYdPFlQVYnjYLfI3KrpYDcOgQLjOoJgQKSZ2XSsHE+2QYMReEba+cadE/0U2KUBvgEEdeb5DRQqc/jGY3TT/Na3zoNxko/gzTve/hnhGHPE7KFyAabkrwEUB2iDupjpOk2UEPLCfNnnTLHLGUu8I6W/ueFbmERAuZjhR8u+v/cMb2kNMoRPa6defrwM1WwtaxNbXVTUpjqX4PfGfNdYFl4d9i/8vb+EIG0LFIzex2RCMBpqsHZT6UwtCCDKLzSImqHB9A58tVXKtqHA9xG+/oPFiJ4AQprBNevjYk3cdUS+S4Jn+HUFQQ5lPNMhgLLWLMAX082oiNdwAnMVaMdOFp3tCyH6VXN1b7Aedrmsc1Za9x/WVtdQ+SSkb3mmQjoVinrGzSecwOHVN3LbC2T3IqHrZIxfrO/4N0UstY1ML1AXr7hJ0ydPT/yTzXNnRkbLgpQa1gKnrP9ovc+AMLF2zHn9ULhXa8kP1x1YjwXFg=dIdioa";
         let faqVisible = false;
         
         const clickSound = new Audio("https://www.soundjay.com/misc/sounds/button-click-1.mp3");
@@ -413,32 +419,20 @@
             }, 2500);
         }
 
-        async function copySubscription() {
-            const btn = document.getElementById('copyBtn');
-            const originalText = btn.innerHTML;
-            
-            btn.innerHTML = '<i class="fas fa-check"></i> Скопировано! ✅';
-            btn.classList.add('copied');
+        function connectToVPN() {
             if (navigator.vibrate) navigator.vibrate(50);
             clickSound.play().catch(e => console.log('Звук не воспроизведён'));
             
-            try {
-                await navigator.clipboard.writeText(SUBSCRIPTION_URL);
-                showToast('✅ Ссылка на подписку скопирована!');
-            } catch (err) {
-                const textarea = document.createElement('textarea');
-                textarea.value = SUBSCRIPTION_URL;
-                document.body.appendChild(textarea);
-                textarea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textarea);
-                showToast('✅ Ссылка скопирована!');
-            }
+            // Пытаемся открыть Happ
+            window.location.href = HAPP_URL;
             
+            // Показываем уведомление
+            showToast('🔄 Открываем Happ...');
+            
+            // Если не открылось через 1 секунду - показываем кнопку установки
             setTimeout(() => {
-                btn.innerHTML = originalText;
-                btn.classList.remove('copied');
-            }, 1500);
+                showToast('⚠️ Если Happ не открылся, установите приложение');
+            }, 1000);
         }
 
         function toggleFaq(element) {
@@ -462,10 +456,10 @@
             }
         }
 
-        document.getElementById('copyBtn').addEventListener('click', copySubscription);
+        document.getElementById('connectBtn').addEventListener('click', connectToVPN);
         document.getElementById('faqLink').addEventListener('click', toggleFaqContainer);
         
         window.toggleFaq = toggleFaq;
     </script>
 </body>
-    </html>
+</html>

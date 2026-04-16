@@ -473,7 +473,7 @@
 
         <div class="subscription-card">
             <h3>🔐 ВАША ПОДПИСКА</h3>
-            <div class="expire-date" id="expireDate">15 июля 2045 г.</div>
+            <div class="expire-date" id="expireDate"></div>
             <div class="info-row">
                 <div class="info-label"><i class="fas fa-infinity"></i> Лимит трафика</div>
                 <div class="info-value">∞ (Безлимит)</div>
@@ -515,7 +515,7 @@
             <div class="rule-item"><div class="rule-icon">🚫</div><div class="rule-text"><strong>Запрещено</strong> использовать торренты и P2P-сети.</div></div>
             <div class="rule-item"><div class="rule-icon">🔒</div><div class="rule-text">Не передавайте свою подписку третьим лицам — это может привести к блокировке.</div></div>
             <div class="rule-item"><div class="rule-icon">📢</div><div class="rule-text">О всех проблемах и неполадках сообщайте в <strong>поддержку</strong> (@Kr0l3k).</div></div>
-            <div class="rule-item"><div class="rule-icon">⏱️</div><div class="rule-text">Подписка <strong>бесплатна</strong> и действует до <strong id="ruleDate">15 июля 2045 года</strong>. Продление не требуется.</div></div>
+            <div class="rule-item"><div class="rule-icon">⏱️</div><div class="rule-text">Подписка <strong>бесплатна</strong> и действует до <strong id="ruleDate"></strong>. Продление не требуется.</div></div>
         </div>
 
         <div id="faqContainer" style="display: none;">
@@ -556,7 +556,7 @@
             </div>
             <div class="expiry-text" id="expiryText">До истечения подписки: ∞</div>
             <button class="feed-btn" id="feedBtn">
-                 Покормить кролика 🥕
+                🥕 Покормить кролика 🥕
             </button>
             <button class="close-modal" id="closeModal">✕ Закрыть</button>
         </div>
@@ -570,7 +570,8 @@
         
         let expiryDate = localStorage.getItem('subscriptionExpiry');
         if (!expiryDate) {
-            expiryDate = new Date(2026, 3, 18).getTime();
+            // Начальная дата: 17 апреля 2026 года
+            expiryDate = new Date(2026, 3, 17).getTime();
             localStorage.setItem('subscriptionExpiry', expiryDate);
         } else {
             expiryDate = parseInt(expiryDate);
@@ -733,4 +734,4 @@
         updateExpiryUI();
     </script>
 </body>
-                </html>
+    </html>

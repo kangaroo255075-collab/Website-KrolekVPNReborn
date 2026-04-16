@@ -16,7 +16,6 @@
             position: relative;
         }
         
-        /* Анимированный фон */
         body::before {
             content: '';
             position: fixed;
@@ -61,7 +60,6 @@
             z-index: 1;
         }
         
-        /* Анимация появления */
         @keyframes fadeInUp {
             0% { opacity: 0; transform: translateY(30px); }
             100% { opacity: 1; transform: translateY(0); }
@@ -81,7 +79,6 @@
         .features { animation-delay: 0.6s; }
         .footer { animation-delay: 0.7s; }
         
-        /* Плавающая иконка кролика */
         .rabbit-float {
             position: fixed;
             bottom: 100px;
@@ -118,7 +115,6 @@
             color: white;
         }
         
-        /* Модальное окно кормления */
         .feed-modal {
             display: none;
             position: fixed;
@@ -147,16 +143,9 @@
         .rabbit-emoji {
             font-size: 80px;
             margin-bottom: 10px;
-            animation: wiggle 0.5s ease;
         }
         
-        @keyframes wiggle {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(10deg); }
-            75% { transform: rotate(-10deg); }
-        }
-        
-        .hunger-bar {
+        .expiry-bar {
             background: rgba(255,255,255,0.1);
             border-radius: 20px;
             height: 12px;
@@ -164,12 +153,15 @@
             overflow: hidden;
         }
         
-        .hunger-fill {
-            background: linear-gradient(90deg, #ff6b35, #ff9f4a);
-            width: 0%;
+        .expiry-fill {
             height: 100%;
             border-radius: 20px;
             transition: width 0.3s;
+        }
+        
+        .expiry-text {
+            font-size: 14px;
+            margin: 10px 0;
         }
         
         .feed-btn {
@@ -481,7 +473,7 @@
 
         <div class="subscription-card">
             <h3>🔐 ВАША ПОДПИСКА</h3>
-            <div class="expire-date">15 июля 2045 г.</div>
+            <div class="expire-date" id="expireDate">15 июля 2045 г.</div>
             <div class="info-row">
                 <div class="info-label"><i class="fas fa-infinity"></i> Лимит трафика</div>
                 <div class="info-value">∞ (Безлимит)</div>
@@ -523,7 +515,7 @@
             <div class="rule-item"><div class="rule-icon">🚫</div><div class="rule-text"><strong>Запрещено</strong> использовать торренты и P2P-сети.</div></div>
             <div class="rule-item"><div class="rule-icon">🔒</div><div class="rule-text">Не передавайте свою подписку третьим лицам — это может привести к блокировке.</div></div>
             <div class="rule-item"><div class="rule-icon">📢</div><div class="rule-text">О всех проблемах и неполадках сообщайте в <strong>поддержку</strong> (@Kr0l3k).</div></div>
-            <div class="rule-item"><div class="rule-icon">⏱️</div><div class="rule-text">Подписка <strong>бесплатна</strong> и действует до <strong>15 июля 2045 года</strong>. Продление не требуется.</div></div>
+            <div class="rule-item"><div class="rule-icon">⏱️</div><div class="rule-text">Подписка <strong>бесплатна</strong> и действует до <strong id="ruleDate">15 июля 2045 года</strong>. Продление не требуется.</div></div>
         </div>
 
         <div id="faqContainer" style="display: none;">
@@ -551,23 +543,20 @@
         </div>
     </div>
 
-    <!-- Плавающая иконка кролика -->
     <div class="rabbit-float" id="rabbitFloat">
         <i class="fas fa-carrot"></i>
     </div>
 
-    <!-- Модальное окно кормления -->
     <div class="feed-modal" id="feedModal">
         <div class="feed-card">
             <div class="rabbit-emoji" id="rabbitEmoji">🐰</div>
-            <h3>Покорми кролика</h3>
-            <div class="hunger-bar">
-                <div class="hunger-fill" id="hungerFill"></div>
+            <h3>Голодный кролик</h3>
+            <div class="expiry-bar">
+                <div class="expiry-fill" id="expiryFill"></div>
             </div>
-            <div id="hungerText" style="margin: 10px 0; color: #aaa;">Сытость: 100%</div>
-            <div id="feedCount" style="margin: 5px 0; font-size: 12px; color: #888;">Кормлений: 0</div>
+            <div class="expiry-text" id="expiryText">До истечения подписки: ∞</div>
             <button class="feed-btn" id="feedBtn">
-                🥕 Покормить
+                 Покормить кролика 🥕
             </button>
             <button class="close-modal" id="closeModal">✕ Закрыть</button>
         </div>
@@ -579,77 +568,106 @@
         const HAPP_URL = "happ://crypt5/iaii7KEPGEJTlqIM6h210Cvtn67jxkq4BV9eFjZujZfC/mATElUmpDTCSP1jHFj+N9sXBK/FGh6r8TY2JafnT4jOl3r5sMzsr3eu4uzlA70TRF527xhr316m9GsvLTCfdKb9Z0KGIs1of9CwqmIAk1V/mEKGMEy05ZERoGNmS4ugQJob23OUT7GuR9zg7hHJ5t7mZqWUZr87jWQ7AiVZ1lh4dtlCmhlrOB2pM1eQ==3g8kpUJXU9EM02PST+9ZtNNdVBEAyi4YF3xFuN+mviOTZ9AgKvc/SVa9kZG/HkHeqqkHbadIt9YX/AxI13gKI+QUu2j7G0/5EVROm0PbJmzXkyJU7xdnctbGKs4ucRw1hELOFUv5T9BKoUwq5KgrcMHTDplZriFI2Hm4YybOtyhacyXHla7OyOipziQBrWPy0BElYdPFlQVYnjYLfI3KrpYDcOgQLjOoJgQKSZ2XSsHE+2QYMReEba+cadE/0U2KUBvgEEdeb5DRQqc/jGY3TT/Na3zoNxko/gzTve/hnhGHPE7KFyAabkrwEUB2iDupjpOk2UEPLCfNnnTLHLGUu8I6W/ueFbmERAuZjhR8u+v/cMb2kNMoRPa6defrwM1WwtaxNbXVTUpjqX4PfGfNdYFl4d9i/8vb+EIG0LFIzex2RCMBpqsHZT6UwtCCDKLzSImqHB9A58tVXKtqHA9xG+/oPFiJ4AQprBNevjYk3cdUS+S4Jn+HUFQQ5lPNMhgLLWLMAX082oiNdwAnMVaMdOFp3tCyH6VXN1b7Aedrmsc1Za9x/WVtdQ+SSkb3mmQjoVinrGzSecwOHVN3LbC2T3IqHrZIxfrO/4N0UstY1ML1AXr7hJ0ydPT/yTzXNnRkbLgpQa1gKnrP9ovc+AMLF2zHn9ULhXa8kP1x1YjwXFg=dIdioa";
         let faqVisible = false;
         
-        // Кормление кролика
-        let feedCount = localStorage.getItem('rabbitFeeds') ? parseInt(localStorage.getItem('rabbitFeeds')) : 0;
-        let lastFeedTime = localStorage.getItem('lastFeedTime') ? parseInt(localStorage.getItem('lastFeedTime')) : 0;
-        
-        // Голод уменьшается на 2% в час
-        function getHunger() {
-            let hoursSinceLastFeed = (Date.now() - lastFeedTime) / (1000 * 60 * 60);
-            let hungerDecrease = hoursSinceLastFeed * 2;
-            let hunger = Math.max(0, 100 - hungerDecrease);
-            return Math.min(100, hunger);
+        let expiryDate = localStorage.getItem('subscriptionExpiry');
+        if (!expiryDate) {
+            expiryDate = new Date(2026, 3, 18).getTime();
+            localStorage.setItem('subscriptionExpiry', expiryDate);
+        } else {
+            expiryDate = parseInt(expiryDate);
         }
         
-        function updateUI() {
-            let hunger = getHunger();
-            document.getElementById('hungerFill').style.width = hunger + '%';
-            document.getElementById('hungerText').innerHTML = `Сытость: ${Math.floor(hunger)}%`;
-            document.getElementById('feedCount').innerHTML = `Кормлений сегодня: ${feedCount}`;
+        function formatDate(timestamp) {
+            let date = new Date(timestamp);
+            return date.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
+        }
+        
+        function getDaysRemaining() {
+            let now = new Date().getTime();
+            let diff = expiryDate - now;
+            return Math.ceil(diff / (1000 * 60 * 60 * 24));
+        }
+        
+        function updateExpiryUI() {
+            let daysLeft = getDaysRemaining();
+            let formattedDate = formatDate(expiryDate);
             
-            // Меняем эмодзи в зависимости от сытости
-            let rabbitEmoji = document.getElementById('rabbitEmoji');
-            if (hunger > 70) rabbitEmoji.innerHTML = '🐰';
-            else if (hunger > 30) rabbitEmoji.innerHTML = '🐇';
-            else rabbitEmoji.innerHTML = '😿';
+            document.getElementById('expireDate').innerHTML = formattedDate;
+            document.getElementById('ruleDate').innerHTML = formattedDate;
+            
+            let maxDays = 30;
+            let percent = Math.min(100, Math.max(0, (daysLeft / maxDays) * 100));
+            document.getElementById('expiryFill').style.width = percent + '%';
+            
+            let expiryText = document.getElementById('expiryText');
+            let expiryFill = document.getElementById('expiryFill');
+            
+            if (daysLeft <= 0) {
+                expiryText.innerHTML = '⚠️ ПОДПИСКА ИСТЕКЛА! Срочно покорми кролика! ⚠️';
+                expiryFill.style.background = '#ff0000';
+                expiryText.style.color = '#ff6666';
+                document.getElementById('rabbitEmoji').innerHTML = '😿';
+            } else if (daysLeft <= 3) {
+                expiryText.innerHTML = `⚠️ До истечения подписки: ${daysLeft} дня(ей)! Срочно покорми! ⚠️`;
+                expiryFill.style.background = '#ffaa00';
+                expiryText.style.color = '#ffaa00';
+                document.getElementById('rabbitEmoji').innerHTML = '🐇⚠️';
+            } else if (daysLeft <= 7) {
+                expiryText.innerHTML = `До истечения подписки: ${daysLeft} дней. Покорми кролика!`;
+                expiryFill.style.background = '#ffaa00';
+                expiryText.style.color = '#ffaa00';
+                document.getElementById('rabbitEmoji').innerHTML = '🐇';
+            } else {
+                expiryText.innerHTML = `До истечения подписки: ${daysLeft} дней`;
+                expiryFill.style.background = 'linear-gradient(90deg, #ff6b35, #ff9f4a)';
+                expiryText.style.color = '#aaa';
+                document.getElementById('rabbitEmoji').innerHTML = '🐰';
+            }
         }
         
         function feedRabbit() {
-            let now = Date.now();
-            let lastFeed = lastFeedTime;
+            let now = new Date().getTime();
+            let lastFeed = localStorage.getItem('lastFeedTime') ? parseInt(localStorage.getItem('lastFeedTime')) : 0;
             
-            // Проверка: можно кормить не чаще 1 раза в 5 минут
-            if (now - lastFeed < 5 * 60 * 1000) {
-                let minutesLeft = Math.ceil((5 * 60 * 1000 - (now - lastFeed)) / 60000);
-                showToast(`⏰ Кролик сыт! Подожди ${minutesLeft} мин`);
+            if (now - lastFeed < 60 * 1000) {
+                let secondsLeft = Math.ceil((60 * 1000 - (now - lastFeed)) / 1000);
+                showToast(`⏰ Кролик сыт! Подожди ${secondsLeft} сек`);
                 return;
             }
             
-            // Обновляем счётчик и время
-            feedCount++;
-            lastFeedTime = now;
+            expiryDate = expiryDate + (3 * 24 * 60 * 60 * 1000);
+            localStorage.setItem('subscriptionExpiry', expiryDate);
+            localStorage.setItem('lastFeedTime', now);
             
-            localStorage.setItem('rabbitFeeds', feedCount);
-            localStorage.setItem('lastFeedTime', lastFeedTime);
-            
-            // Анимация кролика
             let rabbitEmoji = document.getElementById('rabbitEmoji');
             rabbitEmoji.style.animation = 'none';
             setTimeout(() => rabbitEmoji.style.animation = 'wiggle 0.5s ease', 10);
             
-            // Звук и вибрация
             if (navigator.vibrate) navigator.vibrate(50);
             
-            updateUI();
-            showToast('🥕 Ты покормил кролика! +1 кормление');
-            
-            // Проверка на достижение лимита для продления
-            if (feedCount >= 10) {
-                showToast('🎉 Ура! Кролик сыт! Подписка продлена на +1 день!');
-                feedCount = 0;
-                localStorage.setItem('rabbitFeeds', 0);
-                updateUI();
-            }
+            updateExpiryUI();
+            showToast('🥕 +3 дня к подписке! Спасибо, что покормил кролика!');
         }
         
-        // Модальное окно
+        let style = document.createElement('style');
+        style.textContent = `
+            @keyframes wiggle {
+                0%, 100% { transform: rotate(0deg); }
+                25% { transform: rotate(10deg); }
+                75% { transform: rotate(-10deg); }
+            }
+            .rabbit-emoji {
+                animation: none;
+            }
+        `;
+        document.head.appendChild(style);
+        
         const modal = document.getElementById('feedModal');
         const rabbitFloat = document.getElementById('rabbitFloat');
         const closeModal = document.getElementById('closeModal');
         const feedBtn = document.getElementById('feedBtn');
         
         rabbitFloat.addEventListener('click', () => {
-            updateUI();
+            updateExpiryUI();
             modal.style.display = 'flex';
         });
         
@@ -712,8 +730,7 @@
         
         window.toggleFaq = toggleFaq;
         
-        // Инициализация кролика
-        updateUI();
+        updateExpiryUI();
     </script>
 </body>
-    </html>
+                </html>

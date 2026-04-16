@@ -16,7 +16,7 @@
             position: relative;
         }
         
-        /* Анимированный слой с прозрачно-оранжевым */
+        /* Анимированный фон */
         body::before {
             content: '';
             position: fixed;
@@ -30,7 +30,6 @@
             z-index: 0;
         }
         
-        /* Второй слой для дополнительной глубины */
         body::after {
             content: '';
             position: fixed;
@@ -45,28 +44,15 @@
         }
         
         @keyframes orangePulse {
-            0% {
-                opacity: 0.3;
-                transform: scale(1);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1.2);
-            }
+            0% { opacity: 0.3; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.2); }
         }
         
         @keyframes orangePulseReverse {
-            0% {
-                opacity: 0.5;
-                transform: scale(1.2);
-            }
-            100% {
-                opacity: 0.2;
-                transform: scale(1);
-            }
+            0% { opacity: 0.5; transform: scale(1.2); }
+            100% { opacity: 0.2; transform: scale(1); }
         }
         
-        /* Контент поверх фона */
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -75,16 +61,10 @@
             z-index: 1;
         }
         
-        /* Анимация появления меню */
+        /* Анимация появления */
         @keyframes fadeInUp {
-            0% {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
         .navbar, .faq-link, .hero, .subscription-card, .instructions, .rules, .features, .footer {
@@ -100,6 +80,123 @@
         .rules { animation-delay: 0.5s; }
         .features { animation-delay: 0.6s; }
         .footer { animation-delay: 0.7s; }
+        
+        /* Плавающая иконка кролика */
+        .rabbit-float {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #ff6b35, #ff9f4a);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(255,107,53,0.4);
+            transition: 0.3s;
+            animation: bounce 2s infinite;
+        }
+        
+        .rabbit-float:hover {
+            transform: scale(1.1);
+        }
+        
+        .rabbit-float:active {
+            transform: scale(0.95);
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .rabbit-float i {
+            font-size: 32px;
+            color: white;
+        }
+        
+        /* Модальное окно кормления */
+        .feed-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .feed-card {
+            background: linear-gradient(135deg, #1a1a1a, #0d0d0d);
+            border-radius: 40px;
+            padding: 30px;
+            max-width: 350px;
+            width: 90%;
+            text-align: center;
+            border: 1px solid rgba(255,107,53,0.4);
+            animation: fadeInUp 0.3s ease;
+        }
+        
+        .rabbit-emoji {
+            font-size: 80px;
+            margin-bottom: 10px;
+            animation: wiggle 0.5s ease;
+        }
+        
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(10deg); }
+            75% { transform: rotate(-10deg); }
+        }
+        
+        .hunger-bar {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            height: 12px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .hunger-fill {
+            background: linear-gradient(90deg, #ff6b35, #ff9f4a);
+            width: 0%;
+            height: 100%;
+            border-radius: 20px;
+            transition: width 0.3s;
+        }
+        
+        .feed-btn {
+            background: linear-gradient(135deg, #ff6b35, #ff9f4a);
+            border: none;
+            padding: 14px 28px;
+            border-radius: 50px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 15px 0;
+            width: 100%;
+            font-size: 16px;
+        }
+        
+        .feed-btn:active {
+            transform: scale(0.97);
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
         
         .navbar {
             display: flex;
@@ -328,6 +425,7 @@
             .step { flex-wrap: wrap; text-align: center; justify-content: center; }
             .rule-item { flex-wrap: wrap; text-align: center; justify-content: center; }
             .faq-link { text-align: center; }
+            .rabbit-float { bottom: 20px; right: 20px; }
         }
 
         .toast {
@@ -453,11 +551,117 @@
         </div>
     </div>
 
+    <!-- Плавающая иконка кролика -->
+    <div class="rabbit-float" id="rabbitFloat">
+        <i class="fas fa-carrot"></i>
+    </div>
+
+    <!-- Модальное окно кормления -->
+    <div class="feed-modal" id="feedModal">
+        <div class="feed-card">
+            <div class="rabbit-emoji" id="rabbitEmoji">🐰</div>
+            <h3>Покорми кролика</h3>
+            <div class="hunger-bar">
+                <div class="hunger-fill" id="hungerFill"></div>
+            </div>
+            <div id="hungerText" style="margin: 10px 0; color: #aaa;">Сытость: 100%</div>
+            <div id="feedCount" style="margin: 5px 0; font-size: 12px; color: #888;">Кормлений: 0</div>
+            <button class="feed-btn" id="feedBtn">
+                🥕 Покормить
+            </button>
+            <button class="close-modal" id="closeModal">✕ Закрыть</button>
+        </div>
+    </div>
+
     <div id="toast" class="toast"></div>
 
     <script>
         const HAPP_URL = "happ://crypt5/iaii7KEPGEJTlqIM6h210Cvtn67jxkq4BV9eFjZujZfC/mATElUmpDTCSP1jHFj+N9sXBK/FGh6r8TY2JafnT4jOl3r5sMzsr3eu4uzlA70TRF527xhr316m9GsvLTCfdKb9Z0KGIs1of9CwqmIAk1V/mEKGMEy05ZERoGNmS4ugQJob23OUT7GuR9zg7hHJ5t7mZqWUZr87jWQ7AiVZ1lh4dtlCmhlrOB2pM1eQ==3g8kpUJXU9EM02PST+9ZtNNdVBEAyi4YF3xFuN+mviOTZ9AgKvc/SVa9kZG/HkHeqqkHbadIt9YX/AxI13gKI+QUu2j7G0/5EVROm0PbJmzXkyJU7xdnctbGKs4ucRw1hELOFUv5T9BKoUwq5KgrcMHTDplZriFI2Hm4YybOtyhacyXHla7OyOipziQBrWPy0BElYdPFlQVYnjYLfI3KrpYDcOgQLjOoJgQKSZ2XSsHE+2QYMReEba+cadE/0U2KUBvgEEdeb5DRQqc/jGY3TT/Na3zoNxko/gzTve/hnhGHPE7KFyAabkrwEUB2iDupjpOk2UEPLCfNnnTLHLGUu8I6W/ueFbmERAuZjhR8u+v/cMb2kNMoRPa6defrwM1WwtaxNbXVTUpjqX4PfGfNdYFl4d9i/8vb+EIG0LFIzex2RCMBpqsHZT6UwtCCDKLzSImqHB9A58tVXKtqHA9xG+/oPFiJ4AQprBNevjYk3cdUS+S4Jn+HUFQQ5lPNMhgLLWLMAX082oiNdwAnMVaMdOFp3tCyH6VXN1b7Aedrmsc1Za9x/WVtdQ+SSkb3mmQjoVinrGzSecwOHVN3LbC2T3IqHrZIxfrO/4N0UstY1ML1AXr7hJ0ydPT/yTzXNnRkbLgpQa1gKnrP9ovc+AMLF2zHn9ULhXa8kP1x1YjwXFg=dIdioa";
         let faqVisible = false;
+        
+        // Кормление кролика
+        let feedCount = localStorage.getItem('rabbitFeeds') ? parseInt(localStorage.getItem('rabbitFeeds')) : 0;
+        let lastFeedTime = localStorage.getItem('lastFeedTime') ? parseInt(localStorage.getItem('lastFeedTime')) : 0;
+        
+        // Голод уменьшается на 2% в час
+        function getHunger() {
+            let hoursSinceLastFeed = (Date.now() - lastFeedTime) / (1000 * 60 * 60);
+            let hungerDecrease = hoursSinceLastFeed * 2;
+            let hunger = Math.max(0, 100 - hungerDecrease);
+            return Math.min(100, hunger);
+        }
+        
+        function updateUI() {
+            let hunger = getHunger();
+            document.getElementById('hungerFill').style.width = hunger + '%';
+            document.getElementById('hungerText').innerHTML = `Сытость: ${Math.floor(hunger)}%`;
+            document.getElementById('feedCount').innerHTML = `Кормлений сегодня: ${feedCount}`;
+            
+            // Меняем эмодзи в зависимости от сытости
+            let rabbitEmoji = document.getElementById('rabbitEmoji');
+            if (hunger > 70) rabbitEmoji.innerHTML = '🐰';
+            else if (hunger > 30) rabbitEmoji.innerHTML = '🐇';
+            else rabbitEmoji.innerHTML = '😿';
+        }
+        
+        function feedRabbit() {
+            let now = Date.now();
+            let lastFeed = lastFeedTime;
+            
+            // Проверка: можно кормить не чаще 1 раза в 5 минут
+            if (now - lastFeed < 5 * 60 * 1000) {
+                let minutesLeft = Math.ceil((5 * 60 * 1000 - (now - lastFeed)) / 60000);
+                showToast(`⏰ Кролик сыт! Подожди ${minutesLeft} мин`);
+                return;
+            }
+            
+            // Обновляем счётчик и время
+            feedCount++;
+            lastFeedTime = now;
+            
+            localStorage.setItem('rabbitFeeds', feedCount);
+            localStorage.setItem('lastFeedTime', lastFeedTime);
+            
+            // Анимация кролика
+            let rabbitEmoji = document.getElementById('rabbitEmoji');
+            rabbitEmoji.style.animation = 'none';
+            setTimeout(() => rabbitEmoji.style.animation = 'wiggle 0.5s ease', 10);
+            
+            // Звук и вибрация
+            if (navigator.vibrate) navigator.vibrate(50);
+            
+            updateUI();
+            showToast('🥕 Ты покормил кролика! +1 кормление');
+            
+            // Проверка на достижение лимита для продления
+            if (feedCount >= 10) {
+                showToast('🎉 Ура! Кролик сыт! Подписка продлена на +1 день!');
+                feedCount = 0;
+                localStorage.setItem('rabbitFeeds', 0);
+                updateUI();
+            }
+        }
+        
+        // Модальное окно
+        const modal = document.getElementById('feedModal');
+        const rabbitFloat = document.getElementById('rabbitFloat');
+        const closeModal = document.getElementById('closeModal');
+        const feedBtn = document.getElementById('feedBtn');
+        
+        rabbitFloat.addEventListener('click', () => {
+            updateUI();
+            modal.style.display = 'flex';
+        });
+        
+        closeModal.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+        
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) modal.style.display = 'none';
+        });
+        
+        feedBtn.addEventListener('click', feedRabbit);
         
         const clickSound = new Audio("https://www.soundjay.com/misc/sounds/button-click-1.mp3");
 
@@ -507,6 +711,9 @@
         document.getElementById('faqLink').addEventListener('click', toggleFaqContainer);
         
         window.toggleFaq = toggleFaq;
+        
+        // Инициализация кролика
+        updateUI();
     </script>
 </body>
-</html>
+    </html>

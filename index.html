@@ -65,19 +65,19 @@
             100% { opacity: 1; transform: translateY(0); }
         }
 
-        .navbar, .faq-link, .hero, .subscription-card, .instructions, .rules, .features, .footer {
+        .navbar, .hero, .subscription-card, .instructions, .rules, .faq-section, .features, .footer {
             animation: fadeInUp 0.6s ease forwards;
             opacity: 0;
         }
 
         .navbar { animation-delay: 0.1s; }
-        .faq-link { animation-delay: 0.15s; }
         .hero { animation-delay: 0.2s; }
         .subscription-card { animation-delay: 0.3s; }
         .instructions { animation-delay: 0.4s; }
         .rules { animation-delay: 0.5s; }
-        .features { animation-delay: 0.6s; }
-        .footer { animation-delay: 0.7s; }
+        .faq-section { animation-delay: 0.6s; }
+        .features { animation-delay: 0.7s; }
+        .footer { animation-delay: 0.8s; }
         
         .navbar {
             display: flex;
@@ -93,19 +93,6 @@
         .nav-links { display: flex; gap: 30px; }
         .nav-links a { color: #fff; text-decoration: none; transition: 0.3s; font-weight: 500; }
         .nav-links a:hover { color: #ff6b35; }
-        .btn-bot {
-            background: linear-gradient(135deg, #ff6b35, #ff9f4a);
-            padding: 10px 24px;
-            border-radius: 30px;
-            color: #fff;
-            text-decoration: none;
-            font-weight: 600;
-            transition: 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .btn-bot:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(255,107,53,0.4); }
         
         .hero {
             display: flex;
@@ -262,20 +249,6 @@
         }
         .connect-btn:active { transform: scale(0.97); }
         
-        .faq-link {
-            text-align: right;
-            margin-bottom: 10px;
-        }
-        .faq-link a {
-            color: #ff9f4a;
-            text-decoration: none;
-            font-size: 14px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-        
         .features { padding: 40px 0; }
         .section-title { text-align: center; font-size: 32px; margin-bottom: 40px; }
         .section-title span { color: #ff6b35; }
@@ -305,7 +278,6 @@
             .navbar { flex-direction: column; text-align: center; }
             .step { flex-wrap: wrap; text-align: center; justify-content: center; }
             .rule-item { flex-wrap: wrap; text-align: center; justify-content: center; }
-            .faq-link { text-align: center; }
         }
 
         .toast {
@@ -336,14 +308,7 @@
                 <a href="https://t.me/KrolekVPNReborn" target="_blank">Канал</a>
                 <a href="https://t.me/KrolekVPNReborn_bot" target="_blank">Бот</a>
             </div>
-            <a href="https://t.me/KrolekVPNReborn_bot" class="btn-bot" target="_blank"><i class="fab fa-telegram"></i> Перейти в бот</a>
         </nav>
-
-        <div class="faq-link">
-            <a id="faqLink">
-                <i class="fas fa-question-circle"></i> Частые вопросы
-            </a>
-        </div>
 
         <div class="hero">
             <div class="hero-content">
@@ -406,12 +371,38 @@
             <div class="rule-item"><div class="rule-icon">⏱️</div><div class="rule-text">Подписка <strong>бесплатна</strong> и действует до <strong>15 июля 2045 года</strong>. Продление не требуется.</div></div>
         </div>
 
-        <div id="faqContainer" style="display: none;">
-            <div class="faq-section">
-                <h3><i class="fas fa-question-circle"></i> Часто задаваемые вопросы</h3>
-                <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)"><div class="question-text"><span>😕</span> Почему VPN не работает?</div><div class="arrow">›</div></div><div class="faq-answer">Если у вас появились проблемы с работой нашего VPN, советую написать в поддержку.</div></div>
-                <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)"><div class="question-text"><span>🤔</span> Как подключиться?</div><div class="arrow">›</div></div><div class="faq-answer">Установите Happ, нажмите кнопку «Подключиться к VPN» на этом сайте 🐇</div></div>
-                <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)"><div class="question-text"><span>🪤</span> Бесплатный сыр только в мышеловке?</div><div class="arrow">›</div></div><div class="faq-answer">Нет, мы не сливаем данные. Это нарушение закона РФ 🐇</div></div>
+        <!-- НОВЫЙ БЛОК FAQ С ТВОИМИ ТЕКСТАМИ -->
+        <div class="faq-section">
+            <h3><i class="fas fa-question-circle"></i> Часто задаваемые вопросы</h3>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <div class="question-text"><span>😕</span> Почему VPN не работает?</div>
+                    <div class="arrow">›</div>
+                </div>
+                <div class="faq-answer">
+                    Если у вас появились проблемы с работой нашего VPN, советую написать в поддержку. Если у вас пока нет возможности написать нам, то дождитесь следующего обновления. Все обновления сначала публикуются в нашем <a href="https://t.me/KrolekVPNReborn" target="_blank">канале</a>, а затем реализуются 🐇
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <div class="question-text"><span>🤔</span> Как подключиться?</div>
+                    <div class="arrow">›</div>
+                </div>
+                <div class="faq-answer">
+                    Пожалуйста, прочитайте инструкцию, которая находится на главной странице после карточки с датой подписки и скоростью 🐇
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <div class="question-text"><span>🪤</span> Бесплатный сыр только в мышеловке?</div>
+                    <div class="arrow">›</div>
+                </div>
+                <div class="faq-answer">
+                    Я уверен, что многие это говорили, считая, что бесплатные VPN сливают ваши личные данные. Но на самом деле это не так. Есть и более хорошие VPN, которые не отдают данные третьим лицам. Сливание данных третьим лицам — нарушение закона Российской Федерации 🐇
+                </div>
             </div>
         </div>
 
@@ -427,7 +418,7 @@
 
         <div class="footer">
             <p>© 2025-2026 KrolekVPNReborn. Бесплатный VPN для обхода блокировок.</p>
-            <p><a href="https://t.me/KrolekVPNReborn" style="color:#aaa;">Канал</a> | <a href="https://t.me/KrolekVPNReborn_bot" style="color:#aaa;">Бот</a> | <a href="https://t.me/Kr0l3k" style="color:#aaa;">Поддержка</a></p>
+            <p><a href="https://t.me/KrolekVPNReborn" style="color:#aaa;">Канал</a> | <a href="https://t.me/Kr0l3k" style="color:#aaa;">Поддержка</a></p>
         </div>
     </div>
 
@@ -435,7 +426,6 @@
 
     <script>
         const HAPP_URL = "happ://crypt5/iaiitKllnLzXyIFP6b21rr0x2De0UHVssP2nBlcKAL8/ZQGIvlU4c5ujzNEYz4lPCOm/omqkysBNAGARJXVChTi5nqgMcMvrdBLJdBKQYCQ7jhE36Yx7Sx4ZeuLZg2KiwVO1rl5zxp1c/85GESHl0l3XSEqUqLbNePy6cuJO4dO7TyAcjIK5XU5ec02OgM6PG4F7uoLk6qIp9BoK/LpDOk//8PFFpJgOhxzSK4U4==dganFEQz5WNKZ01Q9ktY9V5rd6fKo3D+YP3K7029fmqTrxv6dK1fR/jfTgoo+Qt4DEqtlzte2Qb1vWQ3pnGNDVvcV/x97faJWTPuPovwnO3SKBuGMXgNb6lFDdwtT5i8z5De51gDG2PhZXWUV+RoUadhRiPSbvq1krqQ6W8MnQf5hMKqQ/hweZ7e3MuRPdvkha+FUWPF5HaarolPKrPNX5xTCQBNeb17Sz5T1ApU5LZtu8x6fOiBwopN1q5vfMHtMGgec+41WCI0sgWvRRNyUh2whRoP0Hn8N2wIRlCk2/H3AqIonLDSAyZj+KloeW0YrwzCE3bcpjr+QeoyAKg4gwOiB/7zvfXSWP+smUyqT15gDVz+SCBEHDbhfPddot6Gb1LiMMCnB/ATAp3HqiO4E4WwZHbfyS54Y4pXvg7/tLtUTuJnby8lSrhLXubsdS30Z2IjIoWpBMx+sO0j+5QKC5B3vp57vSMK9qY3Gx2asT04pkd9AY+NldvQ+knJRHXMFNzqh/jBk6wX/ol789tIdzrzheIuJ6HY1GOuCjAu1CGlrSSnatwV67xy92cFUt0tGsuZndoQFH7JzK+Ugp5uIfaFYLmVepmHiZxoF3DL5/4FbxTqJzdEMHa8ObIqwd2XWidC4YEz+M4Bm+Iux6sYka9IQ5ix7E5mgHP+rsXl0Ik=7Fdioa";
-        let faqVisible = false;
         
         const clickSound = new Audio("https://www.soundjay.com/misc/sounds/button-click-1.mp3");
 
@@ -451,10 +441,8 @@
         function connectToVPN() {
             if (navigator.vibrate) navigator.vibrate(50);
             clickSound.play().catch(e => console.log('Звук не воспроизведён'));
-            
             window.location.href = HAPP_URL;
             showToast('🔄 Открываем Happ...');
-            
             setTimeout(() => {
                 showToast('⚠️ Если Happ не открылся, установите приложение');
             }, 1000);
@@ -467,24 +455,7 @@
             arrow.classList.toggle('open');
         }
 
-        function toggleFaqContainer() {
-            const faqContainer = document.getElementById('faqContainer');
-            if (faqVisible) {
-                faqContainer.style.display = 'none';
-                faqVisible = false;
-            } else {
-                faqContainer.style.display = 'block';
-                faqVisible = true;
-                setTimeout(() => {
-                    faqContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 100);
-            }
-        }
-
         document.getElementById('connectBtn').addEventListener('click', connectToVPN);
-        document.getElementById('faqLink').addEventListener('click', toggleFaqContainer);
-        
-        window.toggleFaq = toggleFaq;
     </script>
 </body>
 </html>

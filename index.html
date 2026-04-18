@@ -79,117 +79,6 @@
         .features { animation-delay: 0.6s; }
         .footer { animation-delay: 0.7s; }
         
-        .rabbit-float {
-            position: fixed;
-            bottom: 100px;
-            right: 20px;
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #ff6b35, #ff9f4a);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 100;
-            box-shadow: 0 4px 15px rgba(255,107,53,0.4);
-            transition: 0.3s;
-            animation: bounce 2s infinite;
-        }
-        
-        .rabbit-float:hover {
-            transform: scale(1.1);
-        }
-        
-        .rabbit-float:active {
-            transform: scale(0.95);
-        }
-        
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        
-        .rabbit-float i {
-            font-size: 32px;
-            color: white;
-        }
-        
-        .feed-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.9);
-            backdrop-filter: blur(8px);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .feed-card {
-            background: linear-gradient(135deg, #1a1a1a, #0d0d0d);
-            border-radius: 40px;
-            padding: 30px;
-            max-width: 350px;
-            width: 90%;
-            text-align: center;
-            border: 1px solid rgba(255,107,53,0.4);
-            animation: fadeInUp 0.3s ease;
-        }
-        
-        .rabbit-emoji {
-            font-size: 80px;
-            margin-bottom: 10px;
-        }
-        
-        .expiry-bar {
-            background: rgba(255,255,255,0.1);
-            border-radius: 20px;
-            height: 12px;
-            margin: 20px 0;
-            overflow: hidden;
-        }
-        
-        .expiry-fill {
-            height: 100%;
-            border-radius: 20px;
-            transition: width 0.3s;
-        }
-        
-        .expiry-text {
-            font-size: 14px;
-            margin: 10px 0;
-        }
-        
-        .feed-btn {
-            background: linear-gradient(135deg, #ff6b35, #ff9f4a);
-            border: none;
-            padding: 14px 28px;
-            border-radius: 50px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            margin: 15px 0;
-            width: 100%;
-            font-size: 16px;
-        }
-        
-        .feed-btn:active {
-            transform: scale(0.97);
-        }
-        
-        .close-modal {
-            background: none;
-            border: none;
-            color: #888;
-            font-size: 14px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        
         .navbar {
             display: flex;
             justify-content: space-between;
@@ -417,7 +306,6 @@
             .step { flex-wrap: wrap; text-align: center; justify-content: center; }
             .rule-item { flex-wrap: wrap; text-align: center; justify-content: center; }
             .faq-link { text-align: center; }
-            .rabbit-float { bottom: 20px; right: 20px; }
         }
 
         .toast {
@@ -473,7 +361,7 @@
 
         <div class="subscription-card">
             <h3>🔐 ВАША ПОДПИСКА</h3>
-            <div class="expire-date" id="expireDate"></div>
+            <div class="expire-date">15 июля 2045 г.</div>
             <div class="info-row">
                 <div class="info-label"><i class="fas fa-infinity"></i> Лимит трафика</div>
                 <div class="info-value">∞ (Безлимит)</div>
@@ -515,7 +403,7 @@
             <div class="rule-item"><div class="rule-icon">🚫</div><div class="rule-text"><strong>Запрещено</strong> использовать торренты и P2P-сети.</div></div>
             <div class="rule-item"><div class="rule-icon">🔒</div><div class="rule-text">Не передавайте свою подписку третьим лицам — это может привести к блокировке.</div></div>
             <div class="rule-item"><div class="rule-icon">📢</div><div class="rule-text">О всех проблемах и неполадках сообщайте в <strong>поддержку</strong> (@Kr0l3k).</div></div>
-            <div class="rule-item"><div class="rule-icon">⏱️</div><div class="rule-text">Подписка <strong>бесплатна</strong> и действует до <strong id="ruleDate"></strong>. Продление не требуется.</div></div>
+            <div class="rule-item"><div class="rule-icon">⏱️</div><div class="rule-text">Подписка <strong>бесплатна</strong> и действует до <strong>15 июля 2045 года</strong>. Продление не требуется.</div></div>
         </div>
 
         <div id="faqContainer" style="display: none;">
@@ -543,144 +431,11 @@
         </div>
     </div>
 
-    <div class="rabbit-float" id="rabbitFloat">
-        <i class="fas fa-carrot"></i>
-    </div>
-
-    <div class="feed-modal" id="feedModal">
-        <div class="feed-card">
-            <div class="rabbit-emoji" id="rabbitEmoji">🐰</div>
-            <h3>Голодный кролик</h3>
-            <div class="expiry-bar">
-                <div class="expiry-fill" id="expiryFill"></div>
-            </div>
-            <div class="expiry-text" id="expiryText">До истечения подписки: ∞</div>
-            <button class="feed-btn" id="feedBtn">
-                🥕 Покормить кролика 🥕
-            </button>
-            <button class="close-modal" id="closeModal">✕ Закрыть</button>
-        </div>
-    </div>
-
     <div id="toast" class="toast"></div>
 
     <script>
-        const HAPP_URL = "happ://crypt5/iaii7KEPGEJTlqIM6h210Cvtn67jxkq4BV9eFjZujZfC/mATElUmpDTCSP1jHFj+N9sXBK/FGh6r8TY2JafnT4jOl3r5sMzsr3eu4uzlA70TRF527xhr316m9GsvLTCfdKb9Z0KGIs1of9CwqmIAk1V/mEKGMEy05ZERoGNmS4ugQJob23OUT7GuR9zg7hHJ5t7mZqWUZr87jWQ7AiVZ1lh4dtlCmhlrOB2pM1eQ==3g8kpUJXU9EM02PST+9ZtNNdVBEAyi4YF3xFuN+mviOTZ9AgKvc/SVa9kZG/HkHeqqkHbadIt9YX/AxI13gKI+QUu2j7G0/5EVROm0PbJmzXkyJU7xdnctbGKs4ucRw1hELOFUv5T9BKoUwq5KgrcMHTDplZriFI2Hm4YybOtyhacyXHla7OyOipziQBrWPy0BElYdPFlQVYnjYLfI3KrpYDcOgQLjOoJgQKSZ2XSsHE+2QYMReEba+cadE/0U2KUBvgEEdeb5DRQqc/jGY3TT/Na3zoNxko/gzTve/hnhGHPE7KFyAabkrwEUB2iDupjpOk2UEPLCfNnnTLHLGUu8I6W/ueFbmERAuZjhR8u+v/cMb2kNMoRPa6defrwM1WwtaxNbXVTUpjqX4PfGfNdYFl4d9i/8vb+EIG0LFIzex2RCMBpqsHZT6UwtCCDKLzSImqHB9A58tVXKtqHA9xG+/oPFiJ4AQprBNevjYk3cdUS+S4Jn+HUFQQ5lPNMhgLLWLMAX082oiNdwAnMVaMdOFp3tCyH6VXN1b7Aedrmsc1Za9x/WVtdQ+SSkb3mmQjoVinrGzSecwOHVN3LbC2T3IqHrZIxfrO/4N0UstY1ML1AXr7hJ0ydPT/yTzXNnRkbLgpQa1gKnrP9ovc+AMLF2zHn9ULhXa8kP1x1YjwXFg=dIdioa";
+        const HAPP_URL = "happ://crypt5/iaiitKllnLzXyIFP6b21rr0x2De0UHVssP2nBlcKAL8/ZQGIvlU4c5ujzNEYz4lPCOm/omqkysBNAGARJXVChTi5nqgMcMvrdBLJdBKQYCQ7jhE36Yx7Sx4ZeuLZg2KiwVO1rl5zxp1c/85GESHl0l3XSEqUqLbNePy6cuJO4dO7TyAcjIK5XU5ec02OgM6PG4F7uoLk6qIp9BoK/LpDOk//8PFFpJgOhxzSK4U4==dganFEQz5WNKZ01Q9ktY9V5rd6fKo3D+YP3K7029fmqTrxv6dK1fR/jfTgoo+Qt4DEqtlzte2Qb1vWQ3pnGNDVvcV/x97faJWTPuPovwnO3SKBuGMXgNb6lFDdwtT5i8z5De51gDG2PhZXWUV+RoUadhRiPSbvq1krqQ6W8MnQf5hMKqQ/hweZ7e3MuRPdvkha+FUWPF5HaarolPKrPNX5xTCQBNeb17Sz5T1ApU5LZtu8x6fOiBwopN1q5vfMHtMGgec+41WCI0sgWvRRNyUh2whRoP0Hn8N2wIRlCk2/H3AqIonLDSAyZj+KloeW0YrwzCE3bcpjr+QeoyAKg4gwOiB/7zvfXSWP+smUyqT15gDVz+SCBEHDbhfPddot6Gb1LiMMCnB/ATAp3HqiO4E4WwZHbfyS54Y4pXvg7/tLtUTuJnby8lSrhLXubsdS30Z2IjIoWpBMx+sO0j+5QKC5B3vp57vSMK9qY3Gx2asT04pkd9AY+NldvQ+knJRHXMFNzqh/jBk6wX/ol789tIdzrzheIuJ6HY1GOuCjAu1CGlrSSnatwV67xy92cFUt0tGsuZndoQFH7JzK+Ugp5uIfaFYLmVepmHiZxoF3DL5/4FbxTqJzdEMHa8ObIqwd2XWidC4YEz+M4Bm+Iux6sYka9IQ5ix7E5mgHP+rsXl0Ik=7Fdioa";
         let faqVisible = false;
-        
-        let expiryDate = localStorage.getItem('subscriptionExpiry');
-        if (!expiryDate) {
-            // Начальная дата: 17 апреля 2026 года
-            expiryDate = new Date(2026, 3, 17).getTime();
-            localStorage.setItem('subscriptionExpiry', expiryDate);
-        } else {
-            expiryDate = parseInt(expiryDate);
-        }
-        
-        function formatDate(timestamp) {
-            let date = new Date(timestamp);
-            return date.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
-        }
-        
-        function getDaysRemaining() {
-            let now = new Date().getTime();
-            let diff = expiryDate - now;
-            return Math.ceil(diff / (1000 * 60 * 60 * 24));
-        }
-        
-        function updateExpiryUI() {
-            let daysLeft = getDaysRemaining();
-            let formattedDate = formatDate(expiryDate);
-            
-            document.getElementById('expireDate').innerHTML = formattedDate;
-            document.getElementById('ruleDate').innerHTML = formattedDate;
-            
-            let maxDays = 30;
-            let percent = Math.min(100, Math.max(0, (daysLeft / maxDays) * 100));
-            document.getElementById('expiryFill').style.width = percent + '%';
-            
-            let expiryText = document.getElementById('expiryText');
-            let expiryFill = document.getElementById('expiryFill');
-            
-            if (daysLeft <= 0) {
-                expiryText.innerHTML = '⚠️ ПОДПИСКА ИСТЕКЛА! Срочно покорми кролика! ⚠️';
-                expiryFill.style.background = '#ff0000';
-                expiryText.style.color = '#ff6666';
-                document.getElementById('rabbitEmoji').innerHTML = '😿';
-            } else if (daysLeft <= 3) {
-                expiryText.innerHTML = `⚠️ До истечения подписки: ${daysLeft} дня(ей)! Срочно покорми! ⚠️`;
-                expiryFill.style.background = '#ffaa00';
-                expiryText.style.color = '#ffaa00';
-                document.getElementById('rabbitEmoji').innerHTML = '🐇⚠️';
-            } else if (daysLeft <= 7) {
-                expiryText.innerHTML = `До истечения подписки: ${daysLeft} дней. Покорми кролика!`;
-                expiryFill.style.background = '#ffaa00';
-                expiryText.style.color = '#ffaa00';
-                document.getElementById('rabbitEmoji').innerHTML = '🐇';
-            } else {
-                expiryText.innerHTML = `До истечения подписки: ${daysLeft} дней`;
-                expiryFill.style.background = 'linear-gradient(90deg, #ff6b35, #ff9f4a)';
-                expiryText.style.color = '#aaa';
-                document.getElementById('rabbitEmoji').innerHTML = '🐰';
-            }
-        }
-        
-        function feedRabbit() {
-            let now = new Date().getTime();
-            let lastFeed = localStorage.getItem('lastFeedTime') ? parseInt(localStorage.getItem('lastFeedTime')) : 0;
-            
-            if (now - lastFeed < 60 * 1000) {
-                let secondsLeft = Math.ceil((60 * 1000 - (now - lastFeed)) / 1000);
-                showToast(`⏰ Кролик сыт! Подожди ${secondsLeft} сек`);
-                return;
-            }
-            
-            expiryDate = expiryDate + (3 * 24 * 60 * 60 * 1000);
-            localStorage.setItem('subscriptionExpiry', expiryDate);
-            localStorage.setItem('lastFeedTime', now);
-            
-            let rabbitEmoji = document.getElementById('rabbitEmoji');
-            rabbitEmoji.style.animation = 'none';
-            setTimeout(() => rabbitEmoji.style.animation = 'wiggle 0.5s ease', 10);
-            
-            if (navigator.vibrate) navigator.vibrate(50);
-            
-            updateExpiryUI();
-            showToast('🥕 +3 дня к подписке! Спасибо, что покормил кролика!');
-        }
-        
-        let style = document.createElement('style');
-        style.textContent = `
-            @keyframes wiggle {
-                0%, 100% { transform: rotate(0deg); }
-                25% { transform: rotate(10deg); }
-                75% { transform: rotate(-10deg); }
-            }
-            .rabbit-emoji {
-                animation: none;
-            }
-        `;
-        document.head.appendChild(style);
-        
-        const modal = document.getElementById('feedModal');
-        const rabbitFloat = document.getElementById('rabbitFloat');
-        const closeModal = document.getElementById('closeModal');
-        const feedBtn = document.getElementById('feedBtn');
-        
-        rabbitFloat.addEventListener('click', () => {
-            updateExpiryUI();
-            modal.style.display = 'flex';
-        });
-        
-        closeModal.addEventListener('click', () => {
-            modal.style.display = 'none';
-        });
-        
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) modal.style.display = 'none';
-        });
-        
-        feedBtn.addEventListener('click', feedRabbit);
         
         const clickSound = new Audio("https://www.soundjay.com/misc/sounds/button-click-1.mp3");
 
@@ -730,8 +485,6 @@
         document.getElementById('faqLink').addEventListener('click', toggleFaqContainer);
         
         window.toggleFaq = toggleFaq;
-        
-        updateExpiryUI();
     </script>
 </body>
 </html>

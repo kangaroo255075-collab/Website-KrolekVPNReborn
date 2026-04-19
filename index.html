@@ -87,8 +87,19 @@
             flex-wrap: wrap;
             gap: 15px;
         }
-        .logo { display: flex; align-items: center; gap: 10px; font-size: 24px; font-weight: 700; }
-        .logo i { color: #ff6b35; font-size: 32px; }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 700;
+        }
+        .logo-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
         .logo span { background: linear-gradient(135deg, #ff6b35, #ff9f4a); -webkit-background-clip: text; background-clip: text; color: transparent; }
         .nav-links { display: flex; gap: 30px; }
         .nav-links a { color: #fff; text-decoration: none; transition: 0.3s; font-weight: 500; }
@@ -272,6 +283,8 @@
         .feature-card p { color: #ddd; font-size: 14px; }
         
         .footer { text-align: center; padding: 30px 0; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 40px; color: #aaa; }
+        .footer a { color: #aaa; text-decoration: none; transition: 0.3s; }
+        .footer a:hover { color: #ff6b35; }
         
         @media (max-width: 768px) {
             .hero h1 { font-size: 36px; }
@@ -301,15 +314,22 @@
 </head>
 <body>
     <div class="container">
+        <!-- Шапка с аватаркой в логотипе -->
         <nav class="navbar">
-            <div class="logo"><i class="fas fa-shield-alt"></i><span>KrolekVPN<span style="color:#fff">Reborn</span></span></div>
+            <div class="logo">
+                <img src="https://raw.githubusercontent.com/kangaroo255075-collab/Website-KrolekVPNReborn/main/IMG_20260419_180656_143.jpg" 
+                     alt="KrolekVPN" 
+                     class="logo-avatar">
+                <span>KrolekVPN<span style="color:#fff">Reborn</span></span>
+            </div>
             <div class="nav-links">
                 <a href="#features">Преимущества</a>
-                <a href="https://t.me/KrolekVPNReborn" target="_blank">Канал</a>
+                <a href="https://t.me/+JTSRgKb-tnRiMmFi" target="_blank">Канал</a>
                 <a href="https://t.me/KrolekVPNReborn_bot" target="_blank">Бот</a>
             </div>
         </nav>
 
+        <!-- Герой -->
         <div class="hero">
             <div class="hero-content">
                 <div class="hero-badge"><i class="fas fa-crown"></i> Бесплатно навсегда</div>
@@ -324,6 +344,7 @@
             <div class="hero-image"><i class="fas fa-globe"></i></div>
         </div>
 
+        <!-- Карточка подписки -->
         <div class="subscription-card">
             <h3>🔐 ВАША ПОДПИСКА</h3>
             <div class="expire-date">15 июля 2045 г.</div>
@@ -337,6 +358,7 @@
             </div>
         </div>
 
+        <!-- Инструкция -->
         <div class="instructions">
             <h3><i class="fas fa-book-open"></i> Подключение к VPN</h3>
             <div class="step">
@@ -359,6 +381,7 @@
             </button>
         </div>
 
+        <!-- Правила -->
         <div class="rules">
             <h3><i class="fas fa-gavel"></i> Правила использования</h3>
             <div class="rule-item"><div class="rule-icon">🎯</div><div class="rule-text">VPN предназначен <strong>только для обхода глушилок</strong> и защиты трафика от блокировок.</div></div>
@@ -371,7 +394,7 @@
             <div class="rule-item"><div class="rule-icon">⏱️</div><div class="rule-text">Подписка <strong>бесплатна</strong> и действует до <strong>15 июля 2045 года</strong>. Продление не требуется.</div></div>
         </div>
 
-        <!-- НОВЫЙ БЛОК FAQ С ТВОИМИ ТЕКСТАМИ -->
+        <!-- FAQ -->
         <div class="faq-section">
             <h3><i class="fas fa-question-circle"></i> Часто задаваемые вопросы</h3>
 
@@ -381,7 +404,7 @@
                     <div class="arrow">›</div>
                 </div>
                 <div class="faq-answer">
-                    Если у вас появились проблемы с работой нашего VPN, советую написать в поддержку. Если у вас пока нет возможности написать нам, то дождитесь следующего обновления. Все обновления сначала публикуются в нашем <a href="https://t.me/KrolekVPNReborn" target="_blank">канале</a>, а затем реализуются 🐇
+                    Если у вас появились проблемы с работой нашего VPN, советую написать в поддержку. Если у вас пока нет возможности написать нам, то дождитесь следующего обновления. Все обновления сначала публикуются в нашем <a href="https://t.me/+JTSRgKb-tnRiMmFi" target="_blank">канале</a>, а затем реализуются 🐇
                 </div>
             </div>
 
@@ -406,6 +429,7 @@
             </div>
         </div>
 
+        <!-- Преимущества -->
         <div class="features" id="features">
             <h2 class="section-title">Почему <span>KrolekVPNReborn</span>?</h2>
             <div class="features-grid">
@@ -416,9 +440,14 @@
             </div>
         </div>
 
+        <!-- Футер -->
         <div class="footer">
             <p>© 2025-2026 KrolekVPNReborn. Бесплатный VPN для обхода блокировок.</p>
-            <p><a href="https://t.me/KrolekVPNReborn" style="color:#aaa;">Канал</a> | <a href="https://t.me/Kr0l3k" style="color:#aaa;">Поддержка</a></p>
+            <p>
+                <a href="https://t.me/+JTSRgKb-tnRiMmFi" target="_blank"><i class="fab fa-telegram"></i> Приватный канал</a>
+                &nbsp;|&nbsp;
+                <a href="https://t.me/Kr0l3k" target="_blank"><i class="fas fa-headset"></i> Поддержка</a>
+            </p>
         </div>
     </div>
 

@@ -94,12 +94,6 @@
             font-size: 24px;
             font-weight: 700;
         }
-        .channel-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
         .logo i { color: #ff6b35; font-size: 32px; }
         .logo span { background: linear-gradient(135deg, #ff6b35, #ff9f4a); -webkit-background-clip: text; background-clip: text; color: transparent; }
         .nav-links { display: flex; gap: 30px; }
@@ -242,6 +236,33 @@
             padding: 0 20px 16px 20px;
         }
         
+        /* Переключатель только для Happ */
+        .client-switch {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .client-btn {
+            background: rgba(255,107,53,0.2);
+            border: 1px solid #ff6b35;
+            border-radius: 50px;
+            padding: 10px 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: default;
+            color: #ff9f4a;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .client-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
         .connect-btn {
             background: linear-gradient(135deg, #ff6b35, #ff9f4a);
             border: none;
@@ -359,6 +380,16 @@
 
         <div class="instructions">
             <h3><i class="fas fa-book-open"></i> Подключение к VPN</h3>
+            
+            <!-- Переключатель только с Happ -->
+            <div class="client-switch">
+                <div class="client-btn">
+                    <img src="https://raw.githubusercontent.com/kangaroo255075-collab/Website-KrolekVPNReborn/main/IMG_20260509_130537_620.jpg" 
+                         alt="Happ" class="client-icon">
+                    Happ
+                </div>
+            </div>
+
             <div class="step">
                 <div class="step-icon">📱</div>
                 <div class="step-text">Установите приложение <strong style="color: #ff6b35;">Happ</strong> из 
@@ -502,4 +533,4 @@
         document.getElementById('whitelistBtn').addEventListener('click', connectToWhitelist);
     </script>
 </body>
-                        </html>
+                </html>

@@ -487,8 +487,10 @@
     <div id="toast" class="toast"></div>
 
     <script>
-        const HAPP_URL = "happ://crypt5/iaii7KEPGEJTlqIM6h210Cvtn67jxkq4BV9eFjZujZfC/mATElUmpDTCSP1jHFj+N9sXBK/FGh6r8TY2JafnT4jOl3r5sMzsr3eu4uzlA70TRF527xhr316m9GsvLTCfdKb9Z0KGIs1of9CwqmIAk1V/mEKGMEy05ZERoGNmS4ugQJob23OUT7GuR9zg7hHJ5t7mZqWUZr87jWQ7AiVZ1lh4dtlCmhlrOB2pM1eQ==3g8kpUJXU9EM02PST+9ZtNNdVBEAyi4YF3xFuN+mviOTZ9AgKvc/SVa9kZG/HkHeqqkHbadIt9YX/AxI13gKI+QUu2j7G0/5EVROm0PbJmzXkyJU7xdnctbGKs4ucRw1hELOFUv5T9BKoUwq5KgrcMHTDplZriFI2Hm4YybOtyhacyXHla7OyOipziQBrWPy0BElYdPFlQVYnjYLfI3KrpYDcOgQLjOoJgQKSZ2XSsHE+2QYMReEba+cadE/0U2KUBvgEEdeb5DRQqc/jGY3TT/Na3zoNxko/gzTve/hnhGHPE7KFyAabkrwEUB2iDupjpOk2UEPLCfNnnTLHLGUu8I6W/ueFbmERAuZjhR8u+v/cMb2kNMoRPa6defrwM1WwtaxNbXVTUpjqX4PfGfNdYFl4d9i/8vb+EIG0LFIzex2RCMBpqsHZT6UwtCCDKLzSImqHB9A58tVXKtqHA9xG+/oPFiJ4AQprBNevjYk3cdUS+S4Jn+HUFQQ5lPNMhgLLWLMAX082oiNdwAnMVaMdOFp3tCyH6VXN1b7Aedrmsc1Za9x/WVtdQ+SSkb3mmQjoVinrGzSecwOHVN3LbC2T3IqHrZIxfrO/4N0UstY1ML1AXr7hJ0ydPT/yTzXNnRkbLgpQa1gKnrP9ovc+AMLF2zHn9ULhXa8kP1x1YjwXFg=dIdioa";
+        // НОВАЯ ссылка для кнопки "Подключиться к VPN"
+        const HAPP_URL = "happ://crypt5/neirTpHqYFv7pwC06c21OR+ajPIg7FYfsqtBwuihPX8ReSFi/IEJRqBoS1jtuXoNuXgt+SQiIgKnXZsiu7L4uBiQOaHzMnmbatNLMezmqiZLIB3Yi4OZe+N3poYBcdS4EA3TLVqRI1kNqwHXOFaD8r09MwBG9xCdkoGY9BAkabqw/5ov7QWExsOs3P3b8Uj/Vlhdil1ECGHXix89Nmdmmvb/b3c4vUtPqQGYsY3o==cgXAGp0ml4HKpnyw5sTgcKkmO7d4xMX+JqTDzZPi6maDnbSDSvVKVQmbEupvCL1KJWEpmSU6XzxW3hb3UfsIuiv1YraVMTAMzrRg0vfgS5aT1zfX1I7bkg4Lq9vQ7kSATYkTT0w9zGf7UToeHh7hTfIx2tpLHUU/y0eTXgIBN7pMNZbKfOiaLZ8jsIYAsm/2libxRrGXLoqJ9Nq1eidgLwEvT7pKVfPRaDunaZtxzxpOFOMg+USRZ6CWkuTt1jbpB0I94KnYofphv802s2cnwCR2zhK61/de9H2rVRC/lnepVGNrw+yGJqff90yh34sS1uvM5pWhmxwZYWge6COj5uxatTBMZkGxfdhfeYeV5XVZr0idwE1SFGeF+PebV4Mr1wxOydY7LNbxEKwMfdRS3bM5Rwyvyfgx+nOtT1g0XYwO9WuZM3l4fI24IeUIPFKtL2x3SGs4GTqiSsyc27YAe2Ql/gddvDtoMsHikOXFMF5an05+onXXF4TH0cIjwPCtYAYFxlVjxCIumZhM57kjxzkeUredllK+YaBEZU4xlhuzwQenj4lxuXa4mDky2YPoqug2hGfMAPFja4fC6IdLnXe2bxUH3KdTKLljjdno7xKExGYtT2hAqn4GMMG5Q+iXeKW6kmANeDH8xOPCfKQwuPqNgRjRbuX0M40FIIQ6dCU=Bdftjv";
         
+        // Старая ссылка для "Белых списков" (оставляем как была)
         const WHITELIST_URL = "happ://crypt5/neirpBygmmnKbmEA8v28WlgWpS0EAEI5KL6CtGNCMaNTNNW7lf3fyEY9vIiEaOyvaJETN5/AZ57/k4/NUQmCRxSFjrgztH9tteE/h2afqWkEKkBlXiLXdgzlRojJQKtsbauiLtd1rt8+eCPgnc1zo/CHxh/XQEv/LdtwQdnHA+WFPYogzQT4Bwj2UREoZABq+K9k5snNJ2P7gU8qHQf57peVYfRtuXPkkEvMettYXXiqg235fbnMXSKCTnrsPwZ/Ms0U/dUOYhOf69c85Ai705k8fQt22IwCizTaIciOVDOaucW8eLh1PdAPLPgA6d8kOVZQ6No+HV33ASlQtMz0Sjyains2+zFhtTCZiELCcilWz43tnxCYkoA1BIcW5UROEowJwDA96D3CP/8Gqgh5DGkIpsY94Bw0AYz11sANwPq+yzioq4rzkrbhNvGNpa1BOzfBHDDRz1pOU9Dav48737ocNh9DsLzKuhGoKb1YD4n2HYs1+7cFQyjSWlnnyFIyL3E5SQAAdIePnqHJoVBLWbIic/H0Vc+kzYOXB5Am02dgy+wteohHt3M4Cw6ZIn9P40/6ISMCgetyC3NBszbEf5ep/A9zxyQnX5ymC25+asjOrHI5YRzSVlZbKJafbXi24unN7Kctk8TQKlW7hozc4q6xN3D0kAwKW+pnvW+jCbh58fQSn1/xj1Ljm2k+obsfCtBoVssoi1m5MWrMEWUDFHyyIQSbF2HnhULOd01nARiwTO9y1ITcIspOTmbpeD0KavwYBxbOZDqREaI5bnSh1c8m8R/kLfALP/r7EuHe+PtF65SXU4TuviPBv1IiwUO88n1dNNBBpIi1QWvujdwHvl+9MqZtyRllAzjTmq9yenNZDjN7iLvXFBqAq9o4iU0Fk+jkxrxf34pHy1Ty2c9/WEvZ6s4BCXhPxP2i4G6lWW6/Kk0Q6yJu/OIOBsqBEkZH1cEFeyE/V38vAnMfc3MxriFeuJcGU=KCftjv";
         
         const clickSound = new Audio("https://www.soundjay.com/misc/sounds/button-click-1.mp3");
@@ -533,4 +535,4 @@
         document.getElementById('whitelistBtn').addEventListener('click', connectToWhitelist);
     </script>
 </body>
-                </html>
+</html>

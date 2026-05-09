@@ -94,12 +94,13 @@
             font-size: 24px;
             font-weight: 700;
         }
-        .logo-avatar {
+        .channel-avatar {
             width: 40px;
             height: 40px;
             border-radius: 50%;
             object-fit: cover;
         }
+        .logo i { color: #ff6b35; font-size: 32px; }
         .logo span { background: linear-gradient(135deg, #ff6b35, #ff9f4a); -webkit-background-clip: text; background-clip: text; color: transparent; }
         .nav-links { display: flex; gap: 30px; }
         .nav-links a { color: #fff; text-decoration: none; transition: 0.3s; font-weight: 500; }
@@ -314,12 +315,12 @@
 </head>
 <body>
     <div class="container">
-        <!-- Шапка с аватаркой в логотипе -->
         <nav class="navbar">
             <div class="logo">
                 <img src="https://raw.githubusercontent.com/kangaroo255075-collab/Website-KrolekVPNReborn/main/IMG_20260419_180656_143.jpg" 
                      alt="KrolekVPN" 
-                     class="logo-avatar">
+                     style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px; object-fit: cover;">
+                <i class="fas fa-shield-alt"></i>
                 <span>KrolekVPN<span style="color:#fff">Reborn</span></span>
             </div>
             <div class="nav-links">
@@ -329,7 +330,6 @@
             </div>
         </nav>
 
-        <!-- Герой -->
         <div class="hero">
             <div class="hero-content">
                 <div class="hero-badge"><i class="fas fa-crown"></i> Бесплатно навсегда</div>
@@ -344,7 +344,6 @@
             <div class="hero-image"><i class="fas fa-globe"></i></div>
         </div>
 
-        <!-- Карточка подписки -->
         <div class="subscription-card">
             <h3>🔐 ВАША ПОДПИСКА</h3>
             <div class="expire-date">15 июля 2045 г.</div>
@@ -358,7 +357,6 @@
             </div>
         </div>
 
-        <!-- Инструкция -->
         <div class="instructions">
             <h3><i class="fas fa-book-open"></i> Подключение к VPN</h3>
             <div class="step">
@@ -370,18 +368,22 @@
             </div>
             <div class="step">
                 <div class="step-icon">🔌</div>
-                <div class="step-text">Нажмите на кнопку <strong>«Подключиться к VPN»</strong> ниже</div>
+                <div class="step-text">Нажмите на одну из кнопок ниже</div>
             </div>
             <div class="step">
                 <div class="step-icon">✅</div>
                 <div class="step-text">Готово! Приложение откроется автоматически</div>
             </div>
+            
             <button class="connect-btn" id="connectBtn">
                 <i class="fas fa-plug"></i> Подключиться к VPN
             </button>
+            
+            <button class="connect-btn" id="whitelistBtn" style="margin-top: 10px;">
+                <i class="fas fa-shield-alt"></i> Подключиться, если у вас Белые списки
+            </button>
         </div>
 
-        <!-- Правила -->
         <div class="rules">
             <h3><i class="fas fa-gavel"></i> Правила использования</h3>
             <div class="rule-item"><div class="rule-icon">🎯</div><div class="rule-text">VPN предназначен <strong>только для обхода глушилок</strong> и защиты трафика от блокировок.</div></div>
@@ -394,7 +396,6 @@
             <div class="rule-item"><div class="rule-icon">⏱️</div><div class="rule-text">Подписка <strong>бесплатна</strong> и действует до <strong>15 июля 2045 года</strong>. Продление не требуется.</div></div>
         </div>
 
-        <!-- FAQ -->
         <div class="faq-section">
             <h3><i class="fas fa-question-circle"></i> Часто задаваемые вопросы</h3>
 
@@ -429,7 +430,6 @@
             </div>
         </div>
 
-        <!-- Преимущества -->
         <div class="features" id="features">
             <h2 class="section-title">Почему <span>KrolekVPNReborn</span>?</h2>
             <div class="features-grid">
@@ -440,8 +440,10 @@
             </div>
         </div>
 
-        <!-- Футер -->
         <div class="footer">
+            <img src="https://raw.githubusercontent.com/kangaroo255075-collab/Website-KrolekVPNReborn/main/IMG_20260419_180656_143.jpg" 
+                 alt="KrolekVPN" 
+                 style="width: 50px; border-radius: 50%; margin-bottom: 10px;">
             <p>© 2025-2026 KrolekVPNReborn. Бесплатный VPN для обхода блокировок.</p>
             <p>
                 <a href="https://t.me/+JTSRgKb-tnRiMmFi" target="_blank"><i class="fab fa-telegram"></i> Приватный канал</a>
@@ -454,7 +456,9 @@
     <div id="toast" class="toast"></div>
 
     <script>
-        const HAPP_URL = "happ://crypt5/iaiitKllnLzXyIFP6b21rr0x2De0UHVssP2nBlcKAL8/ZQGIvlU4c5ujzNEYz4lPCOm/omqkysBNAGARJXVChTi5nqgMcMvrdBLJdBKQYCQ7jhE36Yx7Sx4ZeuLZg2KiwVO1rl5zxp1c/85GESHl0l3XSEqUqLbNePy6cuJO4dO7TyAcjIK5XU5ec02OgM6PG4F7uoLk6qIp9BoK/LpDOk//8PFFpJgOhxzSK4U4==dganFEQz5WNKZ01Q9ktY9V5rd6fKo3D+YP3K7029fmqTrxv6dK1fR/jfTgoo+Qt4DEqtlzte2Qb1vWQ3pnGNDVvcV/x97faJWTPuPovwnO3SKBuGMXgNb6lFDdwtT5i8z5De51gDG2PhZXWUV+RoUadhRiPSbvq1krqQ6W8MnQf5hMKqQ/hweZ7e3MuRPdvkha+FUWPF5HaarolPKrPNX5xTCQBNeb17Sz5T1ApU5LZtu8x6fOiBwopN1q5vfMHtMGgec+41WCI0sgWvRRNyUh2whRoP0Hn8N2wIRlCk2/H3AqIonLDSAyZj+KloeW0YrwzCE3bcpjr+QeoyAKg4gwOiB/7zvfXSWP+smUyqT15gDVz+SCBEHDbhfPddot6Gb1LiMMCnB/ATAp3HqiO4E4WwZHbfyS54Y4pXvg7/tLtUTuJnby8lSrhLXubsdS30Z2IjIoWpBMx+sO0j+5QKC5B3vp57vSMK9qY3Gx2asT04pkd9AY+NldvQ+knJRHXMFNzqh/jBk6wX/ol789tIdzrzheIuJ6HY1GOuCjAu1CGlrSSnatwV67xy92cFUt0tGsuZndoQFH7JzK+Ugp5uIfaFYLmVepmHiZxoF3DL5/4FbxTqJzdEMHa8ObIqwd2XWidC4YEz+M4Bm+Iux6sYka9IQ5ix7E5mgHP+rsXl0Ik=7Fdioa";
+        const HAPP_URL = "happ://crypt5/iaii7KEPGEJTlqIM6h210Cvtn67jxkq4BV9eFjZujZfC/mATElUmpDTCSP1jHFj+N9sXBK/FGh6r8TY2JafnT4jOl3r5sMzsr3eu4uzlA70TRF527xhr316m9GsvLTCfdKb9Z0KGIs1of9CwqmIAk1V/mEKGMEy05ZERoGNmS4ugQJob23OUT7GuR9zg7hHJ5t7mZqWUZr87jWQ7AiVZ1lh4dtlCmhlrOB2pM1eQ==3g8kpUJXU9EM02PST+9ZtNNdVBEAyi4YF3xFuN+mviOTZ9AgKvc/SVa9kZG/HkHeqqkHbadIt9YX/AxI13gKI+QUu2j7G0/5EVROm0PbJmzXkyJU7xdnctbGKs4ucRw1hELOFUv5T9BKoUwq5KgrcMHTDplZriFI2Hm4YybOtyhacyXHla7OyOipziQBrWPy0BElYdPFlQVYnjYLfI3KrpYDcOgQLjOoJgQKSZ2XSsHE+2QYMReEba+cadE/0U2KUBvgEEdeb5DRQqc/jGY3TT/Na3zoNxko/gzTve/hnhGHPE7KFyAabkrwEUB2iDupjpOk2UEPLCfNnnTLHLGUu8I6W/ueFbmERAuZjhR8u+v/cMb2kNMoRPa6defrwM1WwtaxNbXVTUpjqX4PfGfNdYFl4d9i/8vb+EIG0LFIzex2RCMBpqsHZT6UwtCCDKLzSImqHB9A58tVXKtqHA9xG+/oPFiJ4AQprBNevjYk3cdUS+S4Jn+HUFQQ5lPNMhgLLWLMAX082oiNdwAnMVaMdOFp3tCyH6VXN1b7Aedrmsc1Za9x/WVtdQ+SSkb3mmQjoVinrGzSecwOHVN3LbC2T3IqHrZIxfrO/4N0UstY1ML1AXr7hJ0ydPT/yTzXNnRkbLgpQa1gKnrP9ovc+AMLF2zHn9ULhXa8kP1x1YjwXFg=dIdioa";
+        
+        const WHITELIST_URL = "happ://crypt5/neirpBygmmnKbmEA8v28WlgWpS0EAEI5KL6CtGNCMaNTNNW7lf3fyEY9vIiEaOyvaJETN5/AZ57/k4/NUQmCRxSFjrgztH9tteE/h2afqWkEKkBlXiLXdgzlRojJQKtsbauiLtd1rt8+eCPgnc1zo/CHxh/XQEv/LdtwQdnHA+WFPYogzQT4Bwj2UREoZABq+K9k5snNJ2P7gU8qHQf57peVYfRtuXPkkEvMettYXXiqg235fbnMXSKCTnrsPwZ/Ms0U/dUOYhOf69c85Ai705k8fQt22IwCizTaIciOVDOaucW8eLh1PdAPLPgA6d8kOVZQ6No+HV33ASlQtMz0Sjyains2+zFhtTCZiELCcilWz43tnxCYkoA1BIcW5UROEowJwDA96D3CP/8Gqgh5DGkIpsY94Bw0AYz11sANwPq+yzioq4rzkrbhNvGNpa1BOzfBHDDRz1pOU9Dav48737ocNh9DsLzKuhGoKb1YD4n2HYs1+7cFQyjSWlnnyFIyL3E5SQAAdIePnqHJoVBLWbIic/H0Vc+kzYOXB5Am02dgy+wteohHt3M4Cw6ZIn9P40/6ISMCgetyC3NBszbEf5ep/A9zxyQnX5ymC25+asjOrHI5YRzSVlZbKJafbXi24unN7Kctk8TQKlW7hozc4q6xN3D0kAwKW+pnvW+jCbh58fQSn1/xj1Ljm2k+obsfCtBoVssoi1m5MWrMEWUDFHyyIQSbF2HnhULOd01nARiwTO9y1ITcIspOTmbpeD0KavwYBxbOZDqREaI5bnSh1c8m8R/kLfALP/r7EuHe+PtF65SXU4TuviPBv1IiwUO88n1dNNBBpIi1QWvujdwHvl+9MqZtyRllAzjTmq9yenNZDjN7iLvXFBqAq9o4iU0Fk+jkxrxf34pHy1Ty2c9/WEvZ6s4BCXhPxP2i4G6lWW6/Kk0Q6yJu/OIOBsqBEkZH1cEFeyE/V38vAnMfc3MxriFeuJcGU=KCftjv";
         
         const clickSound = new Audio("https://www.soundjay.com/misc/sounds/button-click-1.mp3");
 
@@ -477,6 +481,16 @@
             }, 1000);
         }
 
+        function connectToWhitelist() {
+            if (navigator.vibrate) navigator.vibrate(50);
+            clickSound.play().catch(e => console.log('Звук не воспроизведён'));
+            window.location.href = WHITELIST_URL;
+            showToast('🔄 Открываем Happ (Белые списки)...');
+            setTimeout(() => {
+                showToast('⚠️ Если Happ не открылся, установите приложение');
+            }, 1000);
+        }
+
         function toggleFaq(element) {
             const answer = element.nextElementSibling;
             const arrow = element.querySelector('.arrow');
@@ -485,6 +499,7 @@
         }
 
         document.getElementById('connectBtn').addEventListener('click', connectToVPN);
+        document.getElementById('whitelistBtn').addEventListener('click', connectToWhitelist);
     </script>
 </body>
-</html>
+                        </html>

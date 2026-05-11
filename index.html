@@ -270,7 +270,7 @@
         .footer a { color: #888; text-decoration: none; }
         .footer img { width: 40px; border-radius: 50%; margin-bottom: 6px; }
 
-        /* Нижние вкладки — уменьшенная высота */
+        /* Нижние вкладки */
         .bottom-tabs {
             position: fixed;
             bottom: 0;
@@ -325,7 +325,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Магазин — горизонтальный */
+        /* Магазин — горизонтальный, одна карточка */
         .shop-card {
             background: rgba(20, 20, 28, 0.7);
             backdrop-filter: blur(12px);
@@ -348,6 +348,7 @@
             gap: 12px;
             overflow-x: auto;
             padding-bottom: 8px;
+            justify-content: center;
         }
 
         .shop-item-horizontal {
@@ -356,7 +357,6 @@
             padding: 14px;
             min-width: 140px;
             text-align: center;
-            flex-shrink: 0;
         }
 
         .shop-item-name {
@@ -605,29 +605,17 @@
     </div>
 </div>
 
-<!-- Вкладка: МАГАЗИН (горизонтальный) -->
+<!-- Вкладка: МАГАЗИН (только бесплатная акция) -->
 <div id="tab-shop" class="tab-content">
     <div class="container">
         <div class="shop-card">
-            <div class="shop-title">🛍️ Магазин морковок</div>
+            <div class="shop-title">🛍️ Акция</div>
             <div class="shop-items-horizontal">
                 <div class="shop-item-horizontal">
                     <div class="shop-item-name">🥕 1</div>
                     <div class="shop-item-desc">1 морковка</div>
                     <div class="shop-item-price">🎁 Бесплатно (1 раз)</div>
                     <button class="shop-buy-btn" id="freeCarrotBtn">Получить</button>
-                </div>
-                <div class="shop-item-horizontal">
-                    <div class="shop-item-name">🥕 5</div>
-                    <div class="shop-item-desc">5 морковок</div>
-                    <div class="shop-item-price">💎 За реферала</div>
-                    <button class="shop-buy-btn" onclick="buyCarrots(5)">Получить</button>
-                </div>
-                <div class="shop-item-horizontal">
-                    <div class="shop-item-name">🥕 10</div>
-                    <div class="shop-item-desc">10 морковок</div>
-                    <div class="shop-item-price">🎁 Акция</div>
-                    <button class="shop-buy-btn" onclick="buyCarrots(10)">Получить</button>
                 </div>
             </div>
         </div>
@@ -644,7 +632,7 @@
     </div>
 </div>
 
-<!-- Нижние вкладки (уменьшенные) -->
+<!-- Нижние вкладки -->
 <div class="bottom-tabs">
     <button class="tab-item active" data-tab="connect">
         <i class="fas fa-plug"></i>
@@ -769,13 +757,6 @@
         }, 2000);
     }
 
-    function buyCarrots(amount) {
-        carrots += amount;
-        localStorage.setItem('krolek_carrots', carrots);
-        updateUI();
-        showToast(`✅ +${amount} морковок! Теперь у тебя ${carrots} морковок.`);
-    }
-
     // Бесплатная морковка — только 1 раз навсегда
     function freeCarrot() {
         const alreadyGot = localStorage.getItem('freeCarrotClaimed');
@@ -885,10 +866,8 @@
     }
 
     window.toggleFaq = toggleFaq;
-    window.buyCarrots = buyCarrots;
     window.freeCarrot = freeCarrot;
     
-    // Назначаем обработчик для бесплатной кнопки
     const freeBtn = document.getElementById('freeCarrotBtn');
     if (freeBtn) {
         freeBtn.onclick = freeCarrot;
@@ -898,4 +877,4 @@
     updateUI();
 </script>
 </body>
-                    </html>
+                                           </html>

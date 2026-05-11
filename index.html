@@ -17,7 +17,6 @@
             padding-bottom: 85px;
         }
 
-        /* Анимированный фон */
         body::before {
             content: '';
             position: fixed;
@@ -195,8 +194,21 @@
 
         .connect-btn:active { transform: scale(0.97); }
 
-        .rule-item { display: flex; gap: 12px; margin-bottom: 14px; font-size: 13px; color: #bbb; }
-        .rule-icon { font-size: 18px; min-width: 28px; }
+        .rules-list {
+            list-style: none;
+            padding: 0;
+        }
+        .rules-list li {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 14px;
+            font-size: 13px;
+            color: #bbb;
+            text-align: left;
+        }
+        .rules-list li strong {
+            color: #ff9f4a;
+        }
 
         .faq-item {
             margin-bottom: 10px;
@@ -258,7 +270,6 @@
         .footer a { color: #888; text-decoration: none; }
         .footer img { width: 48px; border-radius: 50%; margin-bottom: 8px; }
 
-        /* Кнопка морковки */
         .rabbit-float {
             position: fixed;
             bottom: 20px;
@@ -279,7 +290,6 @@
         .rabbit-float:active { transform: scale(0.92); }
         .rabbit-float i { font-size: 28px; color: white; }
 
-        /* Меню кормления */
         .feed-menu {
             position: fixed;
             bottom: 20px;
@@ -348,7 +358,6 @@
 <body>
 
 <div class="container">
-    <!-- ШАПКА -->
     <nav class="navbar">
         <div class="logo">
             <img src="https://raw.githubusercontent.com/kangaroo255075-collab/Website-KrolekVPNReborn/main/IMG_20260419_180656_143.jpg" 
@@ -363,7 +372,6 @@
         </div>
     </nav>
 
-    <!-- ГЕРОЙ -->
     <div class="hero">
         <h1>Обход глушилок <span>KrolekVPNReborn</span></h1>
         <p>Стабильная скорость 5-15 GBit/с, поддержка 24/7</p>
@@ -374,7 +382,6 @@
         </div>
     </div>
 
-    <!-- КАРТОЧКА ПОДПИСКИ -->
     <div class="subscription-card" id="subscriptionCard">
         <div class="subscription-title">📜 Ваша подписка</div>
         <div class="info-row">
@@ -386,7 +393,6 @@
             <span class="info-value" id="expiryDate">14 мая 2026 г.</span>
         </div>
         
-        <!-- Полоска -->
         <div class="expiry-bar-container">
             <div class="expiry-bar">
                 <div class="expiry-fill" id="expiryFill"></div>
@@ -394,10 +400,9 @@
             <div class="expiry-status" id="expiryStatus">✅ Подписка активна</div>
         </div>
 
-        <div class="carrot-count" id="carrotCount">🥕 Морковок: 0</div>
+        <div class="carrot-count" id="carrotCount">🥕 Морковок: 2</div>
     </div>
 
-    <!-- ИНСТРУКЦИЯ -->
     <div class="instructions">
         <h3><i class="fas fa-book-open"></i> Подключение к VPN</h3>
         <div class="step"><div class="step-icon">📱</div><div class="step-text">Установите <strong>Happ</strong> из Google Play / App Store</div></div>
@@ -412,20 +417,20 @@
         </button>
     </div>
 
-    <!-- ПРАВИЛА (исправленные, чёткие) -->
     <div class="rules">
         <h3><i class="fas fa-gavel"></i> Правила использования</h3>
-        <div class="rule-item"><span class="rule-icon">🎯</span> VPN предназначен <strong>только для обхода блокировок разных зарубежных сервисов и белых списков ТОЛЬКО В РОССИИ</strong>.</div>
-        <div class="rule-item"><span class="rule-icon">⚠️</span> VPN конфигурации мы добавляем <strong>частично</strong>, но не полностью.</div>
-        <div class="rule-item"><span class="rule-icon">🚫</span> <strong>Запрещено</strong> использовать VPN для доступа к банковским приложениям и финансовым операциям.</div>
-        <div class="rule-item"><span class="rule-icon">🚫</span> <strong>Запрещено</strong> заходить в российские сервисы и приложения через VPN.</div>
-        <div class="rule-item"><span class="rule-icon">🚫</span> <strong>Запрещено</strong> использовать торренты и P2P-сети.</div>
-        <div class="rule-item"><span class="rule-icon">🔒</span> Не передавайте свою подписку третьим лицам — это может привести к блокировке.</div>
-        <div class="rule-item"><span class="rule-icon">📢</span> О всех проблемах и неполадках сообщайте в поддержку <strong>@Kr0l3k</strong>.</div>
-        <div class="rule-item"><span class="rule-icon">⏱️</span> Подписка <strong>бесплатна</strong> и действует до даты, которую ты продлил. Продление требуется (корми кролика!).</div>
+        <ul class="rules-list">
+            <li><span>🎯</span> VPN предназначен <strong>только для обхода блокировок разных зарубежных сервисов и белых списков ТОЛЬКО В РОССИИ</strong>.</li>
+            <li><span>⚠️</span> VPN конфигурации мы добавляем <strong>частично</strong>, но не полностью.</li>
+            <li><span>🚫</span> <strong>Запрещено</strong> использовать VPN для доступа к банковским приложениям и финансовым операциям.</li>
+            <li><span>🚫</span> <strong>Запрещено</strong> заходить в российские сервисы и приложения через VPN.</li>
+            <li><span>🚫</span> <strong>Запрещено</strong> использовать торренты и P2P-сети.</li>
+            <li><span>🔒</span> Не передавайте свою подписку третьим лицам — это может привести к блокировке.</li>
+            <li><span>📢</span> О всех проблемах и неполадках сообщайте в поддержку <strong>@Kr0l3k</strong>.</li>
+            <li><span>⏱️</span> Подписка <strong>бесплатна</strong> и действует до даты, которую ты продлил. Продление требуется (корми кролика!).</li>
+        </ul>
     </div>
 
-    <!-- FAQ (полные) -->
     <div class="faq-section">
         <h3><i class="fas fa-question-circle"></i> Часто задаваемые вопросы</h3>
         
@@ -454,14 +459,13 @@
         </div>
     </div>
 
-    <!-- ПРЕИМУЩЕСТВА -->
     <div class="features" id="features">
         <h3 style="text-align:center; margin-bottom:16px;">Почему мы?</h3>
         <div class="features-grid">
             <div class="feature-card"><div class="feature-icon">⚡</div><h3>5-15 GBit/с</h3><p>Стабильно</p></div>
             <div class="feature-card"><div class="feature-icon">🛡️</div><h3>Обход глушилок</h3><p>LTE / VPN</p></div>
             <div class="feature-card"><div class="feature-icon">💬</div><h3>24/7</h3><p>Живая поддержка</p></div>
-            <div class="feature-card"><div class="feature-icon">💎</div><h3>Бесплатно</h3><p>Навсегда</p></div>
+            <div class="feature-card"><div class="feature-icon">🔓</div><h3>Совершенно бесплатно</h3><p>Навсегда</p></div>
         </div>
     </div>
 
@@ -472,12 +476,10 @@
     </div>
 </div>
 
-<!-- Кнопка морковки -->
 <div class="rabbit-float" id="rabbitBtn">
     <i class="fas fa-carrot"></i>
 </div>
 
-<!-- Меню кормления -->
 <div id="feedMenu" class="feed-menu">
     <span>🐇 Покорми кролика</span>
     <button id="feedActionBtn">🥕 Покормить 1🥕 (+3 дня)</button>
@@ -487,7 +489,7 @@
 
 <script>
     // ---------- ПОДПИСКА ----------
-    const START_DATE = new Date(2026, 4, 14); // 14 мая 2026
+    const START_DATE = new Date(2026, 4, 14);
     let userExpiry = localStorage.getItem('krolek_expiry');
     if (!userExpiry) {
         userExpiry = START_DATE.getTime();
@@ -496,7 +498,14 @@
         userExpiry = parseInt(userExpiry);
     }
 
-    let carrots = localStorage.getItem('krolek_carrots') ? parseInt(localStorage.getItem('krolek_carrots')) : 0;
+    // МОРКОВКИ: по умолчанию 2 штуки
+    let carrots = localStorage.getItem('krolek_carrots');
+    if (carrots === null) {
+        carrots = 2;
+        localStorage.setItem('krolek_carrots', carrots);
+    } else {
+        carrots = parseInt(carrots);
+    }
 
     function formatDate(timestamp) {
         const d = new Date(timestamp);
@@ -537,21 +546,30 @@
     }
 
     function feedRabbit() {
+        // Проверка: есть ли морковки?
+        if (carrots <= 0) {
+            showToast('❌ Нет морковок! Пополни запас в магазине или у администратора.');
+            return;
+        }
+        
         const now = Date.now();
         const lastFeed = localStorage.getItem('lastFeedTime') ? parseInt(localStorage.getItem('lastFeedTime')) : 0;
         
+        // Кулдаун 1 минута (чтобы не фармили)
         if (now - lastFeed < 60 * 1000 && lastFeed !== 0) {
             const secLeft = Math.ceil((60 * 1000 - (now - lastFeed)) / 1000);
             showToast(`⏳ Подожди ${secLeft} сек, кролик сыт!`);
             return;
         }
         
+        // Тратим морковку
+        carrots--;
+        localStorage.setItem('krolek_carrots', carrots);
+        
+        // Добавляем 3 дня к подписке
         userExpiry = userExpiry + (3 * 24 * 60 * 60 * 1000);
         localStorage.setItem('krolek_expiry', userExpiry);
         localStorage.setItem('lastFeedTime', now);
-        
-        carrots++;
-        localStorage.setItem('krolek_carrots', carrots);
         
         const btn = document.getElementById('feedActionBtn');
         const originalText = btn.innerText;
@@ -561,7 +579,7 @@
         if (navigator.vibrate) navigator.vibrate(50);
         
         updateUI();
-        showToast('🎉 +3 дня к подписке! Кролик сыт!');
+        showToast('🎉 +3 дня к подписке! (-1 морковка)');
         
         setTimeout(() => {
             document.getElementById('feedMenu').classList.remove('show');
@@ -590,7 +608,6 @@
         showToast('🔄 Открываем Happ (Белые списки)...');
     };
 
-    // Меню кормления
     const rabbitBtn = document.getElementById('rabbitBtn');
     const feedMenu = document.getElementById('feedMenu');
     const feedAction = document.getElementById('feedActionBtn');

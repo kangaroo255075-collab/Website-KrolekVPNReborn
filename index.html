@@ -194,17 +194,16 @@
 
         .connect-btn:active { transform: scale(0.97); }
 
+        /* Правила — как на скриншоте */
         .rules-list {
             list-style: none;
             padding: 0;
         }
         .rules-list li {
-            display: flex;
-            gap: 12px;
             margin-bottom: 14px;
             font-size: 13px;
             color: #bbb;
-            text-align: left;
+            line-height: 1.5;
         }
         .rules-list li strong {
             color: #ff9f4a;
@@ -417,17 +416,18 @@
         </button>
     </div>
 
+    <!-- ПРАВИЛА — ТОЧНО КАК НА СКРИНШОТЕ -->
     <div class="rules">
         <h3><i class="fas fa-gavel"></i> Правила использования</h3>
         <ul class="rules-list">
-            <li><span>🎯</span> VPN предназначен <strong>только для обхода блокировок разных зарубежных сервисов и белых списков ТОЛЬКО В РОССИИ</strong>.</li>
-            <li><span>⚠️</span> VPN конфигурации мы добавляем <strong>частично</strong>, но не полностью.</li>
-            <li><span>🚫</span> <strong>Запрещено</strong> использовать VPN для доступа к банковским приложениям и финансовым операциям.</li>
-            <li><span>🚫</span> <strong>Запрещено</strong> заходить в российские сервисы и приложения через VPN.</li>
-            <li><span>🚫</span> <strong>Запрещено</strong> использовать торренты и P2P-сети.</li>
-            <li><span>🔒</span> Не передавайте свою подписку третьим лицам — это может привести к блокировке.</li>
-            <li><span>📢</span> О всех проблемах и неполадках сообщайте в поддержку <strong>@Kr0l3k</strong>.</li>
-            <li><span>⏱️</span> Подписка <strong>бесплатна</strong> и действует до даты, которую ты продлил. Продление требуется (корми кролика!).</li>
+            <li>• VPN предназначен <strong>только для обхода блокировок разных зарубежных сервисов и белых списков ТОЛЬКО В РОССИИ</strong>.</li>
+            <li>• VPN конфигурации мы добавляем <strong>частично</strong>, но не полностью.</li>
+            <li>• <strong>Запрещено</strong> использовать VPN для доступа к банковским приложениям и финансовым операциям.</li>
+            <li>• <strong>Запрещено</strong> заходить в российские сервисы и приложения через VPN.</li>
+            <li>• <strong>Запрещено</strong> использовать торренты и P2P-сети.</li>
+            <li>• Не передавайте свою подписку третьим лицам — это может привести к блокировке.</li>
+            <li>• О всех проблемах и неполадках сообщайте в поддержку <strong>@Kr0l3k</strong>.</li>
+            <li>• Подписка <strong>бесплатна</strong> и действует до даты, которую ты продлил. Продление требуется (корми кролика!).</li>
         </ul>
     </div>
 
@@ -546,7 +546,6 @@
     }
 
     function feedRabbit() {
-        // Проверка: есть ли морковки?
         if (carrots <= 0) {
             showToast('❌ Нет морковок! Пополни запас в магазине или у администратора.');
             return;
@@ -555,18 +554,15 @@
         const now = Date.now();
         const lastFeed = localStorage.getItem('lastFeedTime') ? parseInt(localStorage.getItem('lastFeedTime')) : 0;
         
-        // Кулдаун 1 минута (чтобы не фармили)
         if (now - lastFeed < 60 * 1000 && lastFeed !== 0) {
             const secLeft = Math.ceil((60 * 1000 - (now - lastFeed)) / 1000);
             showToast(`⏳ Подожди ${secLeft} сек, кролик сыт!`);
             return;
         }
         
-        // Тратим морковку
         carrots--;
         localStorage.setItem('krolek_carrots', carrots);
         
-        // Добавляем 3 дня к подписке
         userExpiry = userExpiry + (3 * 24 * 60 * 60 * 1000);
         localStorage.setItem('krolek_expiry', userExpiry);
         localStorage.setItem('lastFeedTime', now);
@@ -593,7 +589,6 @@
         setTimeout(() => toast.style.opacity = '0', 2500);
     }
 
-    // Ссылки для Happ
     const HAPP_URL = "happ://crypt5/neirTpHqYFv7pwC06c21OR+ajPIg7FYfsqtBwuihPX8ReSFi/IEJRqBoS1jtuXoNuXgt+SQiIgKnXZsiu7L4uBiQOaHzMnmbatNLMezmqiZLIB3Yi4OZe+N3poYBcdS4EA3TLVqRI1kNqwHXOFaD8r09MwBG9xCdkoGY9BAkabqw/5ov7QWExsOs3P3b8Uj/Vlhdil1ECGHXix89Nmdmmvb/b3c4vUtPqQGYsY3o==cgXAGp0ml4HKpnyw5sTgcKkmO7d4xMX+JqTDzZPi6maDnbSDSvVKVQmbEupvCL1KJWEpmSU6XzxW3hb3UfsIuiv1YraVMTAMzrRg0vfgS5aT1zfX1I7bkg4Lq9vQ7kSATYkTT0w9zGf7UToeHh7hTfIx2tpLHUU/y0eTXgIBN7pMNZbKfOiaLZ8jsIYAsm/2libxRrGXLoqJ9Nq1eidgLwEvT7pKVfPRaDunaZtxzxpOFOMg+USRZ6CWkuTt1jbpB0I94KnYofphv802s2cnwCR2zhK61/de9H2rVRC/lnepVGNrw+yGJqff90yh34sS1uvM5pWhmxwZYWge6COj5uxatTBMZkGxfdhfeYeV5XVZr0idwE1SFGeF+PebV4Mr1wxOydY7LNbxEKwMfdRS3bM5Rwyvyfgx+nOtT1g0XYwO9WuZM3l4fI24IeUIPFKtL2x3SGs4GTqiSsyc27YAe2Ql/gddvDtoMsHikOXFMF5an05+onXXF4TH0cIjwPCtYAYFxlVjxCIumZhM57kjxzkeUredllK+YaBEZU4xlhuzwQenj4lxuXa4mDky2YPoqug2hGfMAPFja4fC6IdLnXe2bxUH3KdTKLljjdno7xKExGYtT2hAqn4GMMG5Q+iXeKW6kmANeDH8xOPCfKQwuPqNgRjRbuX0M40FIIQ6dCU=Bdftjv";
     const WHITELIST_URL = "happ://crypt5/neirpBygmmnKbmEA8v28WlgWpS0EAEI5KL6CtGNCMaNTNNW7lf3fyEY9vIiEaOyvaJETN5/AZ57/k4/NUQmCRxSFjrgztH9tteE/h2afqWkEKkBlXiLXdgzlRojJQKtsbauiLtd1rt8+eCPgnc1zo/CHxh/XQEv/LdtwQdnHA+WFPYogzQT4Bwj2UREoZABq+K9k5snNJ2P7gU8qHQf57peVYfRtuXPkkEvMettYXXiqg235fbnMXSKCTnrsPwZ/Ms0U/dUOYhOf69c85Ai705k8fQt22IwCizTaIciOVDOaucW8eLh1PdAPLPgA6d8kOVZQ6No+HV33ASlQtMz0Sjyains2+zFhtTCZiELCcilWz43tnxCYkoA1BIcW5UROEowJwDA96D3CP/8Gqgh5DGkIpsY94Bw0AYz11sANwPq+yzioq4rzkrbhNvGNpa1BOzfBHDDRz1pOU9Dav48737ocNh9DsLzKuhGoKb1YD4n2HYs1+7cFQyjSWlnnyFIyL3E5SQAAdIePnqHJoVBLWbIic/H0Vc+kzYOXB5Am02dgy+wteohHt3M4Cw6ZIn9P40/6ISMCgetyC3NBszbEf5ep/A9zxyQnX5ymC25+asjOrHI5YRzSVlZbKJafbXi24unN7Kctk8TQKlW7hozc4q6xN3D0kAwKW+pnvW+jCbh58fQSn1/xj1Ljm2k+obsfCtBoVssoi1m5MWrMEWUDFHyyIQSbF2HnhULOd01nARiwTO9y1ITcIspOTmbpeD0KavwYBxbOZDqREaI5bnSh1c8m8R/kLfALP/r7EuHe+PtF65SXU4TuviPBv1IiwUO88n1dNNBBpIi1QWvujdwHvl+9MqZtyRllAzjTmq9yenNZDjN7iLvXFBqAq9o4iU0Fk+jkxrxf34pHy1Ty2c9/WEvZ6s4BCXhPxP2i4G6lWW6/Kk0Q6yJu/OIOBsqBEkZH1cEFeyE/V38vAnMfc3MxriFeuJcGU=KCftjv";
 

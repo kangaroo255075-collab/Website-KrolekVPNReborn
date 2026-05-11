@@ -194,7 +194,6 @@
 
         .connect-btn:active { transform: scale(0.97); }
 
-        /* Правила — как на скриншоте */
         .rules-list {
             list-style: none;
             padding: 0;
@@ -269,9 +268,118 @@
         .footer a { color: #888; text-decoration: none; }
         .footer img { width: 48px; border-radius: 50%; margin-bottom: 8px; }
 
+        /* Нижние вкладки */
+        .bottom-tabs {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 0.5px solid rgba(255, 107, 53, 0.3);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 10px 20px 25px;
+            z-index: 1000;
+        }
+
+        .tab-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 6px 20px;
+            border-radius: 30px;
+            transition: 0.2s;
+        }
+
+        .tab-item i {
+            font-size: 22px;
+        }
+
+        .tab-item.active {
+            color: #ff6b35;
+            background: rgba(255, 107, 53, 0.12);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .shop-card {
+            background: rgba(20, 20, 28, 0.7);
+            backdrop-filter: blur(12px);
+            border-radius: 32px;
+            padding: 24px;
+            margin: 20px 0;
+            border: 1px solid rgba(255,107,53,0.2);
+            text-align: center;
+        }
+
+        .shop-item {
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 16px;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .shop-item-info {
+            text-align: left;
+        }
+
+        .shop-item-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .shop-item-desc {
+            font-size: 12px;
+            color: #aaa;
+        }
+
+        .shop-item-price {
+            color: #ff9f4a;
+            font-weight: 700;
+        }
+
+        .shop-buy-btn {
+            background: linear-gradient(135deg, #ff6b35, #ff9f4a);
+            border: none;
+            padding: 8px 20px;
+            border-radius: 40px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .shop-buy-btn:active {
+            transform: scale(0.95);
+        }
+
         .rabbit-float {
             position: fixed;
-            bottom: 20px;
+            bottom: 80px;
             right: 20px;
             width: 56px;
             height: 56px;
@@ -291,7 +399,7 @@
 
         .feed-menu {
             position: fixed;
-            bottom: 20px;
+            bottom: 80px;
             right: 80px;
             background: rgba(20, 20, 28, 0.98);
             backdrop-filter: blur(16px);
@@ -350,132 +458,201 @@
             .feed-menu { padding: 6px 12px; gap: 8px; }
             .feed-menu button { padding: 6px 12px; font-size: 12px; }
             .feed-menu span { font-size: 14px; }
+            .rabbit-float { bottom: 80px; }
+            .feed-menu { bottom: 80px; }
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
 
-<div class="container">
-    <nav class="navbar">
-        <div class="logo">
-            <img src="https://raw.githubusercontent.com/kangaroo255075-collab/Website-KrolekVPNReborn/main/IMG_20260419_180656_143.jpg" 
-                 style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover;">
-            <i class="fas fa-shield-alt"></i>
-            <span>KrolekVPN<span style="color:#fff">Reborn</span></span>
-        </div>
-        <div class="nav-links">
-            <a href="#features">Преимущества</a>
-            <a href="https://t.me/+JTSRgKb-tnRiMmFi" target="_blank">Канал</a>
-            <a href="https://t.me/KrolekVPNReborn_bot" target="_blank">Бот</a>
-        </div>
-    </nav>
-
-    <div class="hero">
-        <h1>Обход глушилок <span>KrolekVPNReborn</span></h1>
-        <p>Стабильная скорость 5-15 GBit/с, поддержка 24/7</p>
-        <div class="hero-stats">
-            <div><div class="stat-number">100+</div><div class="stat-label">Пользователей</div></div>
-            <div><div class="stat-number">3+</div><div class="stat-label">Серверов</div></div>
-            <div><div class="stat-number">24/7</div><div class="stat-label">Поддержка</div></div>
-        </div>
-    </div>
-
-    <div class="subscription-card" id="subscriptionCard">
-        <div class="subscription-title">📜 Ваша подписка</div>
-        <div class="info-row">
-            <span class="info-label">🚀 Скорость:</span>
-            <span class="info-value">5-15 GBit/с</span>
-        </div>
-        <div class="info-row">
-            <span class="info-label">📅 Дата истечения:</span>
-            <span class="info-value" id="expiryDate">14 мая 2026 г.</span>
-        </div>
-        
-        <div class="expiry-bar-container">
-            <div class="expiry-bar">
-                <div class="expiry-fill" id="expiryFill"></div>
+<!-- Вкладка: ПОДКЛЮЧИТСЯ -->
+<div id="tab-connect" class="tab-content active">
+    <div class="container">
+        <nav class="navbar">
+            <div class="logo">
+                <img src="https://raw.githubusercontent.com/kangaroo255075-collab/Website-KrolekVPNReborn/main/IMG_20260419_180656_143.jpg" 
+                     style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover;">
+                <i class="fas fa-shield-alt"></i>
+                <span>KrolekVPN<span style="color:#fff">Reborn</span></span>
             </div>
-            <div class="expiry-status" id="expiryStatus">✅ Подписка активна</div>
-        </div>
-
-        <div class="carrot-count" id="carrotCount">🥕 Морковок: 2</div>
-    </div>
-
-    <div class="instructions">
-        <h3><i class="fas fa-book-open"></i> Подключение к VPN</h3>
-        <div class="step"><div class="step-icon">📱</div><div class="step-text">Установите <strong>Happ</strong> из Google Play / App Store</div></div>
-        <div class="step"><div class="step-icon">🔌</div><div class="step-text">Нажмите на кнопку ниже</div></div>
-        <div class="step"><div class="step-icon">✅</div><div class="step-text">Готово! Приложение откроется</div></div>
-        
-        <button class="connect-btn" id="connectBtn">
-            <i class="fas fa-plug"></i> Подключиться к VPN
-        </button>
-        <button class="connect-btn" id="whitelistBtn" style="margin-top: 8px;">
-            <i class="fas fa-shield-alt"></i> Подключиться, если у вас белые списки
-        </button>
-    </div>
-
-    <!-- ПРАВИЛА — ТОЧНО КАК НА СКРИНШОТЕ -->
-    <div class="rules">
-        <h3><i class="fas fa-gavel"></i> Правила использования</h3>
-        <ul class="rules-list">
-            <li>• VPN предназначен <strong>только для обхода блокировок разных зарубежных сервисов и белых списков ТОЛЬКО В РОССИИ</strong>.</li>
-            <li>• VPN конфигурации мы добавляем <strong>частично</strong>, но не полностью.</li>
-            <li>• <strong>Запрещено</strong> использовать VPN для доступа к банковским приложениям и финансовым операциям.</li>
-            <li>• <strong>Запрещено</strong> заходить в российские сервисы и приложения через VPN.</li>
-            <li>• <strong>Запрещено</strong> использовать торренты и P2P-сети.</li>
-            <li>• Не передавайте свою подписку третьим лицам — это может привести к блокировке.</li>
-            <li>• О всех проблемах и неполадках сообщайте в поддержку <strong>@Kr0l3k</strong>.</li>
-            <li>• Подписка <strong>бесплатна</strong> и действует до даты, которую ты продлил. Продление требуется (корми кролика!).</li>
-        </ul>
-    </div>
-
-    <div class="faq-section">
-        <h3><i class="fas fa-question-circle"></i> Часто задаваемые вопросы</h3>
-        
-        <div class="faq-item">
-            <div class="faq-question" onclick="toggleFaq(this)">
-                <span>😕 Почему VPN не работает?</span>
-                <span class="arrow">›</span>
+            <div class="nav-links">
+                <a href="#features">Преимущества</a>
+                <a href="https://t.me/+JTSRgKb-tnRiMmFi" target="_blank">Канал</a>
+                <a href="https://t.me/KrolekVPNReborn_bot" target="_blank">Бот</a>
             </div>
-            <div class="faq-answer">Если у вас появились проблемы с работой нашего VPN, советую написать в поддержку. Если у вас пока нет возможности написать нам, то дождитесь следующего обновления. Все обновления сначала публикуются в нашем канале, а затем реализуются 🐇</div>
-        </div>
+        </nav>
 
-        <div class="faq-item">
-            <div class="faq-question" onclick="toggleFaq(this)">
-                <span>🤔 Как подключиться?</span>
-                <span class="arrow">›</span>
+        <div class="hero">
+            <h1>Обход глушилок <span>KrolekVPNReborn</span></h1>
+            <p>Стабильная скорость 5-15 GBit/с, поддержка 24/7</p>
+            <div class="hero-stats">
+                <div><div class="stat-number">100+</div><div class="stat-label">Пользователей</div></div>
+                <div><div class="stat-number">3+</div><div class="stat-label">Серверов</div></div>
+                <div><div class="stat-number">24/7</div><div class="stat-label">Поддержка</div></div>
             </div>
-            <div class="faq-answer">Пожалуйста, прочитайте инструкцию, которая находится на главной странице после карточки с датой подписки и скоростью 🐇</div>
         </div>
 
-        <div class="faq-item">
-            <div class="faq-question" onclick="toggleFaq(this)">
-                <span>🪤 Бесплатный сыр только в мышеловке?</span>
-                <span class="arrow">›</span>
+        <div class="subscription-card" id="subscriptionCard">
+            <div class="subscription-title">📜 Ваша подписка</div>
+            <div class="info-row">
+                <span class="info-label">🚀 Скорость:</span>
+                <span class="info-value">5-15 GBit/с</span>
             </div>
-            <div class="faq-answer">Я уверен, что многие это говорили, считая, что бесплатные VPN сливают ваши личные данные. Но на самом деле это не так. Есть и более хорошие VPN, которые не отдают данные третьим лицам. Сливание данных третьим лицам — нарушение закона Российской Федерации 🐇</div>
-        </div>
-    </div>
+            <div class="info-row">
+                <span class="info-label">📅 Дата истечения:</span>
+                <span class="info-value" id="expiryDate">14 мая 2026 г.</span>
+            </div>
+            
+            <div class="expiry-bar-container">
+                <div class="expiry-bar">
+                    <div class="expiry-fill" id="expiryFill"></div>
+                </div>
+                <div class="expiry-status" id="expiryStatus">✅ Подписка активна</div>
+            </div>
 
-    <div class="features" id="features">
-        <h3 style="text-align:center; margin-bottom:16px;">Почему мы?</h3>
-        <div class="features-grid">
-            <div class="feature-card"><div class="feature-icon">⚡</div><h3>5-15 GBit/с</h3><p>Стабильно</p></div>
-            <div class="feature-card"><div class="feature-icon">🛡️</div><h3>Обход глушилок</h3><p>LTE / VPN</p></div>
-            <div class="feature-card"><div class="feature-icon">💬</div><h3>24/7</h3><p>Живая поддержка</p></div>
-            <div class="feature-card"><div class="feature-icon">🔓</div><h3>Совершенно бесплатно</h3><p>Навсегда</p></div>
+            <div class="carrot-count" id="carrotCount">🥕 Морковок: 2</div>
         </div>
-    </div>
 
-    <div class="footer">
-        <img src="https://raw.githubusercontent.com/kangaroo255075-collab/Website-KrolekVPNReborn/main/IMG_20260419_180656_143.jpg" alt="logo">
-        <p>© 2025-2026 KrolekVPNReborn</p>
-        <p><a href="https://t.me/+JTSRgKb-tnRiMmFi">Приватный канал</a> | <a href="https://t.me/Kr0l3k">Поддержка</a></p>
+        <div class="instructions">
+            <h3><i class="fas fa-book-open"></i> Подключение к VPN</h3>
+            <div class="step"><div class="step-icon">📱</div><div class="step-text">Установите <strong>Happ</strong> из Google Play / App Store</div></div>
+            <div class="step"><div class="step-icon">🔌</div><div class="step-text">Нажмите на кнопку ниже</div></div>
+            <div class="step"><div class="step-icon">✅</div><div class="step-text">Готово! Приложение откроется</div></div>
+            
+            <button class="connect-btn" id="connectBtn">
+                <i class="fas fa-plug"></i> Подключиться к VPN
+            </button>
+            <button class="connect-btn" id="whitelistBtn" style="margin-top: 8px;">
+                <i class="fas fa-shield-alt"></i> Подключиться, если у вас белые списки
+            </button>
+        </div>
+
+        <div class="rules">
+            <h3><i class="fas fa-gavel"></i> Правила использования</h3>
+            <ul class="rules-list">
+                <li>• VPN предназначен <strong>только для обхода блокировок разных зарубежных сервисов и белых списков ТОЛЬКО В РОССИИ</strong>.</li>
+                <li>• VPN конфигурации мы добавляем <strong>частично</strong>, но не полностью.</li>
+                <li>• <strong>Запрещено</strong> использовать VPN для доступа к банковским приложениям и финансовым операциям.</li>
+                <li>• <strong>Запрещено</strong> заходить в российские сервисы и приложения через VPN.</li>
+                <li>• <strong>Запрещено</strong> использовать торренты и P2P-сети.</li>
+                <li>• Не передавайте свою подписку третьим лицам — это может привести к блокировке.</li>
+                <li>• О всех проблемах и неполадках сообщайте в поддержку <strong>@Kr0l3k</strong>.</li>
+                <li>• Подписка <strong>бесплатна</strong> и действует до даты, которую ты продлил. Продление требуется (корми кролика!).</li>
+            </ul>
+        </div>
+
+        <div class="faq-section">
+            <h3><i class="fas fa-question-circle"></i> Часто задаваемые вопросы</h3>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>😕 Почему VPN не работает?</span>
+                    <span class="arrow">›</span>
+                </div>
+                <div class="faq-answer">Если у вас появились проблемы с работой нашего VPN, советую написать в поддержку. Если у вас пока нет возможности написать нам, то дождитесь следующего обновления. Все обновления сначала публикуются в нашем канале, а затем реализуются 🐇</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>🤔 Как подключиться?</span>
+                    <span class="arrow">›</span>
+                </div>
+                <div class="faq-answer">Пожалуйста, прочитайте инструкцию, которая находится на главной странице после карточки с датой подписки и скоростью 🐇</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>🪤 Бесплатный сыр только в мышеловке?</span>
+                    <span class="arrow">›</span>
+                </div>
+                <div class="faq-answer">Я уверен, что многие это говорили, считая, что бесплатные VPN сливают ваши личные данные. Но на самом деле это не так. Есть и более хорошие VPN, которые не отдают данные третьим лицам. Сливание данных третьим лицам — нарушение закона Российской Федерации 🐇</div>
+            </div>
+        </div>
+
+        <div class="features" id="features">
+            <h3 style="text-align:center; margin-bottom:16px;">Почему мы?</h3>
+            <div class="features-grid">
+                <div class="feature-card"><div class="feature-icon">⚡</div><h3>5-15 GBit/с</h3><p>Стабильно</p></div>
+                <div class="feature-card"><div class="feature-icon">🛡️</div><h3>Обход глушилок</h3><p>LTE / VPN</p></div>
+                <div class="feature-card"><div class="feature-icon">💬</div><h3>24/7</h3><p>Живая поддержка</p></div>
+                <div class="feature-card"><div class="feature-icon">🔓</div><h3>Совершенно бесплатно</h3><p>Навсегда</p></div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <img src="https://raw.githubusercontent.com/kangaroo255075-collab/Website-KrolekVPNReborn/main/IMG_20260419_180656_143.jpg" alt="logo">
+            <p>© 2025-2026 KrolekVPNReborn</p>
+            <p><a href="https://t.me/+JTSRgKb-tnRiMmFi">Приватный канал</a> | <a href="https://t.me/Kr0l3k">Поддержка</a></p>
+        </div>
     </div>
 </div>
 
+<!-- Вкладка: МАГАЗИН -->
+<div id="tab-shop" class="tab-content">
+    <div class="container">
+        <div class="shop-card">
+            <h3 style="margin-bottom: 20px;">🛍️ Магазин морковок</h3>
+            
+            <div class="shop-item">
+                <div class="shop-item-info">
+                    <div class="shop-item-name">🥕 1 морковка</div>
+                    <div class="shop-item-desc">+3 дня к подписке</div>
+                </div>
+                <div>
+                    <span class="shop-item-price">Бесплатно</span>
+                    <button class="shop-buy-btn" onclick="buyCarrots(1)">Получить</button>
+                </div>
+            </div>
+
+            <div class="shop-item">
+                <div class="shop-item-info">
+                    <div class="shop-item-name">🥕 5 морковок</div>
+                    <div class="shop-item-desc">+15 дней к подписке</div>
+                </div>
+                <div>
+                    <span class="shop-item-price">💎 За реферала</span>
+                    <button class="shop-buy-btn" onclick="buyCarrots(5)">Получить</button>
+                </div>
+            </div>
+
+            <div class="shop-item">
+                <div class="shop-item-info">
+                    <div class="shop-item-name">🥕 10 морковок</div>
+                    <div class="shop-item-desc">+30 дней к подписке</div>
+                </div>
+                <div>
+                    <span class="shop-item-price">🎁 Акция</span>
+                    <button class="shop-buy-btn" onclick="buyCarrots(10)">Получить</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="shop-card">
+            <h3 style="margin-bottom: 16px;">💎 Как получить морковки?</h3>
+            <ul class="rules-list">
+                <li>• Приведи друга — получи 5 морковок</li>
+                <li>• Напиши отзыв — получи 3 морковки</li>
+                <li>• Сообщи об ошибке — получи 2 морковки</li>
+                <li>• Акции в Telegram-канале</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Нижние вкладки -->
+<div class="bottom-tabs">
+    <button class="tab-item active" data-tab="connect">
+        <i class="fas fa-plug"></i>
+        <span>Подключится</span>
+    </button>
+    <button class="tab-item" data-tab="shop">
+        <i class="fas fa-store"></i>
+        <span>Магазин</span>
+    </button>
+</div>
+
+<!-- Кнопка морковки -->
 <div class="rabbit-float" id="rabbitBtn">
     <i class="fas fa-carrot"></i>
 </div>
@@ -498,7 +675,6 @@
         userExpiry = parseInt(userExpiry);
     }
 
-    // МОРКОВКИ: по умолчанию 2 штуки
     let carrots = localStorage.getItem('krolek_carrots');
     if (carrots === null) {
         carrots = 2;
@@ -525,29 +701,36 @@
         const statusDiv = document.getElementById('expiryStatus');
         const expiryDateSpan = document.getElementById('expiryDate');
         
-        expiryDateSpan.innerText = formatDate(userExpiry);
-        fill.style.width = percent + '%';
+        if (expiryDateSpan) expiryDateSpan.innerText = formatDate(userExpiry);
+        if (fill) fill.style.width = percent + '%';
         
         if (daysLeft <= 0) {
-            fill.style.background = '#ff4444';
-            statusDiv.innerHTML = '🔴 Подписка истекла! Покорми кролика.';
-            statusDiv.style.color = '#ff8888';
+            if (fill) fill.style.background = '#ff4444';
+            if (statusDiv) {
+                statusDiv.innerHTML = '🔴 Подписка истекла! Покорми кролика.';
+                statusDiv.style.color = '#ff8888';
+            }
         } else if (daysLeft <= 2) {
-            fill.style.background = '#ffaa00';
-            statusDiv.innerHTML = '🟡 Осталось ' + daysLeft + ' дн. Покорми кролика!';
-            statusDiv.style.color = '#ffcc44';
+            if (fill) fill.style.background = '#ffaa00';
+            if (statusDiv) {
+                statusDiv.innerHTML = '🟡 Осталось ' + daysLeft + ' дн. Покорми кролика!';
+                statusDiv.style.color = '#ffcc44';
+            }
         } else {
-            fill.style.background = 'linear-gradient(90deg, #ff6b35, #ff9f4a)';
-            statusDiv.innerHTML = '🟢 Подписка активна. Осталось ' + daysLeft + ' дн.';
-            statusDiv.style.color = '#aaffaa';
+            if (fill) fill.style.background = 'linear-gradient(90deg, #ff6b35, #ff9f4a)';
+            if (statusDiv) {
+                statusDiv.innerHTML = '🟢 Подписка активна. Осталось ' + daysLeft + ' дн.';
+                statusDiv.style.color = '#aaffaa';
+            }
         }
         
-        document.getElementById('carrotCount').innerHTML = `🥕 Морковок: ${carrots}`;
+        const carrotSpan = document.getElementById('carrotCount');
+        if (carrotSpan) carrotSpan.innerHTML = `🥕 Морковок: ${carrots}`;
     }
 
     function feedRabbit() {
         if (carrots <= 0) {
-            showToast('❌ Нет морковок! Пополни запас в магазине или у администратора.');
+            showToast('❌ Нет морковок! Перейди в магазин и получи бесплатно!');
             return;
         }
         
@@ -582,6 +765,16 @@
         }, 2000);
     }
 
+    function buyCarrots(amount) {
+        carrots += amount;
+        localStorage.setItem('krolek_carrots', carrots);
+        updateUI();
+        showToast(`✅ +${amount} морковок! Теперь у тебя ${carrots} морковок.`);
+        
+        // Переключаемся на вкладку подключения
+        document.querySelector('.tab-item[data-tab="connect"]').click();
+    }
+
     function showToast(msg) {
         const toast = document.getElementById('toast');
         toast.innerText = msg;
@@ -592,36 +785,64 @@
     const HAPP_URL = "happ://crypt5/neirTpHqYFv7pwC06c21OR+ajPIg7FYfsqtBwuihPX8ReSFi/IEJRqBoS1jtuXoNuXgt+SQiIgKnXZsiu7L4uBiQOaHzMnmbatNLMezmqiZLIB3Yi4OZe+N3poYBcdS4EA3TLVqRI1kNqwHXOFaD8r09MwBG9xCdkoGY9BAkabqw/5ov7QWExsOs3P3b8Uj/Vlhdil1ECGHXix89Nmdmmvb/b3c4vUtPqQGYsY3o==cgXAGp0ml4HKpnyw5sTgcKkmO7d4xMX+JqTDzZPi6maDnbSDSvVKVQmbEupvCL1KJWEpmSU6XzxW3hb3UfsIuiv1YraVMTAMzrRg0vfgS5aT1zfX1I7bkg4Lq9vQ7kSATYkTT0w9zGf7UToeHh7hTfIx2tpLHUU/y0eTXgIBN7pMNZbKfOiaLZ8jsIYAsm/2libxRrGXLoqJ9Nq1eidgLwEvT7pKVfPRaDunaZtxzxpOFOMg+USRZ6CWkuTt1jbpB0I94KnYofphv802s2cnwCR2zhK61/de9H2rVRC/lnepVGNrw+yGJqff90yh34sS1uvM5pWhmxwZYWge6COj5uxatTBMZkGxfdhfeYeV5XVZr0idwE1SFGeF+PebV4Mr1wxOydY7LNbxEKwMfdRS3bM5Rwyvyfgx+nOtT1g0XYwO9WuZM3l4fI24IeUIPFKtL2x3SGs4GTqiSsyc27YAe2Ql/gddvDtoMsHikOXFMF5an05+onXXF4TH0cIjwPCtYAYFxlVjxCIumZhM57kjxzkeUredllK+YaBEZU4xlhuzwQenj4lxuXa4mDky2YPoqug2hGfMAPFja4fC6IdLnXe2bxUH3KdTKLljjdno7xKExGYtT2hAqn4GMMG5Q+iXeKW6kmANeDH8xOPCfKQwuPqNgRjRbuX0M40FIIQ6dCU=Bdftjv";
     const WHITELIST_URL = "happ://crypt5/neirpBygmmnKbmEA8v28WlgWpS0EAEI5KL6CtGNCMaNTNNW7lf3fyEY9vIiEaOyvaJETN5/AZ57/k4/NUQmCRxSFjrgztH9tteE/h2afqWkEKkBlXiLXdgzlRojJQKtsbauiLtd1rt8+eCPgnc1zo/CHxh/XQEv/LdtwQdnHA+WFPYogzQT4Bwj2UREoZABq+K9k5snNJ2P7gU8qHQf57peVYfRtuXPkkEvMettYXXiqg235fbnMXSKCTnrsPwZ/Ms0U/dUOYhOf69c85Ai705k8fQt22IwCizTaIciOVDOaucW8eLh1PdAPLPgA6d8kOVZQ6No+HV33ASlQtMz0Sjyains2+zFhtTCZiELCcilWz43tnxCYkoA1BIcW5UROEowJwDA96D3CP/8Gqgh5DGkIpsY94Bw0AYz11sANwPq+yzioq4rzkrbhNvGNpa1BOzfBHDDRz1pOU9Dav48737ocNh9DsLzKuhGoKb1YD4n2HYs1+7cFQyjSWlnnyFIyL3E5SQAAdIePnqHJoVBLWbIic/H0Vc+kzYOXB5Am02dgy+wteohHt3M4Cw6ZIn9P40/6ISMCgetyC3NBszbEf5ep/A9zxyQnX5ymC25+asjOrHI5YRzSVlZbKJafbXi24unN7Kctk8TQKlW7hozc4q6xN3D0kAwKW+pnvW+jCbh58fQSn1/xj1Ljm2k+obsfCtBoVssoi1m5MWrMEWUDFHyyIQSbF2HnhULOd01nARiwTO9y1ITcIspOTmbpeD0KavwYBxbOZDqREaI5bnSh1c8m8R/kLfALP/r7EuHe+PtF65SXU4TuviPBv1IiwUO88n1dNNBBpIi1QWvujdwHvl+9MqZtyRllAzjTmq9yenNZDjN7iLvXFBqAq9o4iU0Fk+jkxrxf34pHy1Ty2c9/WEvZ6s4BCXhPxP2i4G6lWW6/Kk0Q6yJu/OIOBsqBEkZH1cEFeyE/V38vAnMfc3MxriFeuJcGU=KCftjv";
 
-    document.getElementById('connectBtn').onclick = () => {
-        if (navigator.vibrate) navigator.vibrate(50);
-        window.location.href = HAPP_URL;
-        showToast('🔄 Открываем Happ...');
-    };
-    document.getElementById('whitelistBtn').onclick = () => {
-        if (navigator.vibrate) navigator.vibrate(50);
-        window.location.href = WHITELIST_URL;
-        showToast('🔄 Открываем Happ (Белые списки)...');
+    const connectBtn = document.getElementById('connectBtn');
+    const whitelistBtn = document.getElementById('whitelistBtn');
+    
+    if (connectBtn) {
+        connectBtn.onclick = () => {
+            if (navigator.vibrate) navigator.vibrate(50);
+            window.location.href = HAPP_URL;
+            showToast('🔄 Открываем Happ...');
+        };
+    }
+    
+    if (whitelistBtn) {
+        whitelistBtn.onclick = () => {
+            if (navigator.vibrate) navigator.vibrate(50);
+            window.location.href = WHITELIST_URL;
+            showToast('🔄 Открываем Happ (Белые списки)...');
+        };
+    }
+
+    // Переключение вкладок
+    const tabs = document.querySelectorAll('.tab-item');
+    const contents = {
+        connect: document.getElementById('tab-connect'),
+        shop: document.getElementById('tab-shop')
     };
 
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const target = tab.getAttribute('data-tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            Object.values(contents).forEach(c => c.classList.remove('active'));
+            contents[target].classList.add('active');
+        });
+    });
+
+    // Меню кормления
     const rabbitBtn = document.getElementById('rabbitBtn');
     const feedMenu = document.getElementById('feedMenu');
     const feedAction = document.getElementById('feedActionBtn');
 
-    rabbitBtn.onclick = (e) => {
-        e.stopPropagation();
-        feedMenu.classList.toggle('show');
-    };
+    if (rabbitBtn && feedMenu && feedAction) {
+        rabbitBtn.onclick = (e) => {
+            e.stopPropagation();
+            feedMenu.classList.toggle('show');
+        };
 
-    feedAction.onclick = (e) => {
-        e.stopPropagation();
-        feedRabbit();
-    };
+        feedAction.onclick = (e) => {
+            e.stopPropagation();
+            feedRabbit();
+        };
 
-    document.addEventListener('click', (e) => {
-        if (!rabbitBtn.contains(e.target) && !feedMenu.contains(e.target)) {
-            feedMenu.classList.remove('show');
-        }
-    });
+        document.addEventListener('click', (e) => {
+            if (!rabbitBtn.contains(e.target) && !feedMenu.contains(e.target)) {
+                feedMenu.classList.remove('show');
+            }
+        });
+    }
 
     function toggleFaq(el) {
         const answer = el.nextElementSibling;
@@ -631,6 +852,7 @@
     }
 
     window.toggleFaq = toggleFaq;
+    window.buyCarrots = buyCarrots;
     updateUI();
 </script>
 </body>

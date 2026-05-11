@@ -5,12 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>KrolekVPNReborn — Обход глушилок</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            user-select: none; /* Убирает выделение на мобилках */
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -22,7 +17,6 @@
             padding-bottom: 85px;
         }
 
-        /* Анимированный фон */
         body::before {
             content: '';
             position: fixed;
@@ -67,7 +61,6 @@
             z-index: 1;
         }
 
-        /* Анимация появления */
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -87,7 +80,6 @@
         .features { animation-delay: 0.35s; }
         .footer { animation-delay: 0.4s; }
 
-        /* Шапка */
         .navbar {
             display: flex;
             justify-content: space-between;
@@ -108,53 +100,14 @@
         .logo i { color: #ff6b35; font-size: 28px; }
         .logo span { background: linear-gradient(135deg, #ff6b35, #ff9f4a); -webkit-background-clip: text; background-clip: text; color: transparent; }
 
-        .nav-links {
-            display: flex;
-            gap: 20px;
-        }
-
-        .nav-links a {
-            color: #aaa;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: 0.2s;
-        }
-
+        .nav-links { display: flex; gap: 20px; }
+        .nav-links a { color: #aaa; text-decoration: none; font-size: 14px; font-weight: 500; transition: 0.2s; }
         .nav-links a:hover { color: #ff6b35; }
 
-        /* Герой-секция */
-        .hero {
-            text-align: center;
-            margin-bottom: 24px;
-        }
-
-        .hero-badge {
-            background: rgba(255,107,53,0.15);
-            border: 1px solid rgba(255,107,53,0.4);
-            border-radius: 40px;
-            padding: 6px 14px;
-            display: inline-block;
-            font-size: 13px;
-            margin-bottom: 16px;
-            color: #ff9f4a;
-        }
-
-        .hero h1 {
-            font-size: 32px;
-            font-weight: 800;
-            line-height: 1.2;
-            margin-bottom: 12px;
-        }
-
+        .hero { text-align: center; margin-bottom: 24px; }
+        .hero h1 { font-size: 32px; font-weight: 800; line-height: 1.2; margin-bottom: 12px; }
         .hero h1 span { color: #ff6b35; }
-
-        .hero p {
-            font-size: 15px;
-            color: #aaa;
-            max-width: 400px;
-            margin: 0 auto;
-        }
+        .hero p { font-size: 15px; color: #aaa; max-width: 400px; margin: 0 auto; }
 
         .hero-stats {
             display: flex;
@@ -163,18 +116,9 @@
             margin-top: 24px;
         }
 
-        .stat-number {
-            font-size: 24px;
-            font-weight: 800;
-            color: #ff6b35;
-        }
+        .stat-number { font-size: 24px; font-weight: 800; color: #ff6b35; }
+        .stat-label { font-size: 12px; color: #888; }
 
-        .stat-label {
-            font-size: 12px;
-            color: #888;
-        }
-
-        /* Карточка подписки */
         .subscription-card {
             background: rgba(20, 20, 28, 0.7);
             backdrop-filter: blur(12px);
@@ -184,56 +128,15 @@
             border: 1px solid rgba(255,107,53,0.2);
         }
 
-        .subscription-title {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+        .subscription-title { font-size: 20px; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+        .info-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .info-label { color: #aaa; font-size: 14px; }
+        .info-value { color: #ff9f4a; font-weight: 600; }
 
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .info-label {
-            color: #aaa;
-            font-size: 14px;
-        }
-
-        .info-value {
-            color: #ff9f4a;
-            font-weight: 600;
-        }
-
-        /* Полоска прогресса подписки */
-        .expiry-bar-container {
-            margin: 16px 0 8px;
-        }
-
-        .expiry-bar {
-            background: rgba(255,255,255,0.1);
-            border-radius: 20px;
-            height: 8px;
-            overflow: hidden;
-        }
-
-        .expiry-fill {
-            height: 100%;
-            width: 0%;
-            border-radius: 20px;
-            transition: width 0.4s ease;
-        }
-
-        .expiry-status {
-            font-size: 13px;
-            margin-top: 8px;
-            text-align: right;
-        }
+        .expiry-bar-container { margin: 16px 0 8px; }
+        .expiry-bar { background: rgba(255,255,255,0.1); border-radius: 20px; height: 8px; overflow: hidden; }
+        .expiry-fill { height: 100%; width: 0%; border-radius: 20px; transition: width 0.4s ease; }
+        .expiry-status { font-size: 13px; margin-top: 8px; text-align: right; }
 
         .carrot-count {
             background: rgba(255,107,53,0.15);
@@ -244,7 +147,6 @@
             font-size: 14px;
         }
 
-        /* Инструкция */
         .instructions, .rules, .faq-section {
             background: rgba(255,255,255,0.03);
             border-radius: 28px;
@@ -273,7 +175,6 @@
         .step-text { font-size: 14px; color: #ccc; }
         .step-text strong { color: #ff9f4a; }
 
-        /* Кнопки подключения */
         .connect-btn {
             background: linear-gradient(135deg, #ff6b35, #ff9f4a);
             border: none;
@@ -293,18 +194,9 @@
 
         .connect-btn:active { transform: scale(0.97); }
 
-        /* Правила */
-        .rule-item {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 14px;
-            font-size: 13px;
-            color: #bbb;
-        }
-
+        .rule-item { display: flex; gap: 12px; margin-bottom: 14px; font-size: 13px; color: #bbb; }
         .rule-icon { font-size: 18px; min-width: 28px; }
 
-        /* FAQ */
         .faq-item {
             margin-bottom: 10px;
             border-radius: 18px;
@@ -321,12 +213,7 @@
         }
 
         .faq-question:hover { background: rgba(255,107,53,0.08); }
-
-        .faq-question .arrow {
-            transition: transform 0.2s;
-            color: #ff9f4a;
-        }
-
+        .faq-question .arrow { transition: transform 0.2s; color: #ff9f4a; }
         .faq-question .arrow.open { transform: rotate(90deg); }
 
         .faq-answer {
@@ -340,7 +227,6 @@
 
         .faq-answer.open { max-height: 200px; padding: 0 16px 16px; }
 
-        /* Преимущества */
         .features-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -359,7 +245,6 @@
         .feature-card h3 { font-size: 16px; margin-bottom: 4px; }
         .feature-card p { font-size: 12px; color: #888; }
 
-        /* Футер */
         .footer {
             text-align: center;
             padding: 24px 0;
@@ -369,12 +254,9 @@
             font-size: 12px;
         }
 
-        .footer a {
-            color: #888;
-            text-decoration: none;
-        }
+        .footer a { color: #888; text-decoration: none; }
 
-        /* Плавающая кнопка морковки */
+        /* Кнопка морковки */
         .rabbit-float {
             position: fixed;
             bottom: 20px;
@@ -393,25 +275,33 @@
         }
 
         .rabbit-float:active { transform: scale(0.92); }
-
         .rabbit-float i { font-size: 28px; color: white; }
 
         /* Меню кормления */
         .feed-menu {
             position: fixed;
-            bottom: 90px;
-            right: 20px;
+            bottom: 20px;
+            right: 80px;
             background: rgba(20, 20, 28, 0.98);
             backdrop-filter: blur(16px);
-            border-radius: 32px;
-            padding: 12px 20px;
+            border-radius: 40px;
+            padding: 8px 16px;
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 12px;
             border: 1px solid rgba(255,107,53,0.3);
             z-index: 99;
             box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-            animation: fadeInUp 0.2s ease;
+            opacity: 0;
+            transform: translateX(20px);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            pointer-events: none;
+        }
+
+        .feed-menu.show {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
         }
 
         .feed-menu button {
@@ -422,6 +312,7 @@
             color: white;
             font-weight: 600;
             cursor: pointer;
+            white-space: nowrap;
         }
 
         .toast {
@@ -445,6 +336,9 @@
             .hero h1 { font-size: 26px; }
             .hero-stats { gap: 20px; }
             .container { padding: 16px; }
+            .feed-menu { padding: 6px 12px; gap: 8px; }
+            .feed-menu button { padding: 6px 12px; font-size: 12px; }
+            .feed-menu span { font-size: 14px; }
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -469,9 +363,8 @@
 
     <!-- ГЕРОЙ -->
     <div class="hero">
-        <div class="hero-badge"><i class="fas fa-crown"></i> Бесплатно навсегда</div>
         <h1>Обход глушилок <span>KrolekVPNReborn</span></h1>
-        <p>Стабильная скорость 15 Мбит/с, поддержка 24/7</p>
+        <p>Стабильная скорость 5-15 GBit/с, поддержка 24/7</p>
         <div class="hero-stats">
             <div><div class="stat-number">100+</div><div class="stat-label">Пользователей</div></div>
             <div><div class="stat-number">3+</div><div class="stat-label">Серверов</div></div>
@@ -479,12 +372,12 @@
         </div>
     </div>
 
-    <!-- КАРТОЧКА ПОДПИСКИ с полоской -->
+    <!-- КАРТОЧКА ПОДПИСКИ -->
     <div class="subscription-card" id="subscriptionCard">
         <div class="subscription-title">📜 Ваша подписка</div>
         <div class="info-row">
             <span class="info-label">🚀 Скорость:</span>
-            <span class="info-value">5-15 Мбит/с</span>
+            <span class="info-value">5-15 GBit/с</span>
         </div>
         <div class="info-row">
             <span class="info-label">📅 Дата истечения:</span>
@@ -513,31 +406,57 @@
             <i class="fas fa-plug"></i> Подключиться к VPN
         </button>
         <button class="connect-btn" id="whitelistBtn" style="margin-top: 8px;">
-            <i class="fas fa-shield-alt"></i> Белые списки
+            <i class="fas fa-shield-alt"></i> Подключиться, если у вас белые списки
         </button>
     </div>
 
     <!-- ПРАВИЛА -->
     <div class="rules">
-        <h3><i class="fas fa-gavel"></i> Правила</h3>
-        <div class="rule-item"><span class="rule-icon">🎯</span> Только обход глушилок</div>
-        <div class="rule-item"><span class="rule-icon">🚫</span> Запрещены банки, торренты, P2P</div>
-        <div class="rule-item"><span class="rule-icon">🔒</span> Не передавайте подписку</div>
+        <h3><i class="fas fa-gavel"></i> Правила использования</h3>
+        <div class="rule-item"><span class="rule-icon">🎯</span> VPN предназначен <strong>только для обхода блокировок разных зарубежных сервисов и белых списков ТОЛЬКО В РОССИИ</strong>.</div>
+        <div class="rule-item"><span class="rule-icon">⚠️</span> VPN конфигурации мы добавляем <strong>частично</strong>, но не полностью.</div>
+        <div class="rule-item"><span class="rule-icon">🚫</span> <strong>Запрещено</strong> использовать VPN для доступа к банковским приложениям и финансовым операциям.</div>
+        <div class="rule-item"><span class="rule-icon">🚫</span> <strong>Запрещено</strong> заходить в российские сервисы и приложения через VPN.</div>
+        <div class="rule-item"><span class="rule-icon">🚫</span> <strong>Запрещено</strong> использовать торренты и P2P-сети.</div>
+        <div class="rule-item"><span class="rule-icon">🔒</span> Не передавайте свою подписку третьим лицам — это может привести к блокировке.</div>
+        <div class="rule-item"><span class="rule-icon">📢</span> О всех проблемах и неполадках сообщайте в поддержку <strong>@Kr0l3k</strong>.</div>
+        <div class="rule-item"><span class="rule-icon">⏱️</span> Подписка <strong>бесплатна</strong> и действует до даты, которую ты продлил. Продление требуется (корми кролика!).</div>
     </div>
 
     <!-- FAQ -->
     <div class="faq-section">
         <h3><i class="fas fa-question-circle"></i> Часто задаваемые вопросы</h3>
-        <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)"><span>😕 Почему VPN не работает?</span><span class="arrow">›</span></div><div class="faq-answer">Напишите в поддержку @Kr0l3k. Обновления выходят в канале.</div></div>
-        <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)"><span>🤔 Как подключиться?</span><span class="arrow">›</span></div><div class="faq-answer">Установите Happ → нажмите кнопку «Подключиться» → выберите сервер.</div></div>
-        <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)"><span>🪤 Бесплатный сыр?</span><span class="arrow">›</span></div><div class="faq-answer">Мы не сливаем данные — это нарушает закон РФ.</div></div>
+        
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+                <span>😕 Почему VPN не работает?</span>
+                <span class="arrow">›</span>
+            </div>
+            <div class="faq-answer">Если у вас появились проблемы с работой нашего VPN, советую написать в поддержку. Если у вас пока нет возможности написать нам, то дождитесь следующего обновления. Все обновления сначала публикуются в нашем канале, а затем реализуются 🐇</div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+                <span>🤔 Как подключиться?</span>
+                <span class="arrow">›</span>
+            </div>
+            <div class="faq-answer">Пожалуйста, прочитайте инструкцию, которая находится на главной странице после карточки с датой подписки и скоростью 🐇</div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+                <span>🪤 Бесплатный сыр только в мышеловке?</span>
+                <span class="arrow">›</span>
+            </div>
+            <div class="faq-answer">Я уверен, что многие это говорили, считая, что бесплатные VPN сливают ваши личные данные. Но на самом деле это не так. Есть и более хорошие VPN, которые не отдают данные третьим лицам. Сливание данных третьим лицам — нарушение закона Российской Федерации 🐇</div>
+        </div>
     </div>
 
     <!-- ПРЕИМУЩЕСТВА -->
     <div class="features" id="features">
         <h3 style="text-align:center; margin-bottom:16px;">Почему мы?</h3>
         <div class="features-grid">
-            <div class="feature-card"><div class="feature-icon">⚡</div><h3>15 Мбит/с</h3><p>Стабильно</p></div>
+            <div class="feature-card"><div class="feature-icon">⚡</div><h3>5-15 GBit/с</h3><p>Стабильно</p></div>
             <div class="feature-card"><div class="feature-icon">🛡️</div><h3>Обход глушилок</h3><p>LTE / VPN</p></div>
             <div class="feature-card"><div class="feature-icon">💬</div><h3>24/7</h3><p>Живая поддержка</p></div>
             <div class="feature-card"><div class="feature-icon">💎</div><h3>Бесплатно</h3><p>Навсегда</p></div>
@@ -557,20 +476,17 @@
 </div>
 
 <!-- Меню кормления -->
-<div id="feedMenu" class="feed-menu" style="display: none;">
-    <span style="font-size: 18px;">🐇 Покорми кролика</span>
+<div id="feedMenu" class="feed-menu">
+    <span>🐇 Покорми кролика</span>
     <button id="feedActionBtn">🥕 Покормить 1🥕 (+3 дня)</button>
 </div>
 
 <div id="toast" class="toast"></div>
 
 <script>
-    // ---------- РАБОТА С ПОДПИСКОЙ (ИНДИВИДУАЛЬНО) ----------
-    const START_DATE = new Date(2026, 4, 14); // 14 мая 2026 (месяц 4 = май)
+    const START_DATE = new Date(2026, 4, 14);
     let userExpiry = localStorage.getItem('krolek_expiry');
-
     if (!userExpiry) {
-        // Если даты нет — ставим 14 мая 2026
         userExpiry = START_DATE.getTime();
         localStorage.setItem('krolek_expiry', userExpiry);
     } else {
@@ -579,24 +495,20 @@
 
     let carrots = localStorage.getItem('krolek_carrots') ? parseInt(localStorage.getItem('krolek_carrots')) : 0;
 
-    // Функция для форматирования даты
     function formatDate(timestamp) {
         const d = new Date(timestamp);
         return `${d.getDate()} ${d.toLocaleString('ru', { month: 'long' })} ${d.getFullYear()} г.`;
     }
 
-    // Получить дни до истечения
     function getDaysRemaining() {
         const now = new Date().getTime();
         const diff = userExpiry - now;
         return Math.ceil(diff / (1000 * 60 * 60 * 24));
     }
 
-    // Обновить цвет полоски и статус
     function updateUI() {
         const daysLeft = getDaysRemaining();
-        const percent = Math.min(100, Math.max(0, (daysLeft / 30) * 100)); // 30 дней = 100%
-        
+        const percent = Math.min(100, Math.max(0, (daysLeft / 30) * 100));
         const fill = document.getElementById('expiryFill');
         const statusDiv = document.getElementById('expiryStatus');
         const expiryDateSpan = document.getElementById('expiryDate');
@@ -621,28 +533,23 @@
         document.getElementById('carrotCount').innerHTML = `🥕 Морковок: ${carrots}`;
     }
 
-    // Покормить кролика (+3 дня)
     function feedRabbit() {
         const now = Date.now();
         const lastFeed = localStorage.getItem('lastFeedTime') ? parseInt(localStorage.getItem('lastFeedTime')) : 0;
         
-        // Кулдаун 1 минута (чтобы не фармили)
         if (now - lastFeed < 60 * 1000 && lastFeed !== 0) {
             const secLeft = Math.ceil((60 * 1000 - (now - lastFeed)) / 1000);
             showToast(`⏳ Подожди ${secLeft} сек, кролик сыт!`);
             return;
         }
         
-        // Добавляем 3 дня
         userExpiry = userExpiry + (3 * 24 * 60 * 60 * 1000);
         localStorage.setItem('krolek_expiry', userExpiry);
         localStorage.setItem('lastFeedTime', now);
         
-        // Увеличиваем морковки
         carrots++;
         localStorage.setItem('krolek_carrots', carrots);
         
-        // Анимация
         const btn = document.getElementById('feedActionBtn');
         const originalText = btn.innerText;
         btn.innerText = '✅ +3 дня!';
@@ -653,26 +560,21 @@
         updateUI();
         showToast('🎉 +3 дня к подписке! Кролик сыт!');
         
-        // Закрыть меню через 2 секунды
         setTimeout(() => {
-            document.getElementById('feedMenu').style.display = 'none';
+            document.getElementById('feedMenu').classList.remove('show');
         }, 2000);
     }
 
-    // Уведомления
-    function showToast(msg, isError = false) {
+    function showToast(msg) {
         const toast = document.getElementById('toast');
         toast.innerText = msg;
-        toast.style.borderLeftColor = isError ? '#ff4444' : '#4caf50';
         toast.style.opacity = '1';
         setTimeout(() => toast.style.opacity = '0', 2500);
     }
 
-    // Подключение к VPN (Happ)
     const HAPP_URL = "happ://crypt5/neirTpHqYFv7pwC06c21OR+ajPIg7FYfsqtBwuihPX8ReSFi/IEJRqBoS1jtuXoNuXgt+SQiIgKnXZsiu7L4uBiQOaHzMnmbatNLMezmqiZLIB3Yi4OZe+N3poYBcdS4EA3TLVqRI1kNqwHXOFaD8r09MwBG9xCdkoGY9BAkabqw/5ov7QWExsOs3P3b8Uj/Vlhdil1ECGHXix89Nmdmmvb/b3c4vUtPqQGYsY3o==cgXAGp0ml4HKpnyw5sTgcKkmO7d4xMX+JqTDzZPi6maDnbSDSvVKVQmbEupvCL1KJWEpmSU6XzxW3hb3UfsIuiv1YraVMTAMzrRg0vfgS5aT1zfX1I7bkg4Lq9vQ7kSATYkTT0w9zGf7UToeHh7hTfIx2tpLHUU/y0eTXgIBN7pMNZbKfOiaLZ8jsIYAsm/2libxRrGXLoqJ9Nq1eidgLwEvT7pKVfPRaDunaZtxzxpOFOMg+USRZ6CWkuTt1jbpB0I94KnYofphv802s2cnwCR2zhK61/de9H2rVRC/lnepVGNrw+yGJqff90yh34sS1uvM5pWhmxwZYWge6COj5uxatTBMZkGxfdhfeYeV5XVZr0idwE1SFGeF+PebV4Mr1wxOydY7LNbxEKwMfdRS3bM5Rwyvyfgx+nOtT1g0XYwO9WuZM3l4fI24IeUIPFKtL2x3SGs4GTqiSsyc27YAe2Ql/gddvDtoMsHikOXFMF5an05+onXXF4TH0cIjwPCtYAYFxlVjxCIumZhM57kjxzkeUredllK+YaBEZU4xlhuzwQenj4lxuXa4mDky2YPoqug2hGfMAPFja4fC6IdLnXe2bxUH3KdTKLljjdno7xKExGYtT2hAqn4GMMG5Q+iXeKW6kmANeDH8xOPCfKQwuPqNgRjRbuX0M40FIIQ6dCU=Bdftjv";
     const WHITELIST_URL = "happ://crypt5/neirpBygmmnKbmEA8v28WlgWpS0EAEI5KL6CtGNCMaNTNNW7lf3fyEY9vIiEaOyvaJETN5/AZ57/k4/NUQmCRxSFjrgztH9tteE/h2afqWkEKkBlXiLXdgzlRojJQKtsbauiLtd1rt8+eCPgnc1zo/CHxh/XQEv/LdtwQdnHA+WFPYogzQT4Bwj2UREoZABq+K9k5snNJ2P7gU8qHQf57peVYfRtuXPkkEvMettYXXiqg235fbnMXSKCTnrsPwZ/Ms0U/dUOYhOf69c85Ai705k8fQt22IwCizTaIciOVDOaucW8eLh1PdAPLPgA6d8kOVZQ6No+HV33ASlQtMz0Sjyains2+zFhtTCZiELCcilWz43tnxCYkoA1BIcW5UROEowJwDA96D3CP/8Gqgh5DGkIpsY94Bw0AYz11sANwPq+yzioq4rzkrbhNvGNpa1BOzfBHDDRz1pOU9Dav48737ocNh9DsLzKuhGoKb1YD4n2HYs1+7cFQyjSWlnnyFIyL3E5SQAAdIePnqHJoVBLWbIic/H0Vc+kzYOXB5Am02dgy+wteohHt3M4Cw6ZIn9P40/6ISMCgetyC3NBszbEf5ep/A9zxyQnX5ymC25+asjOrHI5YRzSVlZbKJafbXi24unN7Kctk8TQKlW7hozc4q6xN3D0kAwKW+pnvW+jCbh58fQSn1/xj1Ljm2k+obsfCtBoVssoi1m5MWrMEWUDFHyyIQSbF2HnhULOd01nARiwTO9y1ITcIspOTmbpeD0KavwYBxbOZDqREaI5bnSh1c8m8R/kLfALP/r7EuHe+PtF65SXU4TuviPBv1IiwUO88n1dNNBBpIi1QWvujdwHvl+9MqZtyRllAzjTmq9yenNZDjN7iLvXFBqAq9o4iU0Fk+jkxrxf34pHy1Ty2c9/WEvZ6s4BCXhPxP2i4G6lWW6/Kk0Q6yJu/OIOBsqBEkZH1cEFeyE/V38vAnMfc3MxriFeuJcGU=KCftjv";
 
-    // Обработчики кнопок
     document.getElementById('connectBtn').onclick = () => {
         if (navigator.vibrate) navigator.vibrate(50);
         window.location.href = HAPP_URL;
@@ -684,18 +586,13 @@
         showToast('🔄 Открываем Happ (Белые списки)...');
     };
 
-    // Меню кормления
     const rabbitBtn = document.getElementById('rabbitBtn');
     const feedMenu = document.getElementById('feedMenu');
     const feedAction = document.getElementById('feedActionBtn');
 
     rabbitBtn.onclick = (e) => {
         e.stopPropagation();
-        if (feedMenu.style.display === 'none' || feedMenu.style.display === '') {
-            feedMenu.style.display = 'flex';
-        } else {
-            feedMenu.style.display = 'none';
-        }
+        feedMenu.classList.toggle('show');
     };
 
     feedAction.onclick = (e) => {
@@ -703,10 +600,9 @@
         feedRabbit();
     };
 
-    // Закрыть меню при клике вне
     document.addEventListener('click', (e) => {
         if (!rabbitBtn.contains(e.target) && !feedMenu.contains(e.target)) {
-            feedMenu.style.display = 'none';
+            feedMenu.classList.remove('show');
         }
     });
 
@@ -721,4 +617,4 @@
     updateUI();
 </script>
 </body>
-</html>
+    </html>

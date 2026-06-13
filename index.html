@@ -236,39 +236,6 @@
             padding: 0 20px 16px 20px;
         }
         
-        /* Переключатель клиентов */
-        .client-switch {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin: 20px 0;
-        }
-        .client-btn {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,107,53,0.3);
-            border-radius: 50px;
-            padding: 10px 24px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            transition: 0.3s;
-            color: #ddd;
-            font-size: 16px;
-            font-weight: 500;
-        }
-        .client-btn.active {
-            background: rgba(255,107,53,0.2);
-            border-color: #ff6b35;
-            color: #ff9f4a;
-        }
-        .client-icon {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-        
         .connect-btn {
             background: linear-gradient(135deg, #ff6b35, #ff9f4a);
             border: none;
@@ -387,68 +354,29 @@
         <div class="instructions">
             <h3><i class="fas fa-book-open"></i> Подключение к VPN</h3>
             
-            <!-- Переключатель клиентов -->
-            <div class="client-switch">
-                <button class="client-btn active" data-client="happ">
-                    <img src="https://raw.githubusercontent.com/kangaroo255075-collab/Website-KrolekVPNReborn/main/IMG_20260509_130537_620.jpg" 
-                         alt="Happ" class="client-icon">
-                    Happ
-                </button>
-                <button class="client-btn" data-client="incy">
-                    <img src="https://raw.githubusercontent.com/kangaroo255075-collab/Website-KrolekVPNReborn/main/unnamed.png" 
-                         alt="INCY" class="client-icon">
-                    INCY
-                </button>
+            <div class="step">
+                <div class="step-icon">📱</div>
+                <div class="step-text">Установите приложение <strong style="color: #ff6b35;">Happ</strong> из 
+                    <a href="https://play.google.com/store/apps/details?id=com.happproxy" target="_blank">Google Play</a> / 
+                    <a href="https://apps.apple.com/us/app/happ-proxy-utility/id6504287215" target="_blank">App Store</a>
+                </div>
             </div>
-
-            <!-- Инструкция для Happ -->
-            <div id="happSteps" class="client-steps">
-                <div class="step">
-                    <div class="step-icon">📱</div>
-                    <div class="step-text">Установите приложение <strong style="color: #ff6b35;">Happ</strong> из 
-                        <a href="https://play.google.com/store/apps/details?id=com.happproxy" target="_blank">Google Play</a> / 
-                        <a href="https://apps.apple.com/us/app/happ-proxy-utility/id6504287215" target="_blank">App Store</a>
-                    </div>
-                </div>
-                <div class="step">
-                    <div class="step-icon">🔌</div>
-                    <div class="step-text">Нажмите на одну из кнопок ниже</div>
-                </div>
-                <div class="step">
-                    <div class="step-icon">✅</div>
-                    <div class="step-text">Готово! Приложение откроется автоматически</div>
-                </div>
-                
-                <button class="connect-btn" id="connectBtn">
-                    <i class="fas fa-plug"></i> Подключиться к VPN
-                </button>
-                
-                <button class="connect-btn" id="whitelistBtn" style="margin-top: 10px;">
-                    <i class="fas fa-shield-alt"></i> Подключиться, если у вас белые списки
-                </button>
+            <div class="step">
+                <div class="step-icon">🔌</div>
+                <div class="step-text">Нажмите на одну из кнопок ниже</div>
             </div>
-
-            <!-- Инструкция для INCY -->
-            <div id="incySteps" class="client-steps" style="display: none;">
-                <div class="step">
-                    <div class="step-icon">📱</div>
-                    <div class="step-text">Установите приложение <strong style="color: #ff6b35;">INCY</strong> из 
-                        <a href="https://play.google.com/store/apps/details?id=llc.itdev.incy" target="_blank">Google Play</a>
-                    </div>
-                </div>
-                <div class="step">
-                    <div class="step-icon">🔗</div>
-                    <div class="step-text">Нажмите на кнопку ниже</div>
-                </div>
-                <div class="step">
-                    <div class="step-icon">✅</div>
-                    <div class="step-text">Готово! Приложение откроется автоматически</div>
-                </div>
-                
-                <button class="connect-btn" id="incyConnectBtn">
-                    <i class="fas fa-exchange-alt"></i> Перенести в INCY
-                </button>
+            <div class="step">
+                <div class="step-icon">✅</div>
+                <div class="step-text">Готово! Приложение откроется автоматически</div>
             </div>
+            
+            <button class="connect-btn" id="connectBtn">
+                <i class="fas fa-plug"></i> Подключиться к VPN
+            </button>
+            
+            <button class="connect-btn" id="whitelistBtn" style="margin-top: 10px;">
+                <i class="fas fa-shield-alt"></i> Подключиться, если у вас белые списки
+            </button>
         </div>
 
         <div class="rules">
@@ -523,14 +451,10 @@
     <div id="toast" class="toast"></div>
 
     <script>
-        // ССЫЛКИ
         const HAPP_URL = "happ://crypt5/neirTpHqYFv7pwC06c21OR+ajPIg7FYfsqtBwuihPX8ReSFi/IEJRqBoS1jtuXoNuXgt+SQiIgKnXZsiu7L4uBiQOaHzMnmbatNLMezmqiZLIB3Yi4OZe+N3poYBcdS4EA3TLVqRI1kNqwHXOFaD8r09MwBG9xCdkoGY9BAkabqw/5ov7QWExsOs3P3b8Uj/Vlhdil1ECGHXix89Nmdmmvb/b3c4vUtPqQGYsY3o==cgXAGp0ml4HKpnyw5sTgcKkmO7d4xMX+JqTDzZPi6maDnbSDSvVKVQmbEupvCL1KJWEpmSU6XzxW3hb3UfsIuiv1YraVMTAMzrRg0vfgS5aT1zfX1I7bkg4Lq9vQ7kSATYkTT0w9zGf7UToeHh7hTfIx2tpLHUU/y0eTXgIBN7pMNZbKfOiaLZ8jsIYAsm/2libxRrGXLoqJ9Nq1eidgLwEvT7pKVfPRaDunaZtxzxpOFOMg+USRZ6CWkuTt1jbpB0I94KnYofphv802s2cnwCR2zhK61/de9H2rVRC/lnepVGNrw+yGJqff90yh34sS1uvM5pWhmxwZYWge6COj5uxatTBMZkGxfdhfeYeV5XVZr0idwE1SFGeF+PebV4Mr1wxOydY7LNbxEKwMfdRS3bM5Rwyvyfgx+nOtT1g0XYwO9WuZM3l4fI24IeUIPFKtL2x3SGs4GTqiSsyc27YAe2Ql/gddvDtoMsHikOXFMF5an05+onXXF4TH0cIjwPCtYAYFxlVjxCIumZhM57kjxzkeUredllK+YaBEZU4xlhuzwQenj4lxuXa4mDky2YPoqug2hGfMAPFja4fC6IdLnXe2bxUH3KdTKLljjdno7xKExGYtT2hAqn4GMMG5Q+iXeKW6kmANeDH8xOPCfKQwuPqNgRjRbuX0M40FIIQ6dCU=Bdftjv";
         
         const WHITELIST_URL = "happ://crypt5/neirpBygmmnKbmEA8v28WlgWpS0EAEI5KL6CtGNCMaNTNNW7lf3fyEY9vIiEaOyvaJETN5/AZ57/k4/NUQmCRxSFjrgztH9tteE/h2afqWkEKkBlXiLXdgzlRojJQKtsbauiLtd1rt8+eCPgnc1zo/CHxh/XQEv/LdtwQdnHA+WFPYogzQT4Bwj2UREoZABq+K9k5snNJ2P7gU8qHQf57peVYfRtuXPkkEvMettYXXiqg235fbnMXSKCTnrsPwZ/Ms0U/dUOYhOf69c85Ai705k8fQt22IwCizTaIciOVDOaucW8eLh1PdAPLPgA6d8kOVZQ6No+HV33ASlQtMz0Sjyains2+zFhtTCZiELCcilWz43tnxCYkoA1BIcW5UROEowJwDA96D3CP/8Gqgh5DGkIpsY94Bw0AYz11sANwPq+yzioq4rzkrbhNvGNpa1BOzfBHDDRz1pOU9Dav48737ocNh9DsLzKuhGoKb1YD4n2HYs1+7cFQyjSWlnnyFIyL3E5SQAAdIePnqHJoVBLWbIic/H0Vc+kzYOXB5Am02dgy+wteohHt3M4Cw6ZIn9P40/6ISMCgetyC3NBszbEf5ep/A9zxyQnX5ymC25+asjOrHI5YRzSVlZbKJafbXi24unN7Kctk8TQKlW7hozc4q6xN3D0kAwKW+pnvW+jCbh58fQSn1/xj1Ljm2k+obsfCtBoVssoi1m5MWrMEWUDFHyyIQSbF2HnhULOd01nARiwTO9y1ITcIspOTmbpeD0KavwYBxbOZDqREaI5bnSh1c8m8R/kLfALP/r7EuHe+PtF65SXU4TuviPBv1IiwUO88n1dNNBBpIi1QWvujdwHvl+9MqZtyRllAzjTmq9yenNZDjN7iLvXFBqAq9o4iU0Fk+jkxrxf34pHy1Ty2c9/WEvZ6s4BCXhPxP2i4G6lWW6/Kk0Q6yJu/OIOBsqBEkZH1cEFeyE/V38vAnMfc3MxriFeuJcGU=KCftjv";
         
-        const INCY_URL = "incy://add/https://raw.githubusercontent.com/kangaroo255075-collab/Official-KrolekVPNReborn-/refs/heads/main/Krolek.txt";
-        
-        let currentClient = "happ";
         const clickSound = new Audio("https://www.soundjay.com/misc/sounds/button-click-1.mp3");
 
         function showToast(message) {
@@ -562,16 +486,6 @@
             }, 1000);
         }
 
-        function connectToINCY() {
-            if (navigator.vibrate) navigator.vibrate(50);
-            clickSound.play().catch(e => console.log('Звук не воспроизведён'));
-            window.location.href = INCY_URL;
-            showToast('🔄 Открываем INCY...');
-            setTimeout(() => {
-                showToast('⚠️ Если INCY не открылся, установите приложение');
-            }, 1000);
-        }
-
         function toggleFaq(element) {
             const answer = element.nextElementSibling;
             const arrow = element.querySelector('.arrow');
@@ -579,34 +493,10 @@
             arrow.classList.toggle('open');
         }
 
-        // Переключение между клиентами
-        const clientBtns = document.querySelectorAll('.client-btn');
-        const happSteps = document.getElementById('happSteps');
-        const incySteps = document.getElementById('incySteps');
-
-        clientBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const client = btn.getAttribute('data-client');
-                currentClient = client;
-                
-                clientBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                
-                if (client === 'happ') {
-                    happSteps.style.display = 'block';
-                    incySteps.style.display = 'none';
-                } else {
-                    happSteps.style.display = 'none';
-                    incySteps.style.display = 'block';
-                }
-            });
-        });
-
         document.getElementById('connectBtn').addEventListener('click', connectToVPN);
         document.getElementById('whitelistBtn').addEventListener('click', connectToWhitelist);
-        document.getElementById('incyConnectBtn').addEventListener('click', connectToINCY);
         
         window.toggleFaq = toggleFaq;
     </script>
 </body>
-    </html>
+</html>

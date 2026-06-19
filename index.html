@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>KrolekVPNReborn — Обход глушилок</title>
@@ -281,6 +282,19 @@
         .footer a { color: #aaa; text-decoration: none; transition: 0.3s; }
         .footer a:hover { color: #ff6b35; }
         
+        .close-btn {
+            background: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+        .close-btn:hover { background: #444; }
+        
         @media (max-width: 768px) {
             .hero h1 { font-size: 36px; }
             .navbar { flex-direction: column; text-align: center; }
@@ -377,6 +391,10 @@
             <button class="connect-btn" id="whitelistBtn" style="margin-top: 10px;">
                 <i class="fas fa-shield-alt"></i> Подключиться, если у вас белые списки
             </button>
+            
+            <button class="close-btn" onclick="closeApp()" style="width:100%;margin-top:10px;">
+                ❌ Закрыть
+            </button>
         </div>
 
         <div class="rules">
@@ -451,12 +469,30 @@
     <div id="toast" class="toast"></div>
 
     <script>
+        // ========== ИНИЦИАЛИЗАЦИЯ TELEGRAM WEB APP ==========
+        let tg = null;
+        try {
+            if (window.Telegram && window.Telegram.WebApp) {
+                tg = window.Telegram.WebApp;
+                tg.expand(); // Разворачиваем на весь экран
+                tg.ready(); // Сообщаем, что приложение готово
+                console.log('✅ Telegram Web App инициализирован');
+                console.log('👤 Пользователь:', tg.initDataUnsafe?.user);
+            } else {
+                console.log('⚠️ Telegram Web App не найден');
+            }
+        } catch (e) {
+            console.log('❌ Ошибка инициализации:', e);
+        }
+
+        // ========== КОНСТАНТЫ ==========
         const HAPP_URL = "happ://crypt5/neirTpHqYFv7pwC06c21OR+ajPIg7FYfsqtBwuihPX8ReSFi/IEJRqBoS1jtuXoNuXgt+SQiIgKnXZsiu7L4uBiQOaHzMnmbatNLMezmqiZLIB3Yi4OZe+N3poYBcdS4EA3TLVqRI1kNqwHXOFaD8r09MwBG9xCdkoGY9BAkabqw/5ov7QWExsOs3P3b8Uj/Vlhdil1ECGHXix89Nmdmmvb/b3c4vUtPqQGYsY3o==cgXAGp0ml4HKpnyw5sTgcKkmO7d4xMX+JqTDzZPi6maDnbSDSvVKVQmbEupvCL1KJWEpmSU6XzxW3hb3UfsIuiv1YraVMTAMzrRg0vfgS5aT1zfX1I7bkg4Lq9vQ7kSATYkTT0w9zGf7UToeHh7hTfIx2tpLHUU/y0eTXgIBN7pMNZbKfOiaLZ8jsIYAsm/2libxRrGXLoqJ9Nq1eidgLwEvT7pKVfPRaDunaZtxzxpOFOMg+USRZ6CWkuTt1jbpB0I94KnYofphv802s2cnwCR2zhK61/de9H2rVRC/lnepVGNrw+yGJqff90yh34sS1uvM5pWhmxwZYWge6COj5uxatTBMZkGxfdhfeYeV5XVZr0idwE1SFGeF+PebV4Mr1wxOydY7LNbxEKwMfdRS3bM5Rwyvyfgx+nOtT1g0XYwO9WuZM3l4fI24IeUIPFKtL2x3SGs4GTqiSsyc27YAe2Ql/gddvDtoMsHikOXFMF5an05+onXXF4TH0cIjwPCtYAYFxlVjxCIumZhM57kjxzkeUredllK+YaBEZU4xlhuzwQenj4lxuXa4mDky2YPoqug2hGfMAPFja4fC6IdLnXe2bxUH3KdTKLljjdno7xKExGYtT2hAqn4GMMG5Q+iXeKW6kmANeDH8xOPCfKQwuPqNgRjRbuX0M40FIIQ6dCU=Bdftjv";
-        
         const WHITELIST_URL = "happ://crypt5/neirpBygmmnKbmEA8v28WlgWpS0EAEI5KL6CtGNCMaNTNNW7lf3fyEY9vIiEaOyvaJETN5/AZ57/k4/NUQmCRxSFjrgztH9tteE/h2afqWkEKkBlXiLXdgzlRojJQKtsbauiLtd1rt8+eCPgnc1zo/CHxh/XQEv/LdtwQdnHA+WFPYogzQT4Bwj2UREoZABq+K9k5snNJ2P7gU8qHQf57peVYfRtuXPkkEvMettYXXiqg235fbnMXSKCTnrsPwZ/Ms0U/dUOYhOf69c85Ai705k8fQt22IwCizTaIciOVDOaucW8eLh1PdAPLPgA6d8kOVZQ6No+HV33ASlQtMz0Sjyains2+zFhtTCZiELCcilWz43tnxCYkoA1BIcW5UROEowJwDA96D3CP/8Gqgh5DGkIpsY94Bw0AYz11sANwPq+yzioq4rzkrbhNvGNpa1BOzfBHDDRz1pOU9Dav48737ocNh9DsLzKuhGoKb1YD4n2HYs1+7cFQyjSWlnnyFIyL3E5SQAAdIePnqHJoVBLWbIic/H0Vc+kzYOXB5Am02dgy+wteohHt3M4Cw6ZIn9P40/6ISMCgetyC3NBszbEf5ep/A9zxyQnX5ymC25+asjOrHI5YRzSVlZbKJafbXi24unN7Kctk8TQKlW7hozc4q6xN3D0kAwKW+pnvW+jCbh58fQSn1/xj1Ljm2k+obsfCtBoVssoi1m5MWrMEWUDFHyyIQSbF2HnhULOd01nARiwTO9y1ITcIspOTmbpeD0KavwYBxbOZDqREaI5bnSh1c8m8R/kLfALP/r7EuHe+PtF65SXU4TuviPBv1IiwUO88n1dNNBBpIi1QWvujdwHvl+9MqZtyRllAzjTmq9yenNZDjN7iLvXFBqAq9o4iU0Fk+jkxrxf34pHy1Ty2c9/WEvZ6s4BCXhPxP2i4G6lWW6/Kk0Q6yJu/OIOBsqBEkZH1cEFeyE/V38vAnMfc3MxriFeuJcGU=KCftjv";
-        
+
+        // ========== ЗВУК ==========
         const clickSound = new Audio("https://www.soundjay.com/misc/sounds/button-click-1.mp3");
 
+        // ========== TOAST ==========
         function showToast(message) {
             const toast = document.getElementById('toast');
             toast.textContent = message;
@@ -466,26 +502,57 @@
             }, 2500);
         }
 
+        // ========== ПОДКЛЮЧЕНИЕ ==========
         function connectToVPN() {
             if (navigator.vibrate) navigator.vibrate(50);
             clickSound.play().catch(e => console.log('Звук не воспроизведён'));
-            window.location.href = HAPP_URL;
-            showToast('🔄 Открываем Happ...');
+            
+            try {
+                if (tg) {
+                    tg.openLink(HAPP_URL);
+                    showToast('🔄 Открываем Happ...');
+                } else {
+                    window.location.href = HAPP_URL;
+                }
+            } catch (e) {
+                window.location.href = HAPP_URL;
+            }
+            
             setTimeout(() => {
                 showToast('⚠️ Если Happ не открылся, установите приложение');
-            }, 1000);
+            }, 3000);
         }
 
         function connectToWhitelist() {
             if (navigator.vibrate) navigator.vibrate(50);
             clickSound.play().catch(e => console.log('Звук не воспроизведён'));
-            window.location.href = WHITELIST_URL;
-            showToast('🔄 Открываем Happ (Белые списки)...');
+            
+            try {
+                if (tg) {
+                    tg.openLink(WHITELIST_URL);
+                    showToast('🔄 Открываем Happ (Белые списки)...');
+                } else {
+                    window.location.href = WHITELIST_URL;
+                }
+            } catch (e) {
+                window.location.href = WHITELIST_URL;
+            }
+            
             setTimeout(() => {
                 showToast('⚠️ Если Happ не открылся, установите приложение');
-            }, 1000);
+            }, 3000);
         }
 
+        // ========== ЗАКРЫТИЕ ==========
+        function closeApp() {
+            if (tg) {
+                tg.close();
+            } else {
+                window.close();
+            }
+        }
+
+        // ========== FAQ ==========
         function toggleFaq(element) {
             const answer = element.nextElementSibling;
             const arrow = element.querySelector('.arrow');
@@ -493,10 +560,17 @@
             arrow.classList.toggle('open');
         }
 
-        document.getElementById('connectBtn').addEventListener('click', connectToVPN);
-        document.getElementById('whitelistBtn').addEventListener('click', connectToWhitelist);
-        
+        // ========== ПРИВЯЗКА КНОПОК ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            const connectBtn = document.getElementById('connectBtn');
+            const whitelistBtn = document.getElementById('whitelistBtn');
+            
+            if (connectBtn) connectBtn.addEventListener('click', connectToVPN);
+            if (whitelistBtn) whitelistBtn.addEventListener('click', connectToWhitelist);
+        });
+
         window.toggleFaq = toggleFaq;
+        window.closeApp = closeApp;
     </script>
 </body>
 </html>

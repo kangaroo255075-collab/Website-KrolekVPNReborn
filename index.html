@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>KrolekVPNReborn — Обход глушилок</title>
+    <title>KrolekVPNReborn — Стабильное соединение</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -328,8 +327,8 @@
         <div class="hero">
             <div class="hero-content">
                 <div class="hero-badge"><i class="fas fa-crown"></i> Бесплатно навсегда</div>
-                <h1>Обход глушилок <span>KrolekVPNReborn</span></h1>
-                <p>Стабильная скорость 15 Мбит/с, поддержка 24/7 и никаких скрытых платежей.</p>
+                <h1>KrolekVPN<span>Reborn</span></h1>
+                <p>Стабильное соединение, поддержка 24/7 и никаких скрытых платежей.</p>
                 <div class="hero-stats">
                     <div class="stat"><div class="stat-number">100+</div><div class="stat-label">Активных пользователей</div></div>
                     <div class="stat"><div class="stat-number">3+</div><div class="stat-label">Серверов</div></div>
@@ -353,7 +352,7 @@
         </div>
 
         <div class="instructions">
-            <h3><i class="fas fa-book-open"></i> Подключение к VPN</h3>
+            <h3><i class="fas fa-book-open"></i> Подключение к серверу</h3>
             
             <div class="step">
                 <div class="step-icon">📱</div>
@@ -364,7 +363,7 @@
             </div>
             <div class="step">
                 <div class="step-icon">🔌</div>
-                <div class="step-text">Нажмите на кнопку ниже</div>
+                <div class="step-text">Нажмите на одну из кнопок ниже</div>
             </div>
             <div class="step">
                 <div class="step-icon">✅</div>
@@ -372,16 +371,20 @@
             </div>
             
             <button class="connect-btn" id="connectBtn">
-                <i class="fas fa-plug"></i> Подключиться к VPN
+                <i class="fas fa-plug"></i> Подключиться к серверу
+            </button>
+            
+            <button class="connect-btn" id="whitelistBtn" style="margin-top: 10px;">
+                <i class="fas fa-shield-alt"></i> Мобильная связь
             </button>
         </div>
 
         <div class="rules">
             <h3><i class="fas fa-gavel"></i> Правила использования</h3>
-            <div class="rule-item"><div class="rule-icon">🎯</div><div class="rule-text">VPN предназначен <strong>только для обхода глушилок</strong> и защиты трафика от блокировок.</div></div>
-            <div class="rule-item"><div class="rule-icon">⚠️</div><div class="rule-text">VPN конфигурации мы добавляем <strong>частично</strong>, но не полностью.</div></div>
-            <div class="rule-item"><div class="rule-icon">🚫</div><div class="rule-text"><strong>Запрещено</strong> использовать VPN для доступа к банковским приложениям и финансовым операциям.</div></div>
-            <div class="rule-item"><div class="rule-icon">🚫</div><div class="rule-text"><strong>Запрещено</strong> заходить в российские сервисы и приложения через VPN.</div></div>
+            <div class="rule-item"><div class="rule-icon">🎯</div><div class="rule-text">Сервис предназначен <strong>только для стабильного соединения</strong> и защиты трафика.</div></div>
+            <div class="rule-item"><div class="rule-icon">⚠️</div><div class="rule-text">Конфигурации мы добавляем <strong>частично</strong>, но не полностью.</div></div>
+            <div class="rule-item"><div class="rule-icon">🚫</div><div class="rule-text"><strong>Запрещено</strong> использовать сервис для доступа к банковским приложениям и финансовым операциям.</div></div>
+            <div class="rule-item"><div class="rule-icon">🚫</div><div class="rule-text"><strong>Запрещено</strong> заходить в российские сервисы и приложения через сервер.</div></div>
             <div class="rule-item"><div class="rule-icon">🚫</div><div class="rule-text"><strong>Запрещено</strong> использовать торренты и P2P-сети.</div></div>
             <div class="rule-item"><div class="rule-icon">🔒</div><div class="rule-text">Не передавайте свою подписку третьим лицам — это может привести к блокировке.</div></div>
             <div class="rule-item"><div class="rule-icon">📢</div><div class="rule-text">О всех проблемах и неполадках сообщайте в <strong>поддержку</strong> (@Kr0l3k).</div></div>
@@ -393,11 +396,11 @@
 
             <div class="faq-item">
                 <div class="faq-question" onclick="toggleFaq(this)">
-                    <div class="question-text"><span>😕</span> Почему VPN не работает?</div>
+                    <div class="question-text"><span>😕</span> Почему не работает соединение?</div>
                     <div class="arrow">›</div>
                 </div>
                 <div class="faq-answer">
-                    Если у вас появились проблемы с работой нашего VPN, советую написать в поддержку. Если у вас пока нет возможности написать нам, то дождитесь следующего обновления. Все обновления сначала публикуются в нашем <a href="https://t.me/+JTSRgKb-tnRiMmFi" target="_blank">канале</a>, а затем реализуются 🐇
+                    Если у вас появились проблемы с работой сервиса, советую написать в поддержку. Если у вас пока нет возможности написать нам, то дождитесь следующего обновления. Все обновления сначала публикуются в нашем <a href="https://t.me/+JTSRgKb-tnRiMmFi" target="_blank">канале</a>, а затем реализуются 🐇
                 </div>
             </div>
 
@@ -417,7 +420,7 @@
                     <div class="arrow">›</div>
                 </div>
                 <div class="faq-answer">
-                    Я уверен, что многие это говорили, считая, что бесплатные VPN сливают ваши личные данные. Но на самом деле это не так. Есть и более хорошие VPN, которые не отдают данные третьим лицам. Сливание данных третьим лицам — нарушение закона Российской Федерации 🐇
+                    Я уверен, что многие это говорили, считая, что бесплатные сервисы сливают ваши личные данные. Но на самом деле это не так. Есть и более хорошие сервисы, которые не отдают данные третьим лицам. Сливание данных третьим лицам — нарушение закона Российской Федерации 🐇
                 </div>
             </div>
         </div>
@@ -427,7 +430,7 @@
             <div class="features-grid">
                 <div class="feature-card"><div class="feature-icon"><i class="fas fa-bolt"></i></div><h3>Высокая скорость</h3><p>Стабильные 15 Мбит/с</p></div>
                 <div class="feature-card"><div class="feature-icon"><i class="fas fa-headset"></i></div><h3>Поддержка 24/7</h3><p>Живые люди отвечают в любое время</p></div>
-                <div class="feature-card"><div class="feature-icon"><i class="fas fa-lock"></i></div><h3>Обход глушилок</h3><p>Работает там, где остальные падают</p></div>
+                <div class="feature-card"><div class="feature-icon"><i class="fas fa-lock"></i></div><h3>Защита трафика</h3><p>Ваши данные под надёжной защитой</p></div>
                 <div class="feature-card"><div class="feature-icon"><i class="fas fa-gem"></i></div><h3>Совершенно бесплатно</h3><p>Навсегда. Без скрытых подписок</p></div>
             </div>
         </div>
@@ -436,7 +439,7 @@
             <img src="https://raw.githubusercontent.com/kangaroo255075-collab/Website-KrolekVPNReborn/main/IMG_20260419_180656_143.jpg" 
                  alt="KrolekVPN" 
                  style="width: 50px; border-radius: 50%; margin-bottom: 10px;">
-            <p>© 2025-2026 KrolekVPNReborn. Бесплатный VPN для обхода блокировок.</p>
+            <p>© 2025-2026 KrolekVPNReborn. Бесплатный сервис для стабильного соединения.</p>
             <p>
                 <a href="https://t.me/+JTSRgKb-tnRiMmFi" target="_blank"><i class="fab fa-telegram"></i> Приватный канал</a>
                 &nbsp;|&nbsp;
@@ -448,13 +451,12 @@
     <div id="toast" class="toast"></div>
 
     <script>
-        // ========== НОВАЯ ССЫЛКА HAPP ==========
-        const HAPP_URL = "happ://crypt5/fzvdBbCiqlYGTqTGdBzUW7Mp22zfVU0GF7WUr39vhRN7kqZdGuhfGY30cjiY4RA/8dPKXC7eTCAPZZxPCZrnigYZbETcp7fxyOPUGp2Sej51T5oRkhoAJD3/55Zs8R1hxYNaZWB/q7eNJEXXOQa74EgUuclzVYBzmFgeqx/dX1ZDwEQUGwCIHzrDvlvOouHl9cJEZO5semeCwOJHwzJyCr/94/7lw2eqk73Y2G59iG6hP65HFXjAjjIE5FM=RWpwoAqYbUyuiia5ERQw808JfN2wcvyJ7BiD+TW4dAkiBl3Ls0p7I+6Kr4bEZisLeoQ291A5V0R7CkVq9M0PpyeElFOSPdjaNsRL/BzUJNsJ/hugIqQPtVGgf7szM4dg6avVuzgO7Hfd4rUxecn77hDAUWHvROdJ+YTofjGhbAm0LWw+8LEnj1hBd0bo1V4/TM69TpaIvV5KN2LkC+s8i5JCnjcr6Wgxt8o9O2VgRKKNayGWJwCntxzBmJ1NhWyAiUbXTZL/tCzjVo0qHn8RaNxHfrPFJTYbhASmz/PfZPKZe+ts9am8u4bPnnLty9M9rQlVfucsX5RY6/kcmX2d3lDEBA/8sMcXgpMq9lBEpODYSzEIXAmhfNdV4MxHmQ9K0R7LuAOLgkO4p+P7oT+h79PmOzW1jO18E50G5cJPUU5S8aVYsYOOOn6QA80Qesf2Rz0SrNMn1KP/BNm/GZMFfhdG8bIDQvBsZQhFnjTEOz38kcDLbv19kdZdDMRvuCHRWpNFgV2CAp0WMFElxHvbF83idONx/t0nRJAZf7nQJHmG/Cz5hftcuLThy85kIYWtuZC0rLRkDD1nbFCNoaelzRxzzI4iq7fEkI1Biw1m96pihhem3bWvoWF6b5B0eU+4o7j1iiJJpbyxX9dCyi3CwO0oQQpr7cSOFee6kutufo4=ff";
-
-        // ========== ЗВУК ==========
+        const HAPP_URL = "happ://crypt5/neirTpHqYFv7pwC06c21OR+ajPIg7FYfsqtBwuihPX8ReSFi/IEJRqBoS1jtuXoNuXgt+SQiIgKnXZsiu7L4uBiQOaHzMnmbatNLMezmqiZLIB3Yi4OZe+N3poYBcdS4EA3TLVqRI1kNqwHXOFaD8r09MwBG9xCdkoGY9BAkabqw/5ov7QWExsOs3P3b8Uj/Vlhdil1ECGHXix89Nmdmmvb/b3c4vUtPqQGYsY3o==cgXAGp0ml4HKpnyw5sTgcKkmO7d4xMX+JqTDzZPi6maDnbSDSvVKVQmbEupvCL1KJWEpmSU6XzxW3hb3UfsIuiv1YraVMTAMzrRg0vfgS5aT1zfX1I7bkg4Lq9vQ7kSATYkTT0w9zGf7UToeHh7hTfIx2tpLHUU/y0eTXgIBN7pMNZbKfOiaLZ8jsIYAsm/2libxRrGXLoqJ9Nq1eidgLwEvT7pKVfPRaDunaZtxzxpOFOMg+USRZ6CWkuTt1jbpB0I94KnYofphv802s2cnwCR2zhK61/de9H2rVRC/lnepVGNrw+yGJqff90yh34sS1uvM5pWhmxwZYWge6COj5uxatTBMZkGxfdhfeYeV5XVZr0idwE1SFGeF+PebV4Mr1wxOydY7LNbxEKwMfdRS3bM5Rwyvyfgx+nOtT1g0XYwO9WuZM3l4fI24IeUIPFKtL2x3SGs4GTqiSsyc27YAe2Ql/gddvDtoMsHikOXFMF5an05+onXXF4TH0cIjwPCtYAYFxlVjxCIumZhM57kjxzkeUredllK+YaBEZU4xlhuzwQenj4lxuXa4mDky2YPoqug2hGfMAPFja4fC6IdLnXe2bxUH3KdTKLljjdno7xKExGYtT2hAqn4GMMG5Q+iXeKW6kmANeDH8xOPCfKQwuPqNgRjRbuX0M40FIIQ6dCU=Bdftjv";
+        
+        const WHITELIST_URL = "happ://crypt5/neirpBygmmnKbmEA8v28WlgWpS0EAEI5KL6CtGNCMaNTNNW7lf3fyEY9vIiEaOyvaJETN5/AZ57/k4/NUQmCRxSFjrgztH9tteE/h2afqWkEKkBlXiLXdgzlRojJQKtsbauiLtd1rt8+eCPgnc1zo/CHxh/XQEv/LdtwQdnHA+WFPYogzQT4Bwj2UREoZABq+K9k5snNJ2P7gU8qHQf57peVYfRtuXPkkEvMettYXXiqg235fbnMXSKCTnrsPwZ/Ms0U/dUOYhOf69c85Ai705k8fQt22IwCizTaIciOVDOaucW8eLh1PdAPLPgA6d8kOVZQ6No+HV33ASlQtMz0Sjyains2+zFhtTCZiELCcilWz43tnxCYkoA1BIcW5UROEowJwDA96D3CP/8Gqgh5DGkIpsY94Bw0AYz11sANwPq+yzioq4rzkrbhNvGNpa1BOzfBHDDRz1pOU9Dav48737ocNh9DsLzKuhGoKb1YD4n2HYs1+7cFQyjSWlnnyFIyL3E5SQAAdIePnqHJoVBLWbIic/H0Vc+kzYOXB5Am02dgy+wteohHt3M4Cw6ZIn9P40/6ISMCgetyC3NBszbEf5ep/A9zxyQnX5ymC25+asjOrHI5YRzSVlZbKJafbXi24unN7Kctk8TQKlW7hozc4q6xN3D0kAwKW+pnvW+jCbh58fQSn1/xj1Ljm2k+obsfCtBoVssoi1m5MWrMEWUDFHyyIQSbF2HnhULOd01nARiwTO9y1ITcIspOTmbpeD0KavwYBxbOZDqREaI5bnSh1c8m8R/kLfALP/r7EuHe+PtF65SXU4TuviPBv1IiwUO88n1dNNBBpIi1QWvujdwHvl+9MqZtyRllAzjTmq9yenNZDjN7iLvXFBqAq9o4iU0Fk+jkxrxf34pHy1Ty2c9/WEvZ6s4BCXhPxP2i4G6lWW6/Kk0Q6yJu/OIOBsqBEkZH1cEFeyE/V38vAnMfc3MxriFeuJcGU=KCftjv";
+        
         const clickSound = new Audio("https://www.soundjay.com/misc/sounds/button-click-1.mp3");
 
-        // ========== TOAST ==========
         function showToast(message) {
             const toast = document.getElementById('toast');
             toast.textContent = message;
@@ -464,19 +466,26 @@
             }, 2500);
         }
 
-        // ========== ПОДКЛЮЧЕНИЕ ==========
         function connectToVPN() {
             if (navigator.vibrate) navigator.vibrate(50);
             clickSound.play().catch(e => console.log('Звук не воспроизведён'));
-            
             window.location.href = HAPP_URL;
             showToast('🔄 Открываем Happ...');
             setTimeout(() => {
                 showToast('⚠️ Если Happ не открылся, установите приложение');
-            }, 3000);
+            }, 1000);
         }
 
-        // ========== FAQ ==========
+        function connectToWhitelist() {
+            if (navigator.vibrate) navigator.vibrate(50);
+            clickSound.play().catch(e => console.log('Звук не воспроизведён'));
+            window.location.href = WHITELIST_URL;
+            showToast('🔄 Открываем Happ (Мобильная связь)...');
+            setTimeout(() => {
+                showToast('⚠️ Если Happ не открылся, установите приложение');
+            }, 1000);
+        }
+
         function toggleFaq(element) {
             const answer = element.nextElementSibling;
             const arrow = element.querySelector('.arrow');
@@ -484,13 +493,10 @@
             arrow.classList.toggle('open');
         }
 
-        // ========== ПРИВЯЗКА КНОПОК ==========
-        document.addEventListener('DOMContentLoaded', function() {
-            const connectBtn = document.getElementById('connectBtn');
-            if (connectBtn) connectBtn.addEventListener('click', connectToVPN);
-        });
-
+        document.getElementById('connectBtn').addEventListener('click', connectToVPN);
+        document.getElementById('whitelistBtn').addEventListener('click', connectToWhitelist);
+        
         window.toggleFaq = toggleFaq;
     </script>
 </body>
-  </html>
+</html>

@@ -1,483 +1,720 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>KrolekVPNReborn — Обход глушилок</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #0a0a0a;
-            color: #fff;
-            line-height: 1.6;
-            min-height: 100vh;
-            position: relative;
-        }
-        
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at center, rgba(255, 107, 53, 0.15) 0%, rgba(255, 107, 53, 0) 80%);
-            animation: orangePulse 6s ease-in-out infinite alternate;
-            pointer-events: none;
-            z-index: 0;
-        }
-        
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 70% 30%, rgba(255, 159, 74, 0.08) 0%, rgba(255, 107, 53, 0) 70%);
-            animation: orangePulseReverse 8s ease-in-out infinite alternate;
-            pointer-events: none;
-            z-index: 0;
-        }
-        
-        @keyframes orangePulse {
-            0% { opacity: 0.3; transform: scale(1); }
-            100% { opacity: 1; transform: scale(1.2); }
-        }
-        
-        @keyframes orangePulseReverse {
-            0% { opacity: 0.5; transform: scale(1.2); }
-            100% { opacity: 0.2; transform: scale(1); }
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            position: relative;
-            z-index: 1;
-        }
-        
-        @keyframes fadeInUp {
-            0% { opacity: 0; transform: translateY(30px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
+<title>KrolekVPNReborn</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{
+  --bg:#07070a;--card:rgba(18,15,20,.82);--card2:rgba(28,22,32,.9);
+  --or:#ff6b35;--or2:#ff9f4a;--or3:#ffcb80;
+  --text:#fff;--muted:#888;--r:20px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 
-        .navbar, .hero, .subscription-card, .instructions, .rules, .faq-section, .features, .footer {
-            animation: fadeInUp 0.6s ease forwards;
-            opacity: 0;
-        }
+body{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background:var(--bg);color:var(--text);
+  min-height:100vh;overflow-x:hidden;
+}
 
-        .navbar { animation-delay: 0.1s; }
-        .hero { animation-delay: 0.2s; }
-        .subscription-card { animation-delay: 0.3s; }
-        .instructions { animation-delay: 0.4s; }
-        .rules { animation-delay: 0.5s; }
-        .faq-section { animation-delay: 0.6s; }
-        .features { animation-delay: 0.7s; }
-        .footer { animation-delay: 0.8s; }
-        
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 0;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 24px;
-            font-weight: 700;
-        }
-        .logo i { color: #ff6b35; font-size: 32px; }
-        .logo span { background: linear-gradient(135deg, #ff6b35, #ff9f4a); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        .nav-links { display: flex; gap: 30px; }
-        .nav-links a { color: #fff; text-decoration: none; transition: 0.3s; font-weight: 500; }
-        .nav-links a:hover { color: #ff6b35; }
-        
-        .hero {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            min-height: 50vh;
-            gap: 40px;
-            flex-wrap: wrap;
-            padding: 40px 0;
-        }
-        .hero-content { flex: 1; }
-        .hero-badge {
-            background: rgba(255,107,53,0.2);
-            border: 1px solid rgba(255,107,53,0.5);
-            border-radius: 30px;
-            padding: 5px 15px;
-            display: inline-block;
-            font-size: 14px;
-            margin-bottom: 20px;
-            color: #ff9f4a;
-        }
-        .hero h1 { font-size: 52px; font-weight: 700; margin-bottom: 20px; line-height: 1.2; }
-        .hero h1 span { color: #ff6b35; }
-        .hero p { font-size: 18px; color: #ddd; margin-bottom: 30px; max-width: 500px; }
-        .hero-stats { display: flex; gap: 30px; margin-top: 30px; }
-        .stat-number { font-size: 32px; font-weight: 700; color: #ff6b35; }
-        .stat-label { font-size: 14px; color: #ddd; }
-        .hero-image { flex: 1; text-align: center; }
-        .hero-image i { font-size: 250px; color: rgba(255,107,53,0.2); }
-        
-        .subscription-card {
-            background: linear-gradient(135deg, rgba(255,107,53,0.1), rgba(255,159,74,0.05));
-            border-radius: 30px;
-            padding: 25px;
-            margin: 20px 0;
-            text-align: center;
-            border: 1px solid rgba(255,107,53,0.3);
-            backdrop-filter: blur(5px);
-        }
-        .expire-date { font-size: 28px; font-weight: 700; color: #ff6b35; margin: 10px 0; }
-        
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-        .info-label { color: #ddd; font-size: 14px; display: flex; align-items: center; gap: 8px; }
-        .info-value { color: #ff9f4a; font-weight: 600; font-size: 16px; }
-        
-        .instructions, .rules, .faq-section {
-            background: rgba(255,255,255,0.05);
-            border-radius: 24px;
-            padding: 24px;
-            margin: 30px 0;
-            border: 1px solid rgba(255,107,53,0.2);
-            backdrop-filter: blur(5px);
-        }
-        .instructions h3, .rules h3, .faq-section h3 {
-            font-size: 20px;
-            margin-bottom: 20px;
-            color: #ff9f4a;
-        }
-        .step {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-            padding: 12px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 16px;
-        }
-        .step-icon { font-size: 32px; min-width: 50px; text-align: center; }
-        .step-text { flex: 1; font-size: 15px; color: #ddd; }
-        .step-text strong { color: #ff9f4a; }
-        .step-text a { color: #ff9f4a; text-decoration: none; }
-        
-        .rule-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 15px;
-            margin-bottom: 16px;
-            padding: 10px;
-            background: rgba(0,0,0,0.2);
-            border-radius: 12px;
-        }
-        .rule-icon { font-size: 22px; min-width: 40px; text-align: center; }
-        .rule-text { flex: 1; font-size: 14px; color: #ccc; line-height: 1.5; }
-        .rule-text strong { color: #ff6b35; }
-        
-        .faq-item {
-            margin-bottom: 12px;
-            border-radius: 16px;
-            background: rgba(0,0,0,0.2);
-            overflow: hidden;
-        }
-        .faq-question {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 16px 20px;
-            cursor: pointer;
-            transition: 0.2s;
-            font-weight: 500;
-            font-size: 16px;
-        }
-        .faq-question:hover {
-            background: rgba(255,107,53,0.1);
-        }
-        .faq-question .question-text {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .faq-question .arrow {
-            font-size: 18px;
-            transition: transform 0.3s ease;
-            color: #ff9f4a;
-        }
-        .faq-question .arrow.open {
-            transform: rotate(90deg);
-        }
-        .faq-answer {
-            max-height: 0;
-            padding: 0 20px;
-            overflow: hidden;
-            transition: max-height 0.3s ease, padding 0.3s ease;
-            color: #bbb;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-        .faq-answer.open {
-            max-height: 300px;
-            padding: 0 20px 16px 20px;
-        }
-        
-        .connect-btn {
-            background: linear-gradient(135deg, #ff6b35, #ff9f4a);
-            border: none;
-            padding: 14px 28px;
-            border-radius: 50px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-            font-size: 16px;
-            width: 100%;
-            margin: 10px 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        .connect-btn:active { transform: scale(0.97); }
-        
-        .features { padding: 40px 0; }
-        .section-title { text-align: center; font-size: 32px; margin-bottom: 40px; }
-        .section-title span { color: #ff6b35; }
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
-        }
-        .feature-card {
-            background: rgba(255,255,255,0.05);
-            border-radius: 20px;
-            padding: 25px;
-            text-align: center;
-            border: 1px solid rgba(255,107,53,0.2);
-            transition: 0.3s;
-            backdrop-filter: blur(5px);
-        }
-        .feature-card:hover { transform: translateY(-5px); border-color: #ff6b35; }
-        .feature-icon { font-size: 40px; color: #ff6b35; margin-bottom: 15px; }
-        .feature-card h3 { margin-bottom: 10px; }
-        .feature-card p { color: #ddd; font-size: 14px; }
-        
-        .footer { text-align: center; padding: 30px 0; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 40px; color: #aaa; }
-        .footer a { color: #aaa; text-decoration: none; transition: 0.3s; }
-        .footer a:hover { color: #ff6b35; }
-        
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 36px; }
-            .navbar { flex-direction: column; text-align: center; }
-            .step { flex-wrap: wrap; text-align: center; justify-content: center; }
-            .rule-item { flex-wrap: wrap; text-align: center; justify-content: center; }
-        }
+/* ── CANVASES ── */
+#bgCanvas,#particleCanvas{
+  position:fixed;inset:0;pointer-events:none;
+}
+#bgCanvas{z-index:0}
+#particleCanvas{z-index:1}
 
-        .toast {
-            position: fixed;
-            bottom: 30px;
-            left: 20px;
-            right: 20px;
-            background: #1a1a1a;
-            border-left: 4px solid #4caf50;
-            border-radius: 12px;
-            padding: 12px 20px;
-            text-align: center;
-            font-size: 14px;
-            z-index: 1000;
-            opacity: 0;
-            transition: opacity 0.3s;
-            pointer-events: none;
-        }
-    </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+/* ── APP SHELL ── */
+.app{
+  position:relative;z-index:2;
+  padding-bottom:calc(68px + env(safe-area-inset-bottom,0px));
+  min-height:100vh;
+}
+
+/* ── HEADER ── */
+.header{
+  display:flex;align-items:center;gap:12px;
+  padding:calc(14px + env(safe-area-inset-top,0px)) 16px 14px;
+  background:rgba(7,7,10,.75);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border-bottom:1px solid rgba(255,107,53,.12);
+  position:sticky;top:0;z-index:10;
+}
+.avatar{
+  width:44px;height:44px;border-radius:50%;flex-shrink:0;overflow:hidden;
+  background:linear-gradient(135deg,var(--or),var(--or2));
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;font-weight:700;
+  box-shadow:0 0 0 2px rgba(255,107,53,.5),0 0 18px rgba(255,107,53,.35);
+  animation:avatarPulse 3s ease-in-out infinite;
+}
+.avatar img{width:100%;height:100%;object-fit:cover}
+@keyframes avatarPulse{
+  0%,100%{box-shadow:0 0 0 2px rgba(255,107,53,.5),0 0 18px rgba(255,107,53,.3)}
+  50%    {box-shadow:0 0 0 3px rgba(255,107,53,.8),0 0 28px rgba(255,107,53,.55)}
+}
+.hinfo{flex:1;min-width:0}
+.hname{font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hsub{font-size:12px;color:var(--muted);margin-top:1px}
+
+/* ── SCROLL ── */
+.scroll{padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+
+/* ── ENTRANCE ANIMS ── */
+@keyframes slideUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+.banner    {animation:slideUp .5s .05s ease both}
+.main-card {animation:slideUp .5s .15s ease both}
+.row-card  {animation:slideUp .5s .25s ease both}
+
+/* ── BANNER ── */
+.banner{
+  background:linear-gradient(135deg,rgba(255,107,53,.18),rgba(255,159,74,.08));
+  border:1px solid rgba(255,107,53,.3);
+  border-radius:var(--r);padding:14px 16px;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  backdrop-filter:blur(12px);
+  box-shadow:0 4px 24px rgba(255,107,53,.1);
+}
+.banner-text{font-size:14px;font-weight:700}
+.banner-sub{font-size:11px;color:var(--muted);margin-top:2px}
+.banner-pill{
+  background:linear-gradient(135deg,var(--or),var(--or2));
+  border-radius:10px;padding:5px 12px;
+  font-size:12px;font-weight:800;flex-shrink:0;letter-spacing:.5px;
+  box-shadow:0 0 14px rgba(255,107,53,.45);
+}
+
+/* ── MAIN CARD ── */
+.main-card{
+  background:var(--card);border-radius:var(--r);padding:20px;
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border:1px solid rgba(255,107,53,.18);
+  box-shadow:0 8px 40px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.05),0 0 0 0 rgba(255,107,53,.0);
+  transition:box-shadow .3s;
+}
+.main-card:hover{box-shadow:0 8px 40px rgba(0,0,0,.6),0 0 30px rgba(255,107,53,.12)}
+.mc-head{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.mc-title{
+  font-size:22px;font-weight:900;letter-spacing:-.3px;
+  background:linear-gradient(90deg,#fff 40%,var(--or2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.mc-badge{
+  background:rgba(255,107,53,.15);
+  border:1px solid rgba(255,107,53,.4);
+  border-radius:8px;padding:2px 9px;
+  font-size:12px;font-weight:700;color:var(--or2);
+  box-shadow:0 0 10px rgba(255,107,53,.2);
+}
+.mc-desc{font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.5}
+
+/* ── CONNECT BUTTON ── */
+.connect-wrap{position:relative}
+.connect-ring{
+  position:absolute;inset:-6px;border-radius:56px;
+  background:linear-gradient(135deg,var(--or),var(--or2));
+  opacity:.35;filter:blur(10px);
+  animation:ringPulse 2.2s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes ringPulse{
+  0%,100%{opacity:.25;transform:scale(.97)}
+  50%    {opacity:.5; transform:scale(1.02)}
+}
+.connect-btn{
+  position:relative;z-index:1;width:100%;
+  background:linear-gradient(135deg,var(--or),var(--or2));
+  border:none;border-radius:50px;padding:15px;
+  font-size:17px;font-weight:700;color:#fff;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  box-shadow:0 4px 24px rgba(255,107,53,.4);
+  transition:transform .12s,box-shadow .12s;
+}
+.connect-btn:active{transform:scale(.96);box-shadow:0 2px 12px rgba(255,107,53,.3)}
+
+.chips{display:flex;gap:7px;margin-top:14px;flex-wrap:wrap}
+.chip{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:50px;padding:5px 12px;font-size:12px;color:#ccc;
+  display:flex;align-items:center;gap:5px;
+  backdrop-filter:blur(8px);
+}
+
+/* ── ROW CARD ── */
+.row-card{
+  background:var(--card);border-radius:var(--r);padding:15px 16px;
+  display:flex;align-items:center;gap:12px;
+  border:1px solid rgba(255,107,53,.12);
+  backdrop-filter:blur(20px);
+  box-shadow:0 4px 20px rgba(0,0,0,.5);
+  transition:border-color .2s;
+}
+.row-card:active{border-color:rgba(255,107,53,.4)}
+.row-icon{font-size:30px;flex-shrink:0}
+.row-body{flex:1}
+.row-title{font-size:15px;font-weight:700}
+.row-sub{font-size:22px;margin-top:4px;letter-spacing:3px}
+.row-arrow{font-size:20px;color:var(--muted)}
+
+/* ── BOTTOM NAV ── */
+.bnav{
+  position:fixed;bottom:0;left:0;right:0;z-index:100;
+  background:rgba(7,7,10,.9);
+  border-top:1px solid rgba(255,107,53,.1);
+  display:flex;
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  backdrop-filter:blur(24px);
+}
+.bnav-indicator{
+  position:absolute;top:0;height:2px;width:33.33%;
+  background:linear-gradient(90deg,var(--or),var(--or2));
+  border-radius:0 0 3px 3px;
+  transition:transform .3s cubic-bezier(.4,0,.2,1);
+  box-shadow:0 0 10px rgba(255,107,53,.6);
+}
+.ni{
+  flex:1;display:flex;flex-direction:column;align-items:center;
+  gap:2px;padding:10px 0;
+  font-size:10px;color:var(--muted);cursor:pointer;
+  transition:color .2s;user-select:none;
+}
+.ni .ico{font-size:22px;line-height:1;transition:transform .2s}
+.ni.active{color:var(--or)}
+.ni.active .ico{transform:scale(1.15)}
+
+/* ── TABS ── */
+.tab{display:none;opacity:0;transform:translateY(8px);transition:opacity .2s,transform .2s}
+.tab.active{display:block;opacity:1;transform:translateY(0)}
+
+/* ── SUBSCRIPTION TAB ── */
+.sub-hero{
+  background:linear-gradient(135deg,rgba(255,107,53,.14),rgba(255,159,74,.06));
+  border:1px solid rgba(255,107,53,.25);
+  border-radius:var(--r);padding:22px;text-align:center;margin-bottom:10px;
+  backdrop-filter:blur(20px);
+  box-shadow:0 0 40px rgba(255,107,53,.08);
+}
+.sub-exp{
+  font-size:26px;font-weight:800;margin:6px 0 14px;
+  background:linear-gradient(90deg,var(--or),var(--or3));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.sub-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:9px 0;border-top:1px solid rgba(255,255,255,.06);font-size:14px;
+}
+.sub-lbl{color:var(--muted)}
+.sub-val{color:var(--or2);font-weight:600}
+.sub-val.green{color:#4caf50}
+
+/* ── OTHER TAB ── */
+.other-block{
+  background:var(--card);border-radius:var(--r);padding:16px;margin-bottom:10px;
+  border:1px solid rgba(255,255,255,.06);
+  backdrop-filter:blur(20px);
+}
+.other-title{font-size:15px;font-weight:700;color:var(--or2);margin-bottom:8px}
+.other-body{font-size:13px;color:var(--muted);line-height:1.6}
+.other-body a{color:var(--or2);text-decoration:none}
+
+/* ── OVERLAY ── */
+.overlay{
+  position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.7);
+  opacity:0;pointer-events:none;transition:opacity .25s;
+}
+.overlay.open{opacity:1;pointer-events:all}
+
+/* ── SHEET ── */
+.sheet{
+  position:fixed;bottom:0;left:0;right:0;z-index:201;
+  background:rgba(14,12,18,.97);
+  border:1px solid rgba(255,107,53,.18);
+  border-bottom:none;
+  border-radius:24px 24px 0 0;
+  padding:0 18px calc(24px + env(safe-area-inset-bottom,0px));
+  transform:translateY(100%);
+  transition:transform .32s cubic-bezier(.32,.72,0,1);
+  max-height:88vh;overflow-y:auto;
+  backdrop-filter:blur(30px);
+  box-shadow:0 -8px 60px rgba(255,107,53,.12);
+}
+.sheet::before{
+  content:'';position:absolute;inset:0;border-radius:24px 24px 0 0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(255,107,53,.06) 0%,transparent 30%);
+}
+.sheet.open{transform:translateY(0)}
+.handle{
+  width:36px;height:4px;background:rgba(255,255,255,.15);
+  border-radius:2px;margin:14px auto 18px;
+}
+.sheet-title{font-size:18px;font-weight:800;text-align:center;margin-bottom:18px}
+
+/* ── DEVICE BUTTONS ── */
+.dbtn{
+  width:100%;background:rgba(255,255,255,.04);
+  border:1.5px solid rgba(255,107,53,.2);
+  border-radius:16px;padding:14px 16px;
+  color:#fff;cursor:pointer;margin-bottom:10px;
+  display:flex;align-items:center;gap:14px;text-align:left;
+  transition:border-color .15s,background .15s,box-shadow .15s;
+  position:relative;overflow:hidden;
+}
+.dbtn::before{
+  content:'';position:absolute;inset:0;opacity:0;
+  background:linear-gradient(135deg,rgba(255,107,53,.15),transparent);
+  transition:opacity .2s;
+}
+.dbtn:active::before{opacity:1}
+.dbtn:active{border-color:var(--or);box-shadow:0 0 20px rgba(255,107,53,.2)}
+.dbtn svg{width:30px;height:30px;flex-shrink:0}
+.dbtn-title{font-size:15px;font-weight:700}
+.dbtn-sub{font-size:12px;color:var(--muted);margin-top:2px}
+
+/* ── INSTRUCTION STEPS ── */
+.step{
+  display:flex;align-items:flex-start;gap:12px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);
+  border-radius:14px;padding:12px;margin-bottom:10px;
+}
+.stepnum{
+  width:26px;height:26px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--or),var(--or2));
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;
+  box-shadow:0 0 10px rgba(255,107,53,.4);
+}
+.steptxt{font-size:14px;color:#ddd;line-height:1.55;padding-top:2px}
+.steptxt a{color:var(--or2);text-decoration:none}
+.steptxt strong{color:var(--or2)}
+
+.back-btn{
+  width:100%;background:none;
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:50px;padding:11px;
+  color:var(--muted);font-size:14px;cursor:pointer;margin-bottom:10px;
+  transition:border-color .2s;
+}
+.back-btn:active{border-color:rgba(255,255,255,.3)}
+.do-btn{
+  width:100%;background:linear-gradient(135deg,var(--or),var(--or2));
+  border:none;border-radius:50px;padding:15px;
+  font-size:16px;font-weight:700;color:#fff;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  box-shadow:0 4px 24px rgba(255,107,53,.4);
+}
+.do-btn:active{transform:scale(.97)}
+
+.section-lbl{
+  font-size:11px;font-weight:700;letter-spacing:.8px;
+  text-transform:uppercase;color:rgba(255,107,53,.6);padding:0 2px 6px;
+}
+</style>
 </head>
 <body>
-    <div class="container">
-        <nav class="navbar">
-            <div class="logo">
-                <img src="https://raw.githubusercontent.com/kangaroo255075-collab/Website-KrolekVPNReborn/main/IMG_20260419_180656_143.jpg" 
-                     alt="KrolekVPN" 
-                     style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px; object-fit: cover;">
-                <i class="fas fa-shield-alt"></i>
-                <span>KrolekVPN<span style="color:#fff">Reborn</span></span>
-            </div>
-            <div class="nav-links">
-                <a href="#features">Преимущества</a>
-                <a href="https://t.me/+JTSRgKb-tnRiMmFi" target="_blank">Канал</a>
-                <a href="https://t.me/KrolekVPNReborn_bot" target="_blank">Бот</a>
-            </div>
-        </nav>
 
-        <div class="hero">
-            <div class="hero-content">
-                <div class="hero-badge"><i class="fas fa-crown"></i> Бесплатно навсегда</div>
-                <h1>Обход глушилок <span>KrolekVPNReborn</span></h1>
-                <p>Стабильная скорость 15 Мбит/с, поддержка 24/7 и никаких скрытых платежей.</p>
-                <div class="hero-stats">
-                    <div class="stat"><div class="stat-number">100+</div><div class="stat-label">Активных пользователей</div></div>
-                    <div class="stat"><div class="stat-number">3+</div><div class="stat-label">Серверов</div></div>
-                    <div class="stat"><div class="stat-number">24/7</div><div class="stat-label">Поддержка</div></div>
-                </div>
-            </div>
-            <div class="hero-image"><i class="fas fa-globe"></i></div>
-        </div>
+<canvas id="bgCanvas"></canvas>
+<canvas id="particleCanvas"></canvas>
 
-        <div class="subscription-card">
-            <h3>🔐 ВАША ПОДПИСКА</h3>
-            <div class="expire-date">15 июля 2045 г.</div>
-            <div class="info-row">
-                <div class="info-label"><i class="fas fa-infinity"></i> Лимит трафика</div>
-                <div class="info-value">∞ (Безлимит)</div>
-            </div>
-            <div class="info-row">
-                <div class="info-label"><i class="fas fa-tachometer-alt"></i> Скорость</div>
-                <div class="info-value">До 15 Мбит/с</div>
-            </div>
-        </div>
-
-        <div class="instructions">
-            <h3><i class="fas fa-book-open"></i> Подключение к VPN</h3>
-            
-            <div class="step">
-                <div class="step-icon">📱</div>
-                <div class="step-text">Скачайте <strong style="color: #ff6b35;">KrolekClient</strong> с официального канала <a href="https://t.me/+JTSRgKb-tnRiMmFi" target="_blank">KrolekVPNReborn</a></div>
-            </div>
-            <div class="step">
-                <div class="step-icon">🔌</div>
-                <div class="step-text">Нажмите на кнопку ниже, чтобы подписка перешла в KrolekClient</div>
-            </div>
-            <div class="step">
-                <div class="step-icon">✅</div>
-                <div class="step-text">Готово! Приложение откроется автоматически</div>
-            </div>
-            
-            <button class="connect-btn" id="connectBtn">
-                <i class="fas fa-plug"></i> Подключиться к VPN
-            </button>
-        </div>
-
-        <div class="rules">
-            <h3><i class="fas fa-gavel"></i> Правила использования</h3>
-            <div class="rule-item"><div class="rule-icon">🎯</div><div class="rule-text">VPN предназначен <strong>только для обхода глушилок</strong> и защиты трафика от блокировок.</div></div>
-            <div class="rule-item"><div class="rule-icon">⚠️</div><div class="rule-text">VPN конфигурации мы добавляем <strong>частично</strong>, но не полностью.</div></div>
-            <div class="rule-item"><div class="rule-icon">🚫</div><div class="rule-text"><strong>Запрещено</strong> использовать VPN для доступа к банковским приложениям и финансовым операциям.</div></div>
-            <div class="rule-item"><div class="rule-icon">🚫</div><div class="rule-text"><strong>Запрещено</strong> заходить в российские сервисы и приложения через VPN.</div></div>
-            <div class="rule-item"><div class="rule-icon">🚫</div><div class="rule-text"><strong>Запрещено</strong> использовать торренты и P2P-сети.</div></div>
-            <div class="rule-item"><div class="rule-icon">🔒</div><div class="rule-text">Не передавайте свою подписку третьим лицам — это может привести к блокировке.</div></div>
-            <div class="rule-item"><div class="rule-icon">📢</div><div class="rule-text">О всех проблемах и неполадках сообщайте в <strong>поддержку</strong> (@Kr0l3k).</div></div>
-            <div class="rule-item"><div class="rule-icon">⏱️</div><div class="rule-text">Подписка <strong>бесплатна</strong> и действует до <strong>15 июля 2045 года</strong>. Продление не требуется.</div></div>
-        </div>
-
-        <div class="faq-section">
-            <h3><i class="fas fa-question-circle"></i> Часто задаваемые вопросы</h3>
-
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">
-                    <div class="question-text"><span>😕</span> Почему VPN не работает?</div>
-                    <div class="arrow">›</div>
-                </div>
-                <div class="faq-answer">
-                    Если у вас появились проблемы с работой нашего VPN, советую написать в поддержку. Если у вас пока нет возможности написать нам, то дождитесь следующего обновления. Все обновления сначала публикуются в нашем <a href="https://t.me/+JTSRgKb-tnRiMmFi" target="_blank">канале</a>, а затем реализуются 🐇
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">
-                    <div class="question-text"><span>🤔</span> Как подключиться?</div>
-                    <div class="arrow">›</div>
-                </div>
-                <div class="faq-answer">
-                    Пожалуйста, прочитайте инструкцию, которая находится на главной странице после карточки с датой подписки и скоростью 🐇
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">
-                    <div class="question-text"><span>🪤</span> Бесплатный сыр только в мышеловке?</div>
-                    <div class="arrow">›</div>
-                </div>
-                <div class="faq-answer">
-                    Я уверен, что многие это говорили, считая, что бесплатные VPN сливают ваши личные данные. Но на самом деле это не так. Есть и более хорошие VPN, которые не отдают данные третьим лицам. Сливание данных третьим лицам — нарушение закона Российской Федерации 🐇
-                </div>
-            </div>
-        </div>
-
-        <div class="features" id="features">
-            <h2 class="section-title">Почему <span>KrolekVPNReborn</span>?</h2>
-            <div class="features-grid">
-                <div class="feature-card"><div class="feature-icon"><i class="fas fa-bolt"></i></div><h3>Высокая скорость</h3><p>Стабильные 15 Мбит/с</p></div>
-                <div class="feature-card"><div class="feature-icon"><i class="fas fa-headset"></i></div><h3>Поддержка 24/7</h3><p>Живые люди отвечают в любое время</p></div>
-                <div class="feature-card"><div class="feature-icon"><i class="fas fa-lock"></i></div><h3>Обход глушилок</h3><p>Работает там, где остальные падают</p></div>
-                <div class="feature-card"><div class="feature-icon"><i class="fas fa-gem"></i></div><h3>Совершенно бесплатно</h3><p>Навсегда. Без скрытых подписок</p></div>
-            </div>
-        </div>
-
-        <div class="footer">
-            <img src="https://raw.githubusercontent.com/kangaroo255075-collab/Website-KrolekVPNReborn/main/IMG_20260419_180656_143.jpg" 
-                 alt="KrolekVPN" 
-                 style="width: 50px; border-radius: 50%; margin-bottom: 10px;">
-            <p>© 2025-2026 KrolekVPNReborn. Бесплатный VPN для обхода блокировок.</p>
-            <p>
-                <a href="https://t.me/+JTSRgKb-tnRiMmFi" target="_blank"><i class="fab fa-telegram"></i> Приватный канал</a>
-                &nbsp;|&nbsp;
-                <a href="https://t.me/Kr0l3k" target="_blank"><i class="fas fa-headset"></i> Поддержка</a>
-            </p>
-        </div>
+<div class="app">
+  <!-- HEADER -->
+  <div class="header">
+    <div class="avatar" id="userAvatar">🐇</div>
+    <div class="hinfo">
+      <div class="hname" id="userName">KrolekVPNReborn 🐇</div>
+      <div class="hsub"  id="userSub">@KrolekVPNReborn</div>
     </div>
+  </div>
 
-    <div id="toast" class="toast"></div>
+  <!-- BANNER -->
+  <div style="padding:10px 14px 0">
+    <div class="banner">
+      <div>
+        <div class="banner-text">🐇 Пользуйся VPN бесплатно</div>
+        <div class="banner-sub">Навсегда — без скрытых платежей</div>
+      </div>
+      <div class="banner-pill">FREE</div>
+    </div>
+  </div>
 
-    <script>
-        // НОВАЯ ПОДПИСКА ДЛЯ KrolekClient
-        const KROLEK_URL = "krolek://P4H3Jf8Tukl-ZQWGecP0QswJgjZmEC41GqlgONY6omeD2j5wHEu_89CrO_zGZfkkGIikwJqS1FZXN-P8WtxgD_bLmUAGmIQIir39oZauzdG7mrALwzarF7R6NzDNGZ4rcEE1QliXGP1bIkwbFqDgwhyHw8RKA7U-HoGEJF7CRbxvnkGLJptnc5E_JrE-w5fuedm_N4MZJP0M";
-        
-        const clickSound = new Audio("https://www.soundjay.com/misc/sounds/button-click-1.mp3");
+  <!-- VPN TAB -->
+  <div class="tab active" id="tab-vpn">
+    <div class="scroll">
+      <div class="main-card">
+        <div class="mc-head">
+          <span class="mc-title">KrolekVPNReborn</span>
+          <span class="mc-badge">VPN</span>
+        </div>
+        <div class="mc-desc">Быстрый приватный VPN с готовыми конфигурациями для ваших устройств</div>
+        <div class="connect-wrap">
+          <div class="connect-ring"></div>
+          <button class="connect-btn" id="mainConnectBtn">🐇 &nbsp;Подключиться</button>
+        </div>
+        <div class="chips">
+          <div class="chip">⚡ Высокая скорость</div>
+          <div class="chip">🐇 Надёжное соединение</div>
+          <div class="chip">🔒 Полная приватность</div>
+        </div>
+      </div>
 
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.style.opacity = '1';
-            setTimeout(() => {
-                toast.style.opacity = '0';
-            }, 2500);
-        }
+      <div class="section-lbl">Серверы</div>
+      <div class="row-card">
+        <div class="row-icon">🌐</div>
+        <div class="row-body">
+          <div class="row-title">Доступные серверы</div>
+          <div class="row-sub">🇵🇱</div>
+        </div>
+        <div class="row-arrow">›</div>
+      </div>
+    </div>
+  </div>
 
-        function connectToVPN() {
-            if (navigator.vibrate) navigator.vibrate(50);
-            clickSound.play().catch(e => console.log('Звук не воспроизведён'));
-            window.location.href = KROLEK_URL;
-            showToast('🔄 Открываем KrolekClient...');
-            setTimeout(() => {
-                showToast('⚠️ Если KrolekClient не открылся, скачайте его с канала');
-            }, 1000);
-        }
+  <!-- SUBSCRIPTION TAB -->
+  <div class="tab" id="tab-sub">
+    <div class="scroll">
+      <div class="sub-hero">
+        <div style="font-size:13px;color:var(--muted)">🔐 ВАША ПОДПИСКА</div>
+        <div class="sub-exp">15 июля 2045 г.</div>
+        <div class="sub-row"><span class="sub-lbl">∞ Лимит трафика</span><span class="sub-val">Безлимит</span></div>
+        <div class="sub-row"><span class="sub-lbl">⚡ Скорость</span><span class="sub-val">До 15 Мбит/с</span></div>
+        <div class="sub-row"><span class="sub-lbl">📅 Статус</span><span class="sub-val green">Активна</span></div>
+      </div>
+      <div class="other-block">
+        <div class="other-body">
+          <strong style="color:var(--or2)">🐇 KrolekVPNReborn</strong> — бесплатный VPN для обхода блокировок.<br><br>
+          Подписка действует до <strong style="color:var(--or)">15 июля 2045 года</strong>. Продление не требуется.
+        </div>
+      </div>
+    </div>
+  </div>
 
-        function toggleFaq(element) {
-            const answer = element.nextElementSibling;
-            const arrow = element.querySelector('.arrow');
-            answer.classList.toggle('open');
-            arrow.classList.toggle('open');
-        }
+  <!-- OTHER TAB -->
+  <div class="tab" id="tab-other">
+    <div class="scroll">
+      <div class="other-block">
+        <div class="other-title">⚖️ Правила использования</div>
+        <div class="other-body">VPN только для обхода глушилок. Запрещено: банки, российские сервисы, торренты, P2P.<br><br>Не передавайте подписку третьим лицам — это приведёт к блокировке.</div>
+      </div>
+      <div class="other-block">
+        <div class="other-title">❓ Почему VPN не работает?</div>
+        <div class="other-body">Напишите в поддержку или дождитесь обновления.<br>Все апдейты публикуются в <a href="https://t.me/+JTSRgKb-tnRiMmFi" target="_blank">канале</a> первыми.</div>
+      </div>
+      <div class="other-block">
+        <div class="other-title">🐇 О проекте</div>
+        <div class="other-body">
+          Бесплатный VPN навсегда. Без скрытых платежей.<br><br>
+          Поддержка: <a href="https://t.me/Kr0l3k" target="_blank">@Kr0l3k</a><br>
+          Канал: <a href="https://t.me/+JTSRgKb-tnRiMmFi" target="_blank">KrolekVPNReborn</a><br>
+          Бот: <a href="https://t.me/KrolekVPNReborn_bot" target="_blank">@KrolekVPNReborn_bot</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-        document.getElementById('connectBtn').addEventListener('click', connectToVPN);
-        
-        window.toggleFaq = toggleFaq;
-    </script>
+<!-- BOTTOM NAV -->
+<div class="bnav" id="bnav">
+  <div class="bnav-indicator" id="bnavInd"></div>
+  <div class="ni active" id="ni-vpn"   onclick="switchTab('vpn')">  <span class="ico">🛡️</span><span>VPN</span></div>
+  <div class="ni"        id="ni-sub"   onclick="switchTab('sub')">  <span class="ico">📋</span><span>Подписка</span></div>
+  <div class="ni"        id="ni-other" onclick="switchTab('other')"><span class="ico">···</span><span>Другое</span></div>
+</div>
+
+<!-- MODAL -->
+<div class="overlay" id="overlay" onclick="closeSheet()"></div>
+<div class="sheet"   id="sheet">
+  <!-- Screen A -->
+  <div id="screenDevice">
+    <div class="handle"></div>
+    <div class="sheet-title">Выберите устройство</div>
+    <button class="dbtn" onclick="goInstr('android')">
+      <svg viewBox="0 0 24 24" fill="#a4c639"><path d="M6.18 15.64a2.18 2.18 0 0 1-2.18-2.18V9.12a2.18 2.18 0 0 1 4.36 0v4.34a2.18 2.18 0 0 1-2.18 2.18M17.82 15.64a2.18 2.18 0 0 1-2.18-2.18V9.12a2.18 2.18 0 0 1 4.36 0v4.34a2.18 2.18 0 0 1-2.18 2.18M15.96 4.06l1.12-1.94a.23.23 0 0 0-.4 0l-1.14 1.96A7.28 7.28 0 0 0 12 3.16a7.28 7.28 0 0 0-3.54.68L7.32 1.88a.23.23 0 0 0-.4 0l1.12 1.94A6.96 6.96 0 0 0 5 9.68h14a6.96 6.96 0 0 0-3.04-5.62M9.5 7.5a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5m5 0a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5M5 18.5A1.5 1.5 0 0 0 6.5 20h1v3.5a1.5 1.5 0 0 0 3 0V20h3v3.5a1.5 1.5 0 0 0 3 0V20h1a1.5 1.5 0 0 0 1.5-1.5v-8.32H5V18.5z"/></svg>
+      <div><div class="dbtn-title">Android</div><div class="dbtn-sub">KrolekClient из канала</div></div>
+    </button>
+    <button class="dbtn" onclick="goInstr('apple')">
+      <svg viewBox="0 0 24 24" fill="#efefef"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+      <div><div class="dbtn-title">iPhone / iPad</div><div class="dbtn-sub">Happ из App Store</div></div>
+    </button>
+  </div>
+  <!-- Screen B -->
+  <div id="screenInstr" style="display:none">
+    <div class="handle"></div>
+    <div class="sheet-title" id="instrTitle">Инструкция</div>
+    <div id="instrSteps"></div>
+    <button class="back-btn" onclick="goBack()">← Назад</button>
+    <button class="do-btn" id="doBtn">🔌 &nbsp;Подключиться</button>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════
+   WebGL SHADER — plasma fire background
+══════════════════════════════════════ */
+(function(){
+  const c = document.getElementById('bgCanvas');
+  const gl = c.getContext('webgl', {antialias:false, alpha:false});
+  if (!gl) return;
+
+  const vs = `
+    attribute vec2 a;
+    void main(){ gl_Position=vec4(a,0,1); }
+  `;
+  const fs = `
+    precision mediump float;
+    uniform float uT;
+    uniform vec2  uR;
+
+    float hash(vec2 p){
+      p = fract(p * vec2(127.1, 311.7));
+      p += dot(p, p + 19.19);
+      return fract(p.x * p.y);
+    }
+    float noise(vec2 p){
+      vec2 i = floor(p), f = fract(p);
+      f = f*f*(3.0-2.0*f);
+      float a=hash(i), b=hash(i+vec2(1,0)),
+            c=hash(i+vec2(0,1)), d=hash(i+vec2(1,1));
+      return mix(mix(a,b,f.x), mix(c,d,f.x), f.y);
+    }
+    float fbm(vec2 p){
+      float v=0.0, a=0.5;
+      for(int i=0;i<4;i++){
+        v += a*noise(p);
+        p  = p*2.1 + vec2(1.7,9.2);
+        a *= 0.5;
+      }
+      return v;
+    }
+
+    void main(){
+      vec2 uv = gl_FragCoord.xy / uR;
+      float t  = uT * 0.08;
+
+      /* domain warp — two layers */
+      vec2 p = uv * 2.5;
+      vec2 q = vec2(fbm(p + t), fbm(p + vec2(5.2,1.3) + t));
+      vec2 r = vec2(fbm(p + q + vec2(1.7,9.2) + t*0.5),
+                    fbm(p + q + vec2(8.3,2.8) + t*0.3));
+      float f = fbm(p + r);
+
+      /* vignette — darken edges */
+      vec2 vig = uv - 0.5;
+      float vign = 1.0 - dot(vig,vig)*2.2;
+      vign = clamp(vign, 0.0, 1.0);
+
+      /* colour map: very dark → deep orange → bright flare */
+      vec3 dark  = vec3(0.027,0.02,0.035);
+      vec3 coal  = vec3(0.12, 0.06,0.04);
+      vec3 ember = vec3(1.0,  0.42,0.21);
+      vec3 flare = vec3(1.0,  0.78,0.40);
+
+      float fi = clamp(f, 0.0, 1.0);
+      vec3 col = mix(dark, coal,  smoothstep(0.35, 0.55, fi));
+      col       = mix(col,  ember, smoothstep(0.55, 0.75, fi)*0.55);
+      col       = mix(col,  flare, smoothstep(0.72, 0.90, fi)*0.35);
+
+      col *= vign * 0.9;
+
+      gl_FragColor = vec4(col, 1.0);
+    }
+  `;
+
+  function compile(type, src){
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src); gl.compileShader(s); return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, compile(gl.VERTEX_SHADER,   vs));
+  gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(prog); gl.useProgram(prog);
+
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,1,1]), gl.STATIC_DRAW);
+  const aLoc = gl.getAttribLocation(prog,'a');
+  gl.enableVertexAttribArray(aLoc);
+  gl.vertexAttribPointer(aLoc,2,gl.FLOAT,false,0,0);
+
+  const uT  = gl.getUniformLocation(prog,'uT');
+  const uR  = gl.getUniformLocation(prog,'uR');
+
+  let W=0, H=0;
+  function resize(){
+    // render at half res for perf
+    W = Math.floor(window.innerWidth  * 0.5);
+    H = Math.floor(window.innerHeight * 0.5);
+    c.width = W; c.height = H;
+    c.style.width  = window.innerWidth  + 'px';
+    c.style.height = window.innerHeight + 'px';
+    gl.viewport(0,0,W,H);
+    gl.uniform2f(uR, W, H);
+  }
+  window.addEventListener('resize', resize); resize();
+
+  let start = performance.now();
+  function frame(ts){
+    gl.uniform1f(uT, (ts - start) * 0.001);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+
+/* ══════════════════════════════════════
+   PARTICLE SYSTEM — floating embers
+══════════════════════════════════════ */
+(function(){
+  const c  = document.getElementById('particleCanvas');
+  const cx = c.getContext('2d');
+
+  function resize(){
+    c.width  = window.innerWidth;
+    c.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize); resize();
+
+  const N = 38;
+  const particles = Array.from({length:N}, ()=> spawn(true));
+
+  function spawn(random){
+    const h = window.innerHeight;
+    return {
+      x:  Math.random() * window.innerWidth,
+      y:  random ? Math.random() * h : h + 10,
+      vx: (Math.random()-.5) * .4,
+      vy: -(0.25 + Math.random() * .55),
+      r:  1 + Math.random() * 2.2,
+      a:  random ? Math.random() : 0,
+      life: .004 + Math.random() * .003,
+      hue: 25 + Math.random() * 30    // orange range
+    };
+  }
+
+  function frame(){
+    cx.clearRect(0,0,c.width,c.height);
+    for(let i=0;i<particles.length;i++){
+      const p = particles[i];
+      p.x += p.vx; p.y += p.vy;
+      p.a += p.life;
+      if(p.a > 1 || p.y < -10) { particles[i] = spawn(false); continue; }
+      const fade = p.a < .15 ? p.a/.15 : 1 - (p.a-.15)/.85;
+      cx.save();
+      cx.globalAlpha = fade * .75;
+      const g = cx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*2.5);
+      g.addColorStop(0, `hsl(${p.hue},100%,75%)`);
+      g.addColorStop(1, `hsla(${p.hue},100%,55%,0)`);
+      cx.fillStyle = g;
+      cx.beginPath();
+      cx.arc(p.x,p.y,p.r*2.5,0,Math.PI*2);
+      cx.fill();
+      cx.restore();
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+
+/* ══════════════════════════════════════
+   TELEGRAM WEBAPP
+══════════════════════════════════════ */
+(function(){
+  const tg = window.Telegram?.WebApp;
+  if(!tg) return;
+  tg.ready(); tg.expand();
+  try{tg.setHeaderColor('#07070a')}catch(e){}
+  try{tg.setBackgroundColor('#07070a')}catch(e){}
+  const user = tg.initDataUnsafe?.user;
+  if(!user) return;
+  const full = [user.first_name, user.last_name].filter(Boolean).join(' ');
+  document.getElementById('userName').textContent = full + ' 🐇';
+  document.getElementById('userSub').textContent  = user.username ? '@'+user.username : 'KrolekVPNReborn';
+  const av = document.getElementById('userAvatar');
+  if(user.photo_url){ av.innerHTML=`<img src="${user.photo_url}" alt="">`; }
+  else{ av.textContent = (user.first_name||'K')[0].toUpperCase(); }
+})();
+
+/* ══════════════════════════════════════
+   TABS
+══════════════════════════════════════ */
+const tabOrder = ['vpn','sub','other'];
+function switchTab(t){
+  tabOrder.forEach(id=>{
+    const el = document.getElementById('tab-'+id);
+    const ni = document.getElementById('ni-'+id);
+    const active = id===t;
+    ni.classList.toggle('active', active);
+    if(active){
+      el.style.display='block';
+      requestAnimationFrame(()=>{ el.style.opacity='1'; el.style.transform='translateY(0)'; });
+    } else {
+      el.style.opacity='0'; el.style.transform='translateY(8px)';
+      setTimeout(()=>{ if(id!==t) el.style.display='none'; }, 200);
+    }
+  });
+  // slide bottom indicator
+  const idx = tabOrder.indexOf(t);
+  document.getElementById('bnavInd').style.transform = `translateX(${idx*100}%)`;
+}
+// init indicator position
+document.getElementById('bnavInd').style.transform = 'translateX(0%)';
+
+/* ══════════════════════════════════════
+   SHEET
+══════════════════════════════════════ */
+const overlay = document.getElementById('overlay');
+const sheet   = document.getElementById('sheet');
+
+function openSheet(){ showScreen('device'); overlay.classList.add('open'); sheet.classList.add('open'); }
+function closeSheet(){ overlay.classList.remove('open'); sheet.classList.remove('open'); }
+function showScreen(s){
+  document.getElementById('screenDevice').style.display = s==='device'?'block':'none';
+  document.getElementById('screenInstr' ).style.display = s==='instr' ?'block':'none';
+}
+function goBack(){ showScreen('device'); }
+
+document.getElementById('mainConnectBtn').addEventListener('click', openSheet);
+
+/* ══════════════════════════════════════
+   INSTRUCTIONS
+══════════════════════════════════════ */
+const KROLEK_URL = "krolek://P4H3Jf8Tukl-ZQWGecP0QswJgjZmEC41GqlgONY6omeD2j5wHEu_89CrO_zGZfkkGIikwJqS1FZXN-P8WtxgD_bLmUAGmIQIir39oZauzdG7mrALwzarF7R6NzDNGZ4rcEE1QliXGP1bIkwbFqDgwhyHw8RKA7U-HoGEJF7CRbxvnkGLJptnc5E_JrE-w5fuedm_N4MZJP0M";
+const HAPP_URL   = "happ://crypt5/fzvdPE08rIf7UJZuL3vzyanG222Bw70JE/CVfI6HYHHoXtkldQifkiceXuTHr9iIqa0BFKSiybz+3WZJ/6h1f4ta5hBGfVYT3aWm9/wlCoQS9a0//tcsGYraO3ZEBj0Wg73YFoCar0l1cO8MCCrAPKPB0Hmmz8SNMYh3LyOwxHWdyDrZWAwc7wQZ5xm5skaniCRNhqosuN0pr/dVjlPpALbIbque3JH0gtyjCBgKigwV1A0bx682+MpYIJM=Hf2hL2/RnLySJSESowfOOBXOG+tU6HBBGq3bN0OungSYjxlOEJGCxcd2GD8flrxLWKcjpZOQ8o+wgaNDNK01R03VrR031SVi/EJCiRqnRVRuNx9CzRpzGW86rREijBP2CIzRDUvijZdd03B7VMRU1ncnvnp204QGrnnmz673Ddy1z6rWuBrrQaOi+3+G6Rt0pmcuiPNzc28uOSZiyxdzUXxiSeLH1LHQbyXmmSr0k1Pphngbu3VuigUFn93oQ2k63dX+XLoexd1XO0MmWsek4UCQ1wYybYdmqw5YCt5xMHjhlfk7oyWzD1B3rP1hjNshL8fXPSXXPzyAKoHoEZVaBF/K0WmZH7F8MD20Kx9+w+9ieInVujx9r5S1xM3oV1pbbV4jkqiIgjnRllrXgFMDcW1Oh1Y7+Io52xI3vVuazk9TkHj2szsf8ucY7rDca2+XVNgMJ+POE0tmQshPQDxUqIOQ1tdo0sdPguv9SKsxNtCxVWbBlMpWm7744eoC1BQImuT6Aav+UJ7sp9KcWs3W4KOoYwcd7cEdlhAA1+TkxAoI8Ct2ZnPeHhjy68UJYszQRAsu8kLWyTgZdElkzQrCQerDYmXLzJDbKRGSop5ywHj6hJrwDDkM/k5s08VrD26mY+zXgVSYJnmmnFWOF/gN/zUCc+97zyiXEZuJhMLdfog=ff";
+
+let _activeURL = KROLEK_URL;
+
+const INSTR = {
+  android:{
+    title:'📲 Подключение — Android', label:'🤖 &nbsp;Подключиться через KrolekClient',
+    url: KROLEK_URL,
+    steps:['Скачайте <strong>KrolekClient</strong> из новостного канала <a href="https://t.me/KrolekVPNReborn" target="_blank">@KrolekVPNReborn</a>',
+           'Нажмите кнопку ниже — вас телепортирует в клиент с подпиской']
+  },
+  apple:{
+    title:'🍎 Подключение — iPhone / iPad', label:'🍎 &nbsp;Подключиться через Happ',
+    url: HAPP_URL,
+    steps:['Скачайте <strong>Happ</strong> из <a href="https://apps.apple.com/app/happ-proxy-utility/id6504287480" target="_blank">App Store</a>',
+           'Нажмите кнопку ниже — вас телепортирует в Happ с подпиской']
+  }
+};
+
+function goInstr(type){
+  const d = INSTR[type];
+  _activeURL = d.url;
+  document.getElementById('instrTitle').textContent = d.title;
+  document.getElementById('doBtn').innerHTML = d.label;
+  document.getElementById('instrSteps').innerHTML = d.steps.map((s,i)=>`
+    <div class="step">
+      <div class="stepnum">${i+1}</div>
+      <div class="steptxt">${s}</div>
+    </div>`).join('');
+  showScreen('instr');
+}
+
+document.getElementById('doBtn').addEventListener('click', ()=>{
+  if(navigator.vibrate) navigator.vibrate(40);
+  window.location.href = _activeURL;
+});
+</script>
 </body>
 </html>

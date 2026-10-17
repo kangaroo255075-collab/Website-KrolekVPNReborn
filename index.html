@@ -13,174 +13,217 @@
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
-
 #bgCanvas,#particleCanvas{position:fixed;inset:0;pointer-events:none;}
 #bgCanvas{z-index:0}#particleCanvas{z-index:1}
 
-/* ═══════════════════════════
-   MAIN APP
-═══════════════════════════ */
+/* ════ APP SHELL ════ */
 .app{position:relative;z-index:2;padding-bottom:calc(68px + env(safe-area-inset-bottom,0px));min-height:100vh;}
-
-.header{
-  display:flex;align-items:center;gap:12px;
-  padding:calc(14px + env(safe-area-inset-top,0px)) 16px 14px;
-  background:rgba(7,7,10,.75);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
-  border-bottom:1px solid rgba(255,107,53,.12);position:sticky;top:0;z-index:10;
-}
-.avatar{
-  width:44px;height:44px;border-radius:50%;flex-shrink:0;overflow:hidden;
-  background:linear-gradient(135deg,var(--or),var(--or2));
-  display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;
-  animation:avatarPulse 3s ease-in-out infinite;
-}
+.header{display:flex;align-items:center;gap:12px;padding:calc(14px + env(safe-area-inset-top,0px)) 16px 14px;background:rgba(7,7,10,.75);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid rgba(255,107,53,.12);position:sticky;top:0;z-index:10;}
+.avatar{width:44px;height:44px;border-radius:50%;flex-shrink:0;overflow:hidden;background:linear-gradient(135deg,var(--or),var(--or2));display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;animation:avatarPulse 3s ease-in-out infinite;}
 .avatar img{width:100%;height:100%;object-fit:cover}
-@keyframes avatarPulse{
-  0%,100%{box-shadow:0 0 0 2px rgba(255,107,53,.5),0 0 18px rgba(255,107,53,.3)}
-  50%    {box-shadow:0 0 0 3px rgba(255,107,53,.8),0 0 28px rgba(255,107,53,.55)}
-}
-.hinfo{flex:1;min-width:0}
-.hname{font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.hsub{font-size:12px;color:var(--muted);margin-top:1px}
-
+@keyframes avatarPulse{0%,100%{box-shadow:0 0 0 2px rgba(255,107,53,.5),0 0 18px rgba(255,107,53,.3)}50%{box-shadow:0 0 0 3px rgba(255,107,53,.8),0 0 28px rgba(255,107,53,.55)}}
+.hinfo{flex:1;min-width:0}.hname{font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.hsub{font-size:12px;color:var(--muted);margin-top:1px}
 .scroll{padding:12px 14px;display:flex;flex-direction:column;gap:10px}
-
 @keyframes slideUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
-.banner    {animation:slideUp .5s .05s ease both}
-.main-card {animation:slideUp .5s .15s ease both}
-.row-card  {animation:slideUp .5s .25s ease both}
-
-.banner{
-  background:linear-gradient(135deg,rgba(255,107,53,.18),rgba(255,159,74,.08));
-  border:1px solid rgba(255,107,53,.3);border-radius:var(--r);padding:14px 16px;
-  display:flex;align-items:center;justify-content:space-between;gap:10px;
-  backdrop-filter:blur(12px);box-shadow:0 4px 24px rgba(255,107,53,.1);
-}
-.banner-text{font-size:14px;font-weight:700}
-.banner-sub{font-size:11px;color:var(--muted);margin-top:2px}
+.banner{animation:slideUp .5s .05s ease both;background:linear-gradient(135deg,rgba(255,107,53,.18),rgba(255,159,74,.08));border:1px solid rgba(255,107,53,.3);border-radius:var(--r);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;backdrop-filter:blur(12px);box-shadow:0 4px 24px rgba(255,107,53,.1);}
+.banner-text{font-size:14px;font-weight:700}.banner-sub{font-size:11px;color:var(--muted);margin-top:2px}
 .banner-pill{background:linear-gradient(135deg,var(--or),var(--or2));border-radius:10px;padding:5px 12px;font-size:12px;font-weight:800;flex-shrink:0;letter-spacing:.5px;box-shadow:0 0 14px rgba(255,107,53,.45);}
-
-.main-card{
-  background:var(--card);border-radius:var(--r);padding:20px;
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border:1px solid rgba(255,107,53,.18);
-  box-shadow:0 8px 40px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.05);
-}
+.main-card{animation:slideUp .5s .15s ease both;background:var(--card);border-radius:var(--r);padding:20px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,107,53,.18);box-shadow:0 8px 40px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.05);}
 .mc-head{display:flex;align-items:center;gap:10px;margin-bottom:6px}
 .mc-title{font-size:22px;font-weight:900;letter-spacing:-.3px;background:linear-gradient(90deg,#fff 40%,var(--or2));-webkit-background-clip:text;background-clip:text;color:transparent;}
 .mc-badge{background:rgba(255,107,53,.15);border:1px solid rgba(255,107,53,.4);border-radius:8px;padding:2px 9px;font-size:12px;font-weight:700;color:var(--or2);box-shadow:0 0 10px rgba(255,107,53,.2);}
 .mc-desc{font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.5}
-
 .connect-wrap{position:relative}
 .connect-ring{position:absolute;inset:-6px;border-radius:56px;background:linear-gradient(135deg,var(--or),var(--or2));opacity:.35;filter:blur(10px);animation:ringPulse 2.2s ease-in-out infinite;pointer-events:none;}
 @keyframes ringPulse{0%,100%{opacity:.25;transform:scale(.97)}50%{opacity:.55;transform:scale(1.03)}}
 .connect-btn{position:relative;z-index:1;width:100%;background:linear-gradient(135deg,var(--or),var(--or2));border:none;border-radius:50px;padding:15px;font-size:17px;font-weight:700;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 24px rgba(255,107,53,.4);transition:transform .12s,box-shadow .12s;}
-.connect-btn:active{transform:scale(.96);box-shadow:0 2px 12px rgba(255,107,53,.3)}
-
+.connect-btn:active{transform:scale(.96)}
 .chips{display:flex;gap:7px;margin-top:14px;flex-wrap:wrap}
 .chip{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:50px;padding:5px 12px;font-size:12px;color:#ccc;display:flex;align-items:center;gap:5px;backdrop-filter:blur(8px);}
+.row-card{animation:slideUp .5s .25s ease both;background:var(--card);border-radius:var(--r);padding:15px 16px;display:flex;align-items:center;gap:12px;border:1px solid rgba(255,107,53,.12);backdrop-filter:blur(20px);}
+.row-icon{font-size:30px;flex-shrink:0}.row-body{flex:1}.row-title{font-size:15px;font-weight:700}.row-sub{font-size:22px;margin-top:4px;letter-spacing:3px}.row-arrow{font-size:20px;color:var(--muted)}
+.section-lbl{font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:rgba(255,107,53,.6);padding:0 2px 6px;}
 
-.row-card{background:var(--card);border-radius:var(--r);padding:15px 16px;display:flex;align-items:center;gap:12px;border:1px solid rgba(255,107,53,.12);backdrop-filter:blur(20px);box-shadow:0 4px 20px rgba(0,0,0,.5);}
-.row-icon{font-size:30px;flex-shrink:0}
-.row-body{flex:1}
-.row-title{font-size:15px;font-weight:700}
-.row-sub{font-size:22px;margin-top:4px;letter-spacing:3px}
-.row-arrow{font-size:20px;color:var(--muted)}
-
-/* ── BOTTOM NAV ── */
+/* ════ BOTTOM NAV ════ */
 .bnav{position:fixed;bottom:0;left:0;right:0;z-index:100;background:rgba(7,7,10,.9);border-top:1px solid rgba(255,107,53,.1);display:flex;padding-bottom:env(safe-area-inset-bottom,0px);backdrop-filter:blur(24px);}
 .bnav-indicator{position:absolute;top:0;height:2px;width:33.33%;background:linear-gradient(90deg,var(--or),var(--or2));border-radius:0 0 3px 3px;transition:transform .3s cubic-bezier(.4,0,.2,1);box-shadow:0 0 10px rgba(255,107,53,.6);}
 .ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 0;font-size:10px;color:var(--muted);cursor:pointer;transition:color .2s;user-select:none;}
-.ni .ico{font-size:22px;line-height:1;transition:transform .2s}
-.ni.active{color:var(--or)}
-.ni.active .ico{transform:scale(1.15)}
+.ni .ico{font-size:22px;line-height:1;transition:transform .2s}.ni.active{color:var(--or)}.ni.active .ico{transform:scale(1.15)}
 
-/* ── TABS ── */
-.tab{display:none;opacity:0;transform:translateY(8px);transition:opacity .2s,transform .2s}
-.tab.active{display:block;opacity:1;transform:translateY(0)}
+/* ════ TABS ════ */
+.tab{display:none;opacity:0;transform:translateY(8px);transition:opacity .2s,transform .2s}.tab.active{display:block;opacity:1;transform:translateY(0)}
 
-.sub-hero{background:linear-gradient(135deg,rgba(255,107,53,.14),rgba(255,159,74,.06));border:1px solid rgba(255,107,53,.25);border-radius:var(--r);padding:22px;text-align:center;margin-bottom:10px;backdrop-filter:blur(20px);box-shadow:0 0 40px rgba(255,107,53,.08);}
+/* ════ SUBSCRIPTION TAB ════ */
+.sub-hero{background:linear-gradient(135deg,rgba(255,107,53,.14),rgba(255,159,74,.06));border:1px solid rgba(255,107,53,.25);border-radius:var(--r);padding:22px;text-align:center;margin-bottom:10px;backdrop-filter:blur(20px);}
 .sub-exp{font-size:26px;font-weight:800;margin:6px 0 14px;background:linear-gradient(90deg,var(--or),var(--or3));-webkit-background-clip:text;background-clip:text;color:transparent;}
 .sub-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-top:1px solid rgba(255,255,255,.06);font-size:14px;}
-.sub-lbl{color:var(--muted)}
-.sub-val{color:var(--or2);font-weight:600}
-.sub-val.green{color:#4caf50}
+.sub-lbl{color:var(--muted)}.sub-val{color:var(--or2);font-weight:600}.sub-val.green{color:#4caf50}
 
-.other-block{background:var(--card);border-radius:var(--r);padding:16px;margin-bottom:10px;border:1px solid rgba(255,255,255,.06);backdrop-filter:blur(20px);}
-.other-title{font-size:15px;font-weight:700;color:var(--or2);margin-bottom:8px}
-.other-body{font-size:13px;color:var(--muted);line-height:1.6}
-.other-body a{color:var(--or2);text-decoration:none}
+/* ════ OTHER TAB — MENU ════ */
+.other-menu-item{
+  background:var(--card);border-radius:16px;padding:16px 18px;
+  display:flex;align-items:center;gap:14px;cursor:pointer;
+  border:1px solid rgba(255,255,255,.06);
+  backdrop-filter:blur(20px);
+  transition:border-color .15s,background .15s;
+  margin-bottom:10px;
+}
+.other-menu-item:active{border-color:rgba(255,107,53,.4);background:rgba(255,107,53,.07);}
+.omi-icon{font-size:26px;flex-shrink:0}
+.omi-body{flex:1}
+.omi-title{font-size:15px;font-weight:700}
+.omi-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.omi-arrow{font-size:20px;color:var(--muted)}
 
-.section-lbl{font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:rgba(255,107,53,.6);padding:0 2px 6px;}
+/* ════ OTHER SUB-SCREENS ════ */
+.sub-screen{display:none}
+.sub-screen.active{display:block}
+.sub-back{display:flex;align-items:center;gap:10px;padding:14px 16px;cursor:pointer;color:var(--or2);font-size:15px;font-weight:600;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:4px;}
+.sub-back-icon{font-size:20px}
 
-/* ═══════════════════════════
-   DEVICE SHEET
-═══════════════════════════ */
+/* FAQ accordion */
+.faq-item{background:var(--card);border-radius:14px;margin-bottom:8px;overflow:hidden;border:1px solid rgba(255,255,255,.06);}
+.faq-q{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer;font-size:14px;font-weight:600;transition:background .15s;}
+.faq-q:active{background:rgba(255,107,53,.08)}
+.faq-arrow{font-size:16px;color:var(--or2);transition:transform .25s;display:inline-block}
+.faq-arrow.open{transform:rotate(90deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s ease;font-size:13px;color:var(--muted);line-height:1.6;padding:0 16px;}
+.faq-a.open{max-height:200px;padding:0 16px 14px}
+.faq-a a{color:var(--or2);text-decoration:none}
+
+/* Download */
+.dl-card{background:var(--card);border-radius:var(--r);padding:20px;border:1px solid rgba(255,107,53,.18);text-align:center;backdrop-filter:blur(20px);}
+.dl-icon{font-size:64px;margin-bottom:12px}
+.dl-title{font-size:18px;font-weight:800;margin-bottom:6px}
+.dl-desc{font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.5}
+.dl-btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--or),var(--or2));border:none;border-radius:50px;padding:13px 28px;font-size:15px;font-weight:700;color:#fff;cursor:pointer;text-decoration:none;box-shadow:0 4px 20px rgba(255,107,53,.4);}
+.dl-btn:active{transform:scale(.97)}
+.dl-note{font-size:11px;color:var(--muted);margin-top:12px}
+
+/* About */
+.about-block{background:var(--card);border-radius:14px;padding:16px;margin-bottom:10px;border:1px solid rgba(255,255,255,.06);backdrop-filter:blur(20px);}
+.about-title{font-size:14px;font-weight:700;color:var(--or2);margin-bottom:6px}
+.about-body{font-size:13px;color:var(--muted);line-height:1.6}
+.about-body a{color:var(--or2);text-decoration:none}
+
+/* ════ CLICKER ════ */
+.clicker-wrap{padding:0 14px 20px}
+
+.clicker-stats{
+  display:flex;align-items:center;justify-content:center;gap:16px;
+  background:var(--card);border-radius:16px;padding:14px 20px;margin-bottom:14px;
+  border:1px solid rgba(255,107,53,.15);
+}
+.stat-box{text-align:center}
+.stat-big{font-size:22px;font-weight:800;color:var(--or2);font-variant-numeric:tabular-nums;line-height:1}
+.stat-lbl{font-size:10px;color:var(--muted);margin-top:3px;text-transform:uppercase;letter-spacing:.5px}
+.stat-div{width:1px;height:36px;background:rgba(255,255,255,.08)}
+
+.rabbit-arena{
+  position:relative;
+  display:flex;flex-direction:column;align-items:center;
+  background:rgba(255,255,255,.03);border-radius:24px;
+  padding:30px 20px 24px;margin-bottom:14px;
+  border:1px solid rgba(255,107,53,.1);
+  overflow:hidden;
+  min-height:220px;
+}
+.rabbit-btn{
+  font-size:96px;line-height:1;cursor:pointer;
+  border:none;background:none;
+  transition:transform .1s;
+  position:relative;z-index:2;
+  filter:drop-shadow(0 4px 16px rgba(255,107,53,.25));
+  animation:rabbitIdle 4s ease-in-out infinite;
+  user-select:none;
+}
+@keyframes rabbitIdle{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.rabbit-btn.eat{animation:rabbitEat .35s ease both!important}
+@keyframes rabbitEat{0%{transform:scale(1)}25%{transform:scale(1.18) rotate(-4deg)}60%{transform:scale(.94) rotate(2deg)}100%{transform:scale(1) rotate(0)}}
+.rabbit-btn.limited{filter:grayscale(1);opacity:.5;cursor:not-allowed;animation:none}
+.rabbit-hint{font-size:12px;color:var(--muted);margin-top:10px;z-index:2}
+
+/* floating carrot */
+.carrot-fly{
+  position:fixed;font-size:22px;pointer-events:none;z-index:9999;
+  animation:carrotFly .55s cubic-bezier(.4,0,.2,1) forwards;
+}
+@keyframes carrotFly{
+  0%  {opacity:1;transform:translate(0,0) scale(1)}
+  100%{opacity:0;transform:translate(var(--tx),var(--ty)) scale(.2)}
+}
+.plus-two{
+  position:fixed;font-size:15px;font-weight:800;color:var(--or2);
+  pointer-events:none;z-index:9999;
+  animation:plusFloat .75s ease forwards;
+  text-shadow:0 1px 6px rgba(0,0,0,.8);
+}
+@keyframes plusFloat{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-44px)}}
+.combo-pop{
+  position:fixed;font-size:18px;font-weight:900;color:var(--or3);
+  pointer-events:none;z-index:9999;
+  animation:comboPop .6s cubic-bezier(.18,.89,.32,1.28) forwards;
+  text-shadow:0 0 12px rgba(255,107,53,.8);
+}
+@keyframes comboPop{0%{opacity:0;transform:scale(.5)}40%{opacity:1;transform:scale(1.1)}70%{transform:scale(.95)}100%{opacity:0;transform:scale(1)translateY(-20px)}}
+
+/* limit overlay inside arena */
+.limit-overlay{
+  position:absolute;inset:0;z-index:3;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+  background:rgba(7,7,10,.88);border-radius:24px;
+  backdrop-filter:blur(8px);
+}
+.limit-title{font-size:16px;font-weight:800;color:#fff}
+.limit-timer{font-size:32px;font-weight:900;color:var(--or);font-variant-numeric:tabular-nums;letter-spacing:1px}
+.limit-sub{font-size:12px;color:var(--muted);text-align:center;max-width:200px;line-height:1.4}
+
+/* goal progress */
+.goal-card{background:var(--card);border-radius:16px;padding:16px;border:1px solid rgba(255,107,53,.15);backdrop-filter:blur(20px);}
+.goal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.goal-label{font-size:13px;font-weight:700;color:var(--or2)}
+.goal-pct{font-size:13px;font-weight:800;color:var(--or)}
+.goal-track{height:8px;background:rgba(255,255,255,.07);border-radius:8px;overflow:hidden;margin-bottom:8px}
+.goal-fill{height:100%;background:linear-gradient(90deg,var(--or),var(--or2));border-radius:8px;box-shadow:0 0 8px rgba(255,107,53,.4);transition:width .4s ease;}
+.goal-numbers{font-size:11px;color:var(--muted)}
+.goal-desc{font-size:12px;color:var(--muted);margin-top:8px;line-height:1.4;border-top:1px solid rgba(255,255,255,.05);padding-top:8px}
+
+/* ════ DEVICE SHEET ════ */
 .overlay{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.7);opacity:0;pointer-events:none;transition:opacity .25s;}
 .overlay.open{opacity:1;pointer-events:all}
-
 .sheet{position:fixed;bottom:0;left:0;right:0;z-index:201;background:rgba(14,12,18,.97);border:1px solid rgba(255,107,53,.18);border-bottom:none;border-radius:24px 24px 0 0;padding:0 18px calc(24px + env(safe-area-inset-bottom,0px));transform:translateY(100%);transition:transform .32s cubic-bezier(.32,.72,0,1);max-height:88vh;overflow-y:auto;backdrop-filter:blur(30px);box-shadow:0 -8px 60px rgba(255,107,53,.12);}
 .sheet::before{content:'';position:absolute;inset:0;border-radius:24px 24px 0 0;pointer-events:none;background:linear-gradient(180deg,rgba(255,107,53,.06) 0%,transparent 30%);}
 .sheet.open{transform:translateY(0)}
 .handle{width:36px;height:4px;background:rgba(255,255,255,.15);border-radius:2px;margin:14px auto 18px;}
 .sheet-title{font-size:18px;font-weight:800;text-align:center;margin-bottom:18px}
-
 .dbtn{width:100%;background:rgba(255,255,255,.04);border:1.5px solid rgba(255,107,53,.2);border-radius:16px;padding:14px 16px;color:#fff;cursor:pointer;margin-bottom:10px;display:flex;align-items:center;gap:14px;text-align:left;transition:border-color .15s,background .15s;position:relative;overflow:hidden;}
 .dbtn::before{content:'';position:absolute;inset:0;opacity:0;background:linear-gradient(135deg,rgba(255,107,53,.15),transparent);transition:opacity .2s;}
-.dbtn:active::before{opacity:1}
-.dbtn:active{border-color:var(--or);box-shadow:0 0 20px rgba(255,107,53,.2)}
-.dbtn svg{width:30px;height:30px;flex-shrink:0}
-.dbtn-title{font-size:15px;font-weight:700}
-.dbtn-sub{font-size:12px;color:var(--muted);margin-top:2px}
-
+.dbtn:active::before{opacity:1}.dbtn:active{border-color:var(--or)}
+.dbtn svg{width:30px;height:30px;flex-shrink:0}.dbtn-title{font-size:15px;font-weight:700}.dbtn-sub{font-size:12px;color:var(--muted);margin-top:2px}
 .step{display:flex;align-items:flex-start;gap:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:12px;margin-bottom:10px;}
 .stepnum{width:26px;height:26px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,var(--or),var(--or2));display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;box-shadow:0 0 10px rgba(255,107,53,.4);}
-.steptxt{font-size:14px;color:#ddd;line-height:1.55;padding-top:2px}
-.steptxt a{color:var(--or2);text-decoration:none}
-.steptxt strong{color:var(--or2)}
-
-.back-btn{width:100%;background:none;border:1px solid rgba(255,255,255,.1);border-radius:50px;padding:11px;color:var(--muted);font-size:14px;cursor:pointer;margin-bottom:10px;transition:border-color .2s;}
-.back-btn:active{border-color:rgba(255,255,255,.3)}
+.steptxt{font-size:14px;color:#ddd;line-height:1.55;padding-top:2px}.steptxt a{color:var(--or2);text-decoration:none}.steptxt strong{color:var(--or2)}
+.back-btn{width:100%;background:none;border:1px solid rgba(255,255,255,.1);border-radius:50px;padding:11px;color:var(--muted);font-size:14px;cursor:pointer;margin-bottom:10px;}
 .do-btn{width:100%;background:linear-gradient(135deg,var(--or),var(--or2));border:none;border-radius:50px;padding:15px;font-size:16px;font-weight:700;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 24px rgba(255,107,53,.4);}
 .do-btn:active{transform:scale(.97)}
 
-/* ═══════════════════════════
-   HAPP REDIRECT OVERLAY
-═══════════════════════════ */
-.happ-screen{
-  position:fixed;inset:0;z-index:500;
-  background:var(--bg);
-  display:flex;align-items:center;justify-content:center;
-  opacity:0;pointer-events:none;
-  transition:opacity .3s;
-}
+/* ════ HAPP REDIRECT ════ */
+.happ-screen{position:fixed;inset:0;z-index:500;background:var(--bg);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;}
 .happ-screen.open{opacity:1;pointer-events:all}
-
-.happ-center{
-  display:flex;flex-direction:column;align-items:center;
-  gap:24px;padding:32px 24px;text-align:center;
-}
-.happ-rabbit{font-size:80px;line-height:1;animation:rabbitFloat 2s ease-in-out infinite;filter:drop-shadow(0 0 24px rgba(255,107,53,.6));}
-@keyframes rabbitFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-12px) scale(1.05)}}
-
+.happ-center{display:flex;flex-direction:column;align-items:center;gap:24px;padding:32px 24px;text-align:center;}
+.happ-rabbit{font-size:80px;line-height:1;animation:rabbitIdle 2s ease-in-out infinite;filter:drop-shadow(0 0 24px rgba(255,107,53,.6));}
 .ring-wrap{position:relative;width:100px;height:100px}
 .ring{position:absolute;inset:0;border-radius:50%;border:3px solid transparent;border-top-color:var(--or);border-right-color:rgba(255,107,53,.4);animation:spin 1s linear infinite;}
 .ring2{position:absolute;inset:8px;border-radius:50%;border:2px solid transparent;border-bottom-color:var(--or2);animation:spin 1.6s linear infinite reverse;}
 .ring-icon{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:32px;}
 @keyframes spin{to{transform:rotate(360deg)}}
-
 .happ-status{font-size:22px;font-weight:700;background:linear-gradient(90deg,#fff,var(--or2));-webkit-background-clip:text;background-clip:text;color:transparent;}
 .happ-sub{font-size:14px;color:#888;margin-top:4px}
-
 .progress-wrap{width:220px;height:4px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden;}
 .progress-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--or),var(--or2));border-radius:4px;box-shadow:0 0 10px rgba(255,107,53,.5);transition:width .05s linear;}
-
-.happ-manual{display:none;background:linear-gradient(135deg,var(--or),var(--or2));border:none;border-radius:50px;padding:14px 32px;font-size:16px;font-weight:700;color:#fff;cursor:pointer;box-shadow:0 4px 24px rgba(255,107,53,.4);animation:fadeIn .4s ease both;}
+.happ-manual{display:none;background:linear-gradient(135deg,var(--or),var(--or2));border:none;border-radius:50px;padding:14px 32px;font-size:16px;font-weight:700;color:#fff;cursor:pointer;box-shadow:0 4px 24px rgba(255,107,53,.4);}
 .happ-manual.show{display:block}
-.happ-store{display:none;font-size:13px;color:#666}
-.happ-store.show{display:block}
-.happ-store a{color:var(--or2);text-decoration:none}
-@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.happ-store{display:none;font-size:13px;color:#666}.happ-store.show{display:block}.happ-store a{color:var(--or2);text-decoration:none}
 </style>
 </head>
 <body>
@@ -188,7 +231,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <canvas id="bgCanvas"></canvas>
 <canvas id="particleCanvas"></canvas>
 
-<!-- ═══ MAIN APP ═══ -->
 <div class="app">
   <div class="header">
     <div class="avatar" id="userAvatar">🐇</div>
@@ -205,7 +247,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     </div>
   </div>
 
-  <!-- VPN TAB -->
+  <!-- ══ VPN TAB ══ -->
   <div class="tab active" id="tab-vpn">
     <div class="scroll">
       <div class="main-card">
@@ -230,7 +272,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     </div>
   </div>
 
-  <!-- SUBSCRIPTION TAB -->
+  <!-- ══ SUBSCRIPTION TAB ══ -->
   <div class="tab" id="tab-sub">
     <div class="scroll">
       <div class="sub-hero">
@@ -240,23 +282,199 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         <div class="sub-row"><span class="sub-lbl">⚡ Скорость</span><span class="sub-val">До 15 Мбит/с</span></div>
         <div class="sub-row"><span class="sub-lbl">📅 Статус</span><span class="sub-val green">Активна</span></div>
       </div>
-      <div class="other-block">
-        <div class="other-body"><strong style="color:var(--or2)">🐇 KrolekVPNReborn</strong> — бесплатный VPN для обхода блокировок.<br><br>Подписка действует до <strong style="color:var(--or)">15 июля 2045 года</strong>. Продление не требуется.</div>
+      <div class="about-block">
+        <div class="about-body"><strong style="color:var(--or2)">🐇 KrolekVPNReborn</strong> — бесплатный VPN для обхода блокировок.<br><br>Подписка действует до <strong style="color:var(--or)">15 июля 2045 года</strong>. Продление не требуется.</div>
       </div>
     </div>
   </div>
 
-  <!-- OTHER TAB -->
+  <!-- ══ OTHER TAB ══ -->
   <div class="tab" id="tab-other">
     <div class="scroll">
-      <div class="other-block"><div class="other-title">⚖️ Правила</div><div class="other-body">VPN только для обхода глушилок. Запрещено: банки, российские сервисы, торренты, P2P.<br><br>Не передавайте подписку третьим лицам.</div></div>
-      <div class="other-block"><div class="other-title">❓ Почему VPN не работает?</div><div class="other-body">Напишите в поддержку или дождитесь обновления в <a href="https://t.me/+JTSRgKb-tnRiMmFi" target="_blank">канале</a>.</div></div>
-      <div class="other-block"><div class="other-title">🐇 О проекте</div><div class="other-body">Бесплатно навсегда. Без слива данных.<br><br>Поддержка: <a href="https://t.me/Kr0l3k" target="_blank">@Kr0l3k</a><br>Канал: <a href="https://t.me/+JTSRgKb-tnRiMmFi" target="_blank">KrolekVPNReborn</a><br>Бот: <a href="https://t.me/KrolekVPNReborn_bot" target="_blank">@KrolekVPNReborn_bot</a></div></div>
+
+      <!-- MENU -->
+      <div id="other-menu">
+        <div class="other-menu-item" onclick="openOther('faq')">
+          <div class="omi-icon">❓</div>
+          <div class="omi-body"><div class="omi-title">Часто задаваемые вопросы</div><div class="omi-sub">Всё что ты хотел спросить</div></div>
+          <div class="omi-arrow">›</div>
+        </div>
+        <div class="other-menu-item" onclick="openOther('download')">
+          <div class="omi-icon">⬇️</div>
+          <div class="omi-body"><div class="omi-title">Скачать KrolekClient</div><div class="omi-sub">Клиент для Android</div></div>
+          <div class="omi-arrow">›</div>
+        </div>
+        <div class="other-menu-item" onclick="openOther('clicker')">
+          <div class="omi-icon">🥕</div>
+          <div class="omi-body"><div class="omi-title">Покормить зайца</div><div class="omi-sub">Зайка голодный — помоги ему!</div></div>
+          <div class="omi-arrow">›</div>
+        </div>
+        <div class="other-menu-item" onclick="openOther('about')">
+          <div class="omi-icon">📃</div>
+          <div class="omi-body"><div class="omi-title">О проекте</div><div class="omi-sub">Правила, контакты, история</div></div>
+          <div class="omi-arrow">›</div>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <div class="sub-screen" id="other-faq">
+        <div class="sub-back" onclick="closeOther()"><span class="sub-back-icon">←</span> Другое</div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)"><span>😕 Почему VPN не работает?</span><span class="faq-arrow">›</span></div>
+          <div class="faq-a">Скорее всего устарела конфигурация. Напишите в поддержку <a href="https://t.me/Kr0l3k" target="_blank">@Kr0l3k</a> или дождитесь обновления — все апдейты публикуются в <a href="https://t.me/+JTSRgKb-tnRiMmFi" target="_blank">канале</a> первыми. Также попробуйте переустановить клиент и заново загрузить подписку 🐇</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)"><span>🤔 Как подключиться?</span><span class="faq-arrow">›</span></div>
+          <div class="faq-a">Перейдите на вкладку VPN, нажмите «Подключиться» и выберите устройство — Android или iPhone. На Android откроется KrolekClient, на iPhone — Happ. Подписка загружается автоматически, ничего вводить не нужно 🐇</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)"><span>🪤 Бесплатный сыр только в мышеловке?</span><span class="faq-arrow">›</span></div>
+          <div class="faq-a">Слив данных третьим лицам нарушает закон РФ. Мы не продаём и не передаём никакую информацию. Проект существует ради сообщества — никакой монетизации за счёт пользователей 🐇</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)"><span>🌍 Сколько серверов?</span><span class="faq-arrow">›</span></div>
+          <div class="faq-a">Сейчас работает сервер в 🇵🇱 Польше. Новые серверы добавляются по мере роста проекта — следите за обновлениями в канале. Помогаешь кормить зайца — ускоряешь появление новых серверов!</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)"><span>📱 Работает на iPhone?</span><span class="faq-arrow">›</span></div>
+          <div class="faq-a">Да! Для iPhone и iPad используется <strong>Happ</strong> из App Store. Нажми «Подключиться» → выбери iPhone — откроется экран загрузки, и подписка попадёт в приложение автоматически 🐇</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)"><span>🚀 Насколько быстрый VPN?</span><span class="faq-arrow">›</span></div>
+          <div class="faq-a">Скорость до 15 Мбит/с — этого хватает для YouTube в HD, Telegram, Instagram и большинства сайтов. Для 4K-стриминга и торрентов VPN не предназначен. Реальная скорость зависит от качества вашего интернет-соединения.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)"><span>🔒 Безопасно ли использовать этот VPN?</span><span class="faq-arrow">›</span></div>
+          <div class="faq-a">Да. Трафик шифруется, данные не логируются. Не используйте VPN для банков и госсервисов — не из-за безопасности, а потому что они сами блокируют иностранные IP-адреса и могут временно заморозить счёт.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)"><span>🏦 Почему нельзя использовать банки через VPN?</span><span class="faq-arrow">›</span></div>
+          <div class="faq-a">Российские банки (Сбер, Тинькофф и др.) автоматически блокируют вход при обнаружении иностранного IP. Это защита от мошенников. Если войдёте через VPN — аккаунт может быть временно заблокирован службой безопасности банка.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)"><span>📅 Сколько действует подписка?</span><span class="faq-arrow">›</span></div>
+          <div class="faq-a">Подписка бесплатна и действует до 15 июля 2045 года. Продление не требуется — просто пользуйся. Если конфигурация перестанет работать раньше, мы выдадим новую через <a href="https://t.me/KrolekVPNReborn_bot" target="_blank">бота</a> 🐇</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)"><span>🔄 Как обновить клиент?</span><span class="faq-arrow">›</span></div>
+          <div class="faq-a">Следите за обновлениями в <a href="https://t.me/+JTSRgKb-tnRiMmFi" target="_blank">канале</a>. Когда выходит новая версия KrolekClient — скачайте .apk из закреплённого сообщения и установите поверх старой. Подписка при этом сохраняется.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)"><span>📲 KrolekClient не устанавливается. Что делать?</span><span class="faq-arrow">›</span></div>
+          <div class="faq-a">Разрешите установку из неизвестных источников: Настройки → Безопасность → Установка неизвестных приложений. Если Android 13+ — разрешение даётся при первом запуске .apk. При повторных проблемах пишите в поддержку.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)"><span>📶 Можно использовать несколько устройств?</span><span class="faq-arrow">›</span></div>
+          <div class="faq-a">Одна подписка — одно устройство одновременно. Если подключите второе — первое отключится. Не передавайте конфигурацию другим людям: это приведёт к блокировке вашей подписки.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)"><span>🎬 Можно смотреть YouTube через VPN?</span><span class="faq-arrow">›</span></div>
+          <div class="faq-a">Да, это одна из основных целей. YouTube, Instagram, TikTok, Discord, Spotify — всё работает. Скорость 15 Мбит/с хватает для HD 1080p без буферизации. 4K может подтормаживать.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)"><span>🚫 Что будет если нарушить правила?</span><span class="faq-arrow">›</span></div>
+          <div class="faq-a">При обнаружении торрент-трафика, P2P или использования в банках — подписка блокируется без предупреждения и без возможности восстановления. Правила существуют чтобы серверы работали для всех.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)"><span>🌐 Что такое «глушилки» и зачем их обходить?</span><span class="faq-arrow">›</span></div>
+          <div class="faq-a">Глушилки — это системы блокировки трафика (ТСПУ) которые Роскомнадзор установил у провайдеров. Они замедляют и блокируют иностранные сервисы. VPN шифрует трафик так, что глушилка не может определить куда вы идёте.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)"><span>🍎 Что такое Happ и почему именно он?</span><span class="faq-arrow">›</span></div>
+          <div class="faq-a">Happ — VPN-клиент для iOS, поддерживающий зашифрованные конфигурации crypt5. На iPhone нельзя напрямую установить сторонние .ipa без джейлбрейка, поэтому используем App Store. Happ бесплатен и работает без рекламы.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)"><span>🛣️ Планируются ли новые серверы?</span><span class="faq-arrow">›</span></div>
+          <div class="faq-a">Да! Следующий в очереди — 🇩🇪 Германия. Прогресс отслеживается в разделе «Покормить зайца» — там видно сколько морковок уже собрано к цели. Как наберём — добавим новый сервер 🐇</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)"><span>💬 Как связаться с поддержкой?</span><span class="faq-arrow">›</span></div>
+          <div class="faq-a">Пишите напрямую: <a href="https://t.me/Kr0l3k" target="_blank">@Kr0l3k</a>. Время ответа — обычно до нескольких часов. Также следите за <a href="https://t.me/+JTSRgKb-tnRiMmFi" target="_blank">каналом</a> — многие проблемы решаются обновлением клиента.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)"><span>🤖 Есть ли бот для управления?</span><span class="faq-arrow">›</span></div>
+          <div class="faq-a">Да! <a href="https://t.me/KrolekVPNReborn_bot" target="_blank">@KrolekVPNReborn_bot</a> — официальный бот проекта. Через него можно получить подписку, задать вопрос и следить за статусом серверов. Работает круглосуточно 🐇</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)"><span>🥕 Что такое «Покормить зайца»?</span><span class="faq-arrow">›</span></div>
+          <div class="faq-a">Это наш способ вовлечь сообщество в развитие проекта! Каждый клик = 2 морковки. Суммарные морковки всех пользователей двигают прогресс к цели — открытию нового сервера. Лимит 10 000 кликов в час — чтобы заяц не объелся 🐇</div>
+        </div>
+      </div>
+
+      <!-- DOWNLOAD -->
+      <div class="sub-screen" id="other-download">
+        <div class="sub-back" onclick="closeOther()"><span class="sub-back-icon">←</span> Другое</div>
+        <div class="dl-card">
+          <div class="dl-icon">📱</div>
+          <div class="dl-title">KrolekClient</div>
+          <div class="dl-desc">Официальный клиент для Android. Скачайте из нашего новостного канала — там всегда актуальная версия.</div>
+          <a class="dl-btn" href="https://t.me/KrolekVPNReborn" target="_blank">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>
+            Открыть канал
+          </a>
+          <div class="dl-note">После перехода найдите закреплённое сообщение с файлом .apk</div>
+        </div>
+      </div>
+
+      <!-- CLICKER -->
+      <div class="sub-screen" id="other-clicker">
+        <div class="sub-back" onclick="closeOther()"><span class="sub-back-icon">←</span> Другое</div>
+        <div class="clicker-wrap">
+
+          <div class="clicker-stats">
+            <div class="stat-box">
+              <div class="stat-big" id="carrotCount">0</div>
+              <div class="stat-lbl">🥕 морковок</div>
+            </div>
+            <div class="stat-div"></div>
+            <div class="stat-box">
+              <div class="stat-big" id="clickCount">0</div>
+              <div class="stat-lbl">кликов</div>
+            </div>
+            <div class="stat-div"></div>
+            <div class="stat-box">
+              <div class="stat-big">×2</div>
+              <div class="stat-lbl">за клик</div>
+            </div>
+          </div>
+
+          <div class="rabbit-arena" id="rabbitArena">
+            <button class="rabbit-btn" id="rabbitBtn" onclick="onRabbitClick(event)">🐇</button>
+            <div class="rabbit-hint" id="rabbitHint">нажми на зайку, чтобы покормить!</div>
+            <div class="limit-overlay" id="limitOverlay" style="display:none">
+              <div style="font-size:36px">😴</div>
+              <div class="limit-title">Зайка объелся!</div>
+              <div class="limit-timer" id="limitTimer">00:00:00</div>
+              <div class="limit-sub">10 000 морковок за раз — хватит! Приходи через час 🥕</div>
+            </div>
+          </div>
+
+          <div class="goal-card">
+            <div class="goal-header">
+              <div class="goal-label" id="goalLabel">🎯 Цель: открыть сервер 🇩🇪</div>
+              <div class="goal-pct" id="goalPct">0%</div>
+            </div>
+            <div class="goal-track"><div class="goal-fill" id="goalFill" style="width:0%"></div></div>
+            <div class="goal-numbers" id="goalNumbers">0 / 2 000 000 🥕</div>
+            <div class="goal-desc" id="goalDesc">Как наберём — добавим немецкий сервер! Каждая морковка на счету 🐇</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ABOUT -->
+      <div class="sub-screen" id="other-about">
+        <div class="sub-back" onclick="closeOther()"><span class="sub-back-icon">←</span> Другое</div>
+        <div class="about-block"><div class="about-title">🐇 О проекте</div><div class="about-body">KrolekVPNReborn — бесплатный VPN навсегда. Без скрытых платежей и слива данных.<br><br>Запущен в 2025 году как альтернатива платным VPN-сервисам для обхода блокировок.</div></div>
+        <div class="about-block"><div class="about-title">⚖️ Правила</div><div class="about-body">VPN только для обхода глушилок. Запрещено: банки, российские сервисы, торренты, P2P.<br><br>Не передавайте подписку третьим лицам — это приведёт к блокировке аккаунта.</div></div>
+        <div class="about-block"><div class="about-title">📬 Контакты</div><div class="about-body">Поддержка: <a href="https://t.me/Kr0l3k" target="_blank">@Kr0l3k</a><br>Канал: <a href="https://t.me/+JTSRgKb-tnRiMmFi" target="_blank">KrolekVPNReborn</a><br>Бот: <a href="https://t.me/KrolekVPNReborn_bot" target="_blank">@KrolekVPNReborn_bot</a></div></div>
+      </div>
+
     </div>
   </div>
 </div>
 
-<!-- ═══ BOTTOM NAV ═══ -->
+<!-- BOTTOM NAV -->
 <div class="bnav">
   <div class="bnav-indicator" id="bnavInd"></div>
   <div class="ni active" id="ni-vpn"   onclick="switchTab('vpn')">  <span class="ico">🛡️</span><span>VPN</span></div>
@@ -264,7 +482,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <div class="ni"        id="ni-other" onclick="switchTab('other')"><span class="ico">···</span><span>Другое</span></div>
 </div>
 
-<!-- ═══ DEVICE SHEET ═══ -->
+<!-- DEVICE SHEET -->
 <div class="overlay" id="overlay" onclick="closeSheet()"></div>
 <div class="sheet" id="sheet">
   <div id="screenDevice">
@@ -288,23 +506,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   </div>
 </div>
 
-<!-- ═══ HAPP REDIRECT SCREEN ═══ -->
+<!-- HAPP SCREEN -->
 <div class="happ-screen" id="happScreen">
   <div class="happ-center">
     <div class="happ-rabbit">🐇</div>
-    <div class="ring-wrap">
-      <div class="ring"></div><div class="ring2"></div>
-      <div class="ring-icon">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="#efefef"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-      </div>
+    <div class="ring-wrap"><div class="ring"></div><div class="ring2"></div>
+      <div class="ring-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="#efefef"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg></div>
     </div>
-    <div>
-      <div class="happ-status" id="happStatus">Открываем Happ...</div>
-      <div class="happ-sub"    id="happSub">Загружаем зашифрованную подписку</div>
-    </div>
+    <div><div class="happ-status" id="happStatus">Открываем Happ...</div><div class="happ-sub" id="happSub">Загружаем зашифрованную подписку</div></div>
     <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
-    <button class="happ-manual" id="happManual">🍎 &nbsp;Открыть Happ вручную</button>
-    <div class="happ-store" id="happStore">Нет Happ? <a href="https://apps.apple.com/app/happ-proxy-utility/id6504287480" target="_blank">Скачать из App Store</a></div>
+    <button class="happ-manual" id="happManual">📋 &nbsp;Скопировать и попробовать снова</button>
+    <div class="happ-store" id="happStore">Нет Happ? <a href="https://apps.apple.com/app/happ-proxy-utility/id6504287480" target="_blank">Скачать из App Store</a><br><br>Или откройте ссылку вручную в Safari</div>
   </div>
 </div>
 
@@ -312,8 +524,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 /* ══ WebGL SHADER ══ */
 (function(){
   const c=document.getElementById('bgCanvas');
-  const gl=c.getContext('webgl',{antialias:false,alpha:false});
-  if(!gl)return;
+  const gl=c.getContext('webgl',{antialias:false,alpha:false});if(!gl)return;
   const vs=`attribute vec2 a;void main(){gl_Position=vec4(a,0,1);}`;
   const fs=`precision mediump float;uniform float uT;uniform vec2 uR;
     float hash(vec2 p){p=fract(p*vec2(127.1,311.7));p+=dot(p,p+19.19);return fract(p.x*p.y);}
@@ -348,8 +559,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 (function(){
   const tg=window.Telegram?.WebApp;if(!tg)return;
   tg.ready();tg.expand();
-  try{tg.setHeaderColor('#07070a')}catch(e){}
-  try{tg.setBackgroundColor('#07070a')}catch(e){}
+  try{tg.setHeaderColor('#07070a')}catch(e){}try{tg.setBackgroundColor('#07070a')}catch(e){}
   const user=tg.initDataUnsafe?.user;if(!user)return;
   const full=[user.first_name,user.last_name].filter(Boolean).join(' ');
   document.getElementById('userName').textContent=full+' 🐇';
@@ -372,6 +582,24 @@ function switchTab(t){
 }
 document.getElementById('bnavInd').style.transform='translateX(0%)';
 
+/* ══ OTHER SUB-SCREENS ══ */
+let _otherCurrent=null;
+function openOther(id){
+  document.getElementById('other-menu').style.display='none';
+  document.getElementById('other-'+id).classList.add('active');
+  _otherCurrent=id;
+  if(id==='clicker') initClicker();
+}
+function closeOther(){
+  if(_otherCurrent){document.getElementById('other-'+_otherCurrent).classList.remove('active');}
+  document.getElementById('other-menu').style.display='block';
+  _otherCurrent=null;
+}
+function toggleFaq(el){
+  const ans=el.nextElementSibling,arr=el.querySelector('.faq-arrow');
+  ans.classList.toggle('open');arr.classList.toggle('open');
+}
+
 /* ══ DEVICE SHEET ══ */
 const overlay=document.getElementById('overlay'),sheet=document.getElementById('sheet');
 function openSheet(){showScreen('device');overlay.classList.add('open');sheet.classList.add('open');}
@@ -380,84 +608,207 @@ function showScreen(s){document.getElementById('screenDevice').style.display=s==
 function goBack(){showScreen('device');}
 document.getElementById('mainConnectBtn').addEventListener('click',openSheet);
 
-/* ══ URLS ══ */
 const KROLEK_URL="krolek://P4H3Jf8Tukl-ZQWGecP0QswJgjZmEC41GqlgONY6omeD2j5wHEu_89CrO_zGZfkkGIikwJqS1FZXN-P8WtxgD_bLmUAGmIQIir39oZauzdG7mrALwzarF7R6NzDNGZ4rcEE1QliXGP1bIkwbFqDgwhyHw8RKA7U-HoGEJF7CRbxvnkGLJptnc5E_JrE-w5fuedm_N4MZJP0M";
 const HAPP_URL="happ://crypt5/fzvdPE08rIf7UJZuL3vzyanG222Bw70JE/CVfI6HYHHoXtkldQifkiceXuTHr9iIqa0BFKSiybz+3WZJ/6h1f4ta5hBGfVYT3aWm9/wlCoQS9a0//tcsGYraO3ZEBj0Wg73YFoCar0l1cO8MCCrAPKPB0Hmmz8SNMYh3LyOwxHWdyDrZWAwc7wQZ5xm5skaniCRNhqosuN0pr/dVjlPpALbIbque3JH0gtyjCBgKigwV1A0bx682+MpYIJM=Hf2hL2/RnLySJSESowfOOBXOG+tU6HBBGq3bN0OungSYjxlOEJGCxcd2GD8flrxLWKcjpZOQ8o+wgaNDNK01R03VrR031SVi/EJCiRqnRVRuNx9CzRpzGW86rREijBP2CIzRDUvijZdd03B7VMRU1ncnvnp204QGrnnmz673Ddy1z6rWuBrrQaOi+3+G6Rt0pmcuiPNzc28uOSZiyxdzUXxiSeLH1LHQbyXmmSr0k1Pphngbu3VuigUFn93oQ2k63dX+XLoexd1XO0MmWsek4UCQ1wYybYdmqw5YCt5xMHjhlfk7oyWzD1B3rP1hjNshL8fXPSXXPzyAKoHoEZVaBF/K0WmZH7F8MD20Kx9+w+9ieInVujx9r5S1xM3oV1pbbV4jkqiIgjnRllrXgFMDcW1Oh1Y7+Io52xI3vVuazk9TkHj2szsf8ucY7rDca2+XVNgMJ+POE0tmQshPQDxUqIOQ1tdo0sdPguv9SKsxNtCxVWbBlMpWm7744eoC1BQImuT6Aav+UJ7sp9KcWs3W4KOoYwcd7cEdlhAA1+TkxAoI8Ct2ZnPeHhjy68UJYszQRAsu8kLWyTgZdElkzQrCQerDYmXLzJDbKRGSop5ywHj6hJrwDDkM/k5s08VrD26mY+zXgVSYJnmmnFWOF/gN/zUCc+97zyiXEZuJhMLdfog=ff";
 
-/* ══ INSTRUCTIONS ══ */
+function openScheme(url){
+  try{window.open(url,'_blank');}catch(e){}
+  try{const f=document.createElement('iframe');f.style.cssText='position:fixed;width:1px;height:1px;opacity:0;top:-200px;left:-200px;';f.src=url;document.body.appendChild(f);setTimeout(()=>{try{document.body.removeChild(f);}catch(e){}},3000);}catch(e){}
+}
+
 let _activeType='android';
 const INSTR={
   android:{title:'📲 Подключение — Android',label:'🤖 &nbsp;Подключиться через KrolekClient',
-    steps:['Скачайте <strong>KrolekClient</strong> из канала <a href="https://t.me/KrolekVPNReborn" target="_blank">@KrolekVPNReborn</a>',
-           'Нажмите кнопку ниже — вас телепортирует в клиент с подпиской']},
+    steps:['Скачайте <strong>KrolekClient</strong> из канала <a href="https://t.me/KrolekVPNReborn" target="_blank">@KrolekVPNReborn</a>','Нажмите кнопку ниже — вас телепортирует в клиент с подпиской']},
   apple:{title:'🍎 Подключение — iPhone / iPad',label:'🍎 &nbsp;Подключиться через Happ',
-    steps:['Скачайте <strong>Happ</strong> из <a href="https://apps.apple.com/app/happ-proxy-utility/id6504287480" target="_blank">App Store</a>',
-           'Нажмите кнопку ниже — откроется экран загрузки и автоматически перенесёт вас в Happ']}
+    steps:['Скачайте <strong>Happ</strong> из <a href="https://apps.apple.com/app/happ-proxy-utility/id6504287480" target="_blank">App Store</a>','Нажмите кнопку ниже — откроется экран и автоматически перенесёт вас в Happ']}
 };
 function goInstr(type){
-  _activeType=type;
-  const d=INSTR[type];
+  _activeType=type;const d=INSTR[type];
   document.getElementById('instrTitle').textContent=d.title;
   document.getElementById('doBtn').innerHTML=d.label;
   document.getElementById('instrSteps').innerHTML=d.steps.map((s,i)=>`<div class="step"><div class="stepnum">${i+1}</div><div class="steptxt">${s}</div></div>`).join('');
   showScreen('instr');
 }
 document.getElementById('doBtn').addEventListener('click',()=>{
-  if(navigator.vibrate)navigator.vibrate(40);
-  closeSheet();
-  if(_activeType==='apple'){
-    openHappScreen();
-  } else {
-    window.location.href=KROLEK_URL;
-  }
+  if(navigator.vibrate)navigator.vibrate(40);closeSheet();
+  if(_activeType==='apple'){openHappScreen();}
+  else{openScheme(KROLEK_URL);setTimeout(()=>{navigator.clipboard?.writeText(KROLEK_URL).catch(()=>{});},2500);}
 });
 
-/* ══ HAPP REDIRECT SCREEN ══ */
-const happScreen =document.getElementById('happScreen');
-const progressBar=document.getElementById('progressBar');
-const happStatus =document.getElementById('happStatus');
-const happSub    =document.getElementById('happSub');
-const happManual =document.getElementById('happManual');
-const happStore  =document.getElementById('happStore');
+/* ══ HAPP SCREEN ══ */
+const happScreen=document.getElementById('happScreen'),progressBar=document.getElementById('progressBar');
+const happStatus=document.getElementById('happStatus'),happSub=document.getElementById('happSub');
+const happManual=document.getElementById('happManual'),happStore=document.getElementById('happStore');
 let progressTimer=null;
-
 function openHappScreen(){
-  happScreen.classList.add('open');
-  progressBar.style.width='0%';
-  happStatus.textContent='Открываем Happ...';
-  happSub.textContent='Загружаем зашифрованную подписку';
-  happManual.classList.remove('show');
-  happStore.classList.remove('show');
-
-  let pct=0;
-  clearInterval(progressTimer);
-  progressTimer=setInterval(()=>{
-    pct=Math.min(pct+3.33,100);
-    progressBar.style.width=pct+'%';
-    if(pct>=100){
-      clearInterval(progressTimer);
-      fireHapp();
-    }
-  },40);
+  happScreen.classList.add('open');progressBar.style.width='0%';
+  happStatus.textContent='Открываем Happ...';happSub.textContent='Загружаем зашифрованную подписку';
+  happManual.classList.remove('show');happStore.classList.remove('show');
+  let pct=0;clearInterval(progressTimer);
+  progressTimer=setInterval(()=>{pct=Math.min(pct+3.33,100);progressBar.style.width=pct+'%';if(pct>=100){clearInterval(progressTimer);fireHapp();}},40);
 }
-
 function fireHapp(){
-  happStatus.textContent='Переходим в Happ 🐇';
-  happSub.textContent='Подписка загружается автоматически';
-  if(navigator.vibrate)navigator.vibrate([40,60,40]);
-  window.location.href=HAPP_URL;
-  setTimeout(()=>{
-    happStatus.textContent='Happ не открылся?';
-    happSub.textContent='Нажмите кнопку ниже';
-    happManual.classList.add('show');
-    happStore.classList.add('show');
-  },2500);
+  happStatus.textContent='Переходим в Happ 🐇';happSub.textContent='Подписка загружается автоматически';
+  if(navigator.vibrate)navigator.vibrate([40,60,40]);openScheme(HAPP_URL);
+  setTimeout(()=>{happStatus.textContent='Happ не открылся?';happSub.textContent='Скопируйте ссылку и откройте в Safari';happManual.classList.add('show');happStore.classList.add('show');},2500);
+}
+happManual.addEventListener('click',()=>{navigator.clipboard?.writeText(HAPP_URL).catch(()=>{});openScheme(HAPP_URL);happSub.textContent='Ссылка скопирована — вставьте в Safari';});
+
+/* ══════════════════════════════
+   CLICKER — ПОКОРМИТЬ ЗАЙЦА
+══════════════════════════════ */
+
+// ── ADMIN CONFIG (меняй здесь) ──
+const ADMIN_GOAL = {
+  target:  2000000,
+  current: 0,           // ← администратор @Kr0l3k ставит сюда текущее кол-во (суммарно по всем)
+  label:   '🎯 Цель: открыть сервер 🇩🇪',
+  desc:    'Как наберём — добавим немецкий сервер! Каждая морковка на счету 🐇'
+};
+// ─────────────────────────────
+
+const CLICK_LIMIT = 10000;
+const LIMIT_MS    = 3600000; // 1 час
+
+function fmtNum(n){return n.toLocaleString('ru-RU');}
+function fmtTime(ms){
+  const s=Math.ceil(ms/1000);
+  const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sec=s%60;
+  return [h,m,sec].map(v=>String(v).padStart(2,'0')).join(':');
 }
 
-happManual.addEventListener('click',()=>{
-  if(navigator.vibrate)navigator.vibrate(40);
-  window.location.href=HAPP_URL;
-});
+function getLS(k,def=0){return parseInt(localStorage.getItem('kv_'+k)||def);}
+function setLS(k,v){localStorage.setItem('kv_'+k,v);}
+
+let _clickerInited=false;
+let _limitTimerInterval=null;
+let _lastClickTime=0;
+let _rapidClicks=0;
+
+function initClicker(){
+  if(_clickerInited)return;_clickerInited=true;
+  renderClicker();checkLimit();
+}
+
+function renderClicker(){
+  const carrots = getLS('carrots');
+  const clicks  = getLS('clicks_window');
+  document.getElementById('carrotCount').textContent = fmtNum(carrots);
+  document.getElementById('clickCount').textContent  = fmtNum(clicks);
+  updateGoal(carrots);
+}
+
+function updateGoal(userCarrots){
+  const total = ADMIN_GOAL.current + userCarrots;
+  const pct   = Math.min(100, (total / ADMIN_GOAL.target) * 100);
+  document.getElementById('goalLabel').textContent   = ADMIN_GOAL.label;
+  document.getElementById('goalDesc').textContent    = ADMIN_GOAL.desc;
+  document.getElementById('goalFill').style.width    = pct.toFixed(1) + '%';
+  document.getElementById('goalPct').textContent     = pct.toFixed(1) + '%';
+  document.getElementById('goalNumbers').textContent = fmtNum(total) + ' / ' + fmtNum(ADMIN_GOAL.target) + ' 🥕';
+}
+
+function checkLimit(){
+  const limitAt = getLS('limit_at',0);
+  if(!limitAt){showLimitOverlay(false);return;}
+  const remaining = LIMIT_MS - (Date.now() - limitAt);
+  if(remaining <= 0){
+    setLS('limit_at',0);setLS('clicks_window',0);
+    showLimitOverlay(false);return;
+  }
+  showLimitOverlay(true,remaining);
+}
+
+function showLimitOverlay(show, remaining=0){
+  const ol = document.getElementById('limitOverlay');
+  const rb = document.getElementById('rabbitBtn');
+  const hi = document.getElementById('rabbitHint');
+  ol.style.display = show ? 'flex' : 'none';
+  rb.classList.toggle('limited', show);
+  hi.style.display = show ? 'none' : 'block';
+  clearInterval(_limitTimerInterval);
+  if(show){
+    let rem = remaining;
+    document.getElementById('limitTimer').textContent = fmtTime(rem);
+    _limitTimerInterval = setInterval(()=>{
+      rem -= 1000;
+      if(rem <= 0){clearInterval(_limitTimerInterval);setLS('limit_at',0);setLS('clicks_window',0);showLimitOverlay(false);}
+      else{document.getElementById('limitTimer').textContent = fmtTime(rem);}
+    },1000);
+  }
+}
+
+function onRabbitClick(e){
+  const limitAt = getLS('limit_at',0);
+  if(limitAt && (Date.now()-limitAt) < LIMIT_MS) return;
+
+  const clicks  = getLS('clicks_window') + 1;
+  const carrots = getLS('carrots') + 2;
+  setLS('clicks_window', clicks);
+  setLS('carrots', carrots);
+
+  if(navigator.vibrate) navigator.vibrate(8);
+
+  // rabbit eat animation
+  const rb = document.getElementById('rabbitBtn');
+  rb.classList.remove('eat');
+  void rb.offsetWidth;
+  rb.classList.add('eat');
+  setTimeout(()=>rb.classList.remove('eat'),350);
+
+  // spawn carrot fly
+  const arena = document.getElementById('rabbitArena').getBoundingClientRect();
+  const rbRect = rb.getBoundingClientRect();
+  const cx2 = rbRect.left + rbRect.width/2;
+  const cy2 = rbRect.top  + rbRect.height/2;
+  spawnCarrot(e.clientX, e.clientY, cx2, cy2);
+  spawnPlusTwo(e.clientX, e.clientY);
+
+  // rapid combo
+  const now = Date.now();
+  if(now - _lastClickTime < 300){ _rapidClicks++; }
+  else { _rapidClicks = 1; }
+  _lastClickTime = now;
+  if(_rapidClicks > 0 && _rapidClicks % 10 === 0){
+    spawnCombo(e.clientX, e.clientY, '🔥 COMBO ×'+_rapidClicks);
+  }
+
+  // update UI
+  document.getElementById('carrotCount').textContent = fmtNum(carrots);
+  document.getElementById('clickCount').textContent  = fmtNum(clicks);
+  updateGoal(carrots);
+
+  // check limit
+  if(clicks >= CLICK_LIMIT){
+    setLS('limit_at', Date.now());
+    showLimitOverlay(true, LIMIT_MS);
+  }
+}
+
+function spawnCarrot(x, y, tx, ty){
+  const el = document.createElement('div');
+  el.className = 'carrot-fly';
+  el.textContent = '🥕';
+  el.style.left = x + 'px';
+  el.style.top  = y + 'px';
+  el.style.setProperty('--tx',(tx-x)+'px');
+  el.style.setProperty('--ty',(ty-y)+'px');
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),580);
+}
+function spawnPlusTwo(x,y){
+  const el=document.createElement('div');
+  el.className='plus-two';el.textContent='+2 🥕';
+  el.style.left=(x+10)+'px';el.style.top=(y-10)+'px';
+  document.body.appendChild(el);setTimeout(()=>el.remove(),800);
+}
+function spawnCombo(x,y,text){
+  const el=document.createElement('div');
+  el.className='combo-pop';el.textContent=text;
+  el.style.left=(x-60)+'px';el.style.top=(y-50)+'px';
+  document.body.appendChild(el);setTimeout(()=>el.remove(),700);
+}
 </script>
 </body>
 </html>

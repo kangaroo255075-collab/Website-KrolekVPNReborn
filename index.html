@@ -438,8 +438,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
             </div>
           </div>
 
-          <div class="rabbit-arena" id="rabbitArena">
-            <button class="rabbit-btn" id="rabbitBtn" onclick="onRabbitClick(event)">🐇</button>
+          <div class="rabbit-arena" id="rabbitArena" onclick="onRabbitClick(event)">
+            <button class="rabbit-btn" id="rabbitBtn">🐇</button>
             <div class="rabbit-hint" id="rabbitHint">нажми на зайку, чтобы покормить!</div>
             <div class="limit-overlay" id="limitOverlay" style="display:none">
               <div style="font-size:36px">😴</div>
@@ -518,6 +518,33 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <button class="happ-manual" id="happManual">📋 &nbsp;Скопировать и попробовать снова</button>
     <div class="happ-store" id="happStore">Нет Happ? <a href="https://apps.apple.com/app/happ-proxy-utility/id6504287480" target="_blank">Скачать из App Store</a><br><br>Или откройте ссылку вручную в Safari</div>
   </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div class="overlay" id="adminOverlay" onclick="closeAdmin()"></div>
+<div class="sheet" id="adminSheet" style="z-index:600">
+  <div class="handle"></div>
+  <div class="sheet-title">⚙️ Панель администратора</div>
+  <div style="font-size:12px;color:var(--muted);text-align:center;margin:-10px 0 16px">Доступно только @Kr0l3k • 5 тапов по 🥕</div>
+
+  <div style="margin-bottom:12px">
+    <div style="font-size:12px;color:var(--muted);margin-bottom:6px">🎯 Название цели</div>
+    <input id="adminLabel" type="text" placeholder="🎯 Цель: открыть сервер 🇩🇪" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,107,53,.25);border-radius:12px;padding:12px 14px;color:#fff;font-size:14px;outline:none;">
+  </div>
+  <div style="margin-bottom:12px">
+    <div style="font-size:12px;color:var(--muted);margin-bottom:6px">🥕 Нужно морковок (цель)</div>
+    <input id="adminTarget" type="number" placeholder="2000000" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,107,53,.25);border-radius:12px;padding:12px 14px;color:#fff;font-size:14px;outline:none;">
+  </div>
+  <div style="margin-bottom:12px">
+    <div style="font-size:12px;color:var(--muted);margin-bottom:6px">📊 Уже собрано (базовое значение)</div>
+    <input id="adminCurrent" type="number" placeholder="0" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,107,53,.25);border-radius:12px;padding:12px 14px;color:#fff;font-size:14px;outline:none;">
+  </div>
+  <div style="margin-bottom:20px">
+    <div style="font-size:12px;color:var(--muted);margin-bottom:6px">📝 Описание под прогресс-баром</div>
+    <textarea id="adminDesc" placeholder="Как наберём — добавим сервер!" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,107,53,.25);border-radius:12px;padding:12px 14px;color:#fff;font-size:14px;outline:none;resize:none;height:72px;font-family:inherit;"></textarea>
+  </div>
+  <button class="do-btn" onclick="saveAdmin()" style="margin-bottom:10px">✅ &nbsp;Сохранить цель</button>
+  <button class="back-btn" onclick="resetAdmin()">🗑 Сбросить к стандартным</button>
 </div>
 
 <script>
@@ -700,13 +727,14 @@ function renderClicker(){
 }
 
 function updateGoal(userCarrots){
-  const total = ADMIN_GOAL.current + userCarrots;
-  const pct   = Math.min(100, (total / ADMIN_GOAL.target) * 100);
-  document.getElementById('goalLabel').textContent   = ADMIN_GOAL.label;
-  document.getElementById('goalDesc').textContent    = ADMIN_GOAL.desc;
+  const g     = getAdminGoal();
+  const total = g.current + userCarrots;
+  const pct   = Math.min(100, (total / g.target) * 100);
+  document.getElementById('goalLabel').textContent   = g.label;
+  document.getElementById('goalDesc').textContent    = g.desc;
   document.getElementById('goalFill').style.width    = pct.toFixed(1) + '%';
   document.getElementById('goalPct').textContent     = pct.toFixed(1) + '%';
-  document.getElementById('goalNumbers').textContent = fmtNum(total) + ' / ' + fmtNum(ADMIN_GOAL.target) + ' 🥕';
+  document.getElementById('goalNumbers').textContent = fmtNum(total) + ' / ' + fmtNum(g.target) + ' 🥕';
 }
 
 function checkLimit(){
@@ -786,6 +814,57 @@ function onRabbitClick(e){
   }
 }
 
+/* ══ ADMIN PANEL ══ */
+let _adminTaps=0, _adminTapTimer=null;
+
+// 5 быстрых тапов по счётчику морковок → открыть
+document.getElementById('carrotCount').addEventListener('click',()=>{
+  _adminTaps++;
+  clearTimeout(_adminTapTimer);
+  _adminTapTimer=setTimeout(()=>{ _adminTaps=0; },1400);
+  if(_adminTaps>=5){ _adminTaps=0; openAdmin(); }
+});
+
+function getAdminGoal(){
+  const raw=localStorage.getItem('kv_admin_goal');
+  if(!raw) return ADMIN_GOAL;
+  try{ return JSON.parse(raw); }catch(e){ return ADMIN_GOAL; }
+}
+
+function openAdmin(){
+  const g=getAdminGoal();
+  document.getElementById('adminLabel').value  = g.label   || '';
+  document.getElementById('adminTarget').value = g.target  || '';
+  document.getElementById('adminCurrent').value= g.current || '';
+  document.getElementById('adminDesc').value   = g.desc    || '';
+  document.getElementById('adminOverlay').classList.add('open');
+  document.getElementById('adminSheet').classList.add('open');
+}
+function closeAdmin(){
+  document.getElementById('adminOverlay').classList.remove('open');
+  document.getElementById('adminSheet').classList.remove('open');
+}
+function saveAdmin(){
+  const g={
+    label:   document.getElementById('adminLabel').value.trim()   || ADMIN_GOAL.label,
+    target:  parseInt(document.getElementById('adminTarget').value)|| ADMIN_GOAL.target,
+    current: parseInt(document.getElementById('adminCurrent').value)||0,
+    desc:    document.getElementById('adminDesc').value.trim()    || ADMIN_GOAL.desc,
+  };
+  localStorage.setItem('kv_admin_goal', JSON.stringify(g));
+  closeAdmin();
+  updateGoal(getLS('carrots'));
+  // flash confirmation
+  const lbl=document.getElementById('goalLabel');
+  lbl.style.color='#4caf50';
+  setTimeout(()=>{ lbl.style.color=''; },1200);
+}
+function resetAdmin(){
+  localStorage.removeItem('kv_admin_goal');
+  closeAdmin();
+  updateGoal(getLS('carrots'));
+}
+
 function spawnCarrot(x, y, tx, ty){
   const el = document.createElement('div');
   el.className = 'carrot-fly';
@@ -811,4 +890,4 @@ function spawnCombo(x,y,text){
 }
 </script>
 </body>
-</html>
+  </html>

@@ -407,12 +407,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         <div class="dl-card">
           <div class="dl-icon">📱</div>
           <div class="dl-title">KrolekClient</div>
-          <div class="dl-desc">Официальный клиент для Android. Скачайте из нашего новостного канала — там всегда актуальная версия.</div>
-          <a class="dl-btn" href="https://t.me/KrolekVPNReborn" target="_blank">
+          <div class="dl-desc">Официальный клиент для Android. Нажми кнопку — бот пришлёт актуальную версию прямо в чат.</div>
+          <button class="dl-btn" id="dlBtn" onclick="getClientFromBot()">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>
-            Открыть канал
-          </a>
-          <div class="dl-note">После перехода найдите закреплённое сообщение с файлом .apk</div>
+            Получить в боте
+          </button>
+          <div class="dl-note">Файл придёт в чат с @KrolekVPNReborn_bot. Если бот попросит — нажми Start.<br>Не пришёл? Скачай из <a href="https://t.me/KrolekVPNReborn" target="_blank" style="color:var(--or2);text-decoration:none">канала</a>.</div>
         </div>
       </div>
 
@@ -452,7 +452,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
           <div class="goal-card">
             <div class="goal-header">
               <div class="goal-label" id="goalLabel">🎯 Цель: открыть сервер 🇩🇪</div>
-              <div class="goal-pct" id="goalPct">0%</div>
+              <div style="display:flex;align-items:center;gap:8px">
+                <div class="goal-pct" id="goalPct">0%</div>
+                <button id="adminGear" onclick="openAdmin()" style="display:none;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;border:1px solid rgba(255,107,53,.4);background:rgba(255,107,53,.12);font-size:15px;cursor:pointer;color:#fff">⚙️</button>
+              </div>
             </div>
             <div class="goal-track"><div class="goal-fill" id="goalFill" style="width:0%"></div></div>
             <div class="goal-numbers" id="goalNumbers">0 / 2 000 000 🥕</div>
@@ -643,6 +646,15 @@ function openScheme(url){
   try{const f=document.createElement('iframe');f.style.cssText='position:fixed;width:1px;height:1px;opacity:0;top:-200px;left:-200px;';f.src=url;document.body.appendChild(f);setTimeout(()=>{try{document.body.removeChild(f);}catch(e){}},3000);}catch(e){}
 }
 
+/* ══ СКАЧАТЬ КЛИЕНТ ЧЕРЕЗ БОТА ══ */
+const BOT_CLIENT_LINK='https://t.me/KrolekVPNReborn_bot?start=client';
+function getClientFromBot(){
+  if(navigator.vibrate)navigator.vibrate(30);
+  const tg=window.Telegram?.WebApp;
+  if(tg && typeof tg.openTelegramLink==='function'){tg.openTelegramLink(BOT_CLIENT_LINK);}
+  else{window.open(BOT_CLIENT_LINK,'_blank');}
+}
+
 let _activeType='android';
 const INSTR={
   android:{title:'📲 Подключение — Android',label:'🤖 &nbsp;Подключиться через KrolekClient',
@@ -714,6 +726,7 @@ let _lastClickTime=0;
 let _rapidClicks=0;
 
 function initClicker(){
+  document.getElementById('adminGear').style.display = isAdmin() ? 'inline-flex' : 'none';
   if(_clickerInited)return;_clickerInited=true;
   renderClicker();checkLimit();
 }
@@ -831,7 +844,12 @@ function getAdminGoal(){
   try{ return JSON.parse(raw); }catch(e){ return ADMIN_GOAL; }
 }
 
+function isAdmin(){
+  const u=window.Telegram?.WebApp?.initDataUnsafe?.user;
+  return !!u && String(u.username||'').toLowerCase()==='kr0l3k';
+}
 function openAdmin(){
+  if(!isAdmin()) return;
   const g=getAdminGoal();
   document.getElementById('adminLabel').value  = g.label   || '';
   document.getElementById('adminTarget').value = g.target  || '';
@@ -845,6 +863,7 @@ function closeAdmin(){
   document.getElementById('adminSheet').classList.remove('open');
 }
 function saveAdmin(){
+  if(!isAdmin()) return;
   const g={
     label:   document.getElementById('adminLabel').value.trim()   || ADMIN_GOAL.label,
     target:  parseInt(document.getElementById('adminTarget').value)|| ADMIN_GOAL.target,
@@ -890,4 +909,4 @@ function spawnCombo(x,y,text){
 }
 </script>
 </body>
-  </html>
+</html>

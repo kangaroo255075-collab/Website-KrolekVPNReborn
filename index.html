@@ -224,6 +224,21 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .happ-manual{display:none;background:linear-gradient(135deg,var(--or),var(--or2));border:none;border-radius:50px;padding:14px 32px;font-size:16px;font-weight:700;color:#fff;cursor:pointer;box-shadow:0 4px 24px rgba(255,107,53,.4);}
 .happ-manual.show{display:block}
 .happ-store{display:none;font-size:13px;color:#666}.happ-store.show{display:block}.happ-store a{color:var(--or2);text-decoration:none}
+/* iOS 26 liquid glass */
+body{font-family:-apple-system,'SF Pro Text','SF Pro Display',system-ui,sans-serif;letter-spacing:-.01em}
+.app{padding-bottom:calc(100px + env(safe-area-inset-bottom,0px))}
+.header,.banner,.main-card,.row-card,.sub-hero,.about-block,.goal-card,.clicker-stats,.other-menu-item,.faq-item,.dl-card,.rabbit-arena{background:linear-gradient(145deg,rgba(255,255,255,.13),rgba(255,255,255,.04) 55%,rgba(255,255,255,.08));-webkit-backdrop-filter:blur(24px) saturate(190%);backdrop-filter:blur(24px) saturate(190%);border:1px solid rgba(255,255,255,.15);border-radius:26px;box-shadow:inset 0 1.5px 0 rgba(255,255,255,.38),inset 0 -1px 0 rgba(255,255,255,.06),0 12px 32px rgba(0,0,0,.42)}
+.header{border-radius:0 0 26px 26px;border-top:0}
+.faq-item,.other-menu-item{border-radius:20px}
+.bnav{left:14px;right:14px;bottom:calc(10px + env(safe-area-inset-bottom,0px));padding:6px;border-radius:34px;background:linear-gradient(145deg,rgba(255,255,255,.17),rgba(255,255,255,.05));-webkit-backdrop-filter:blur(30px) saturate(210%);backdrop-filter:blur(30px) saturate(210%);border:1px solid rgba(255,255,255,.2);box-shadow:inset 0 1.5px 0 rgba(255,255,255,.45),0 14px 44px rgba(0,0,0,.6)}
+.bnav-indicator{top:6px;bottom:6px;left:6px;height:auto;width:calc((100% - 12px)/3);border-radius:28px;background:linear-gradient(145deg,rgba(255,255,255,.26),rgba(255,255,255,.08));border:1px solid rgba(255,255,255,.3);box-shadow:inset 0 1.5px 0 rgba(255,255,255,.55),0 0 22px rgba(255,107,53,.4);transition:transform .45s cubic-bezier(.34,1.4,.5,1)}
+.ni{position:relative;z-index:1;padding:8px 0}
+.sheet{border-radius:30px 30px 0 0;background:linear-gradient(160deg,rgba(40,32,40,.93),rgba(14,12,18,.97));border-color:rgba(255,255,255,.14)}
+.connect-btn,.do-btn,.dl-btn{box-shadow:inset 0 1.5px 0 rgba(255,255,255,.45),0 6px 24px rgba(255,107,53,.4)}
+.dbtn,.step{border-radius:18px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.07)}
+.dev-row{display:flex;align-items:center;gap:12px}.dev-ic{font-size:28px}
+.dev-del{border:1px solid rgba(255,90,70,.5);background:rgba(255,90,70,.15);color:#ff8a78;border-radius:14px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer}
+#sfxBtn{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);border-radius:50%;width:36px;height:36px;font-size:16px;cursor:pointer;color:#fff}
 </style>
 </head>
 <body>
@@ -281,6 +296,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         <div class="sub-row"><span class="sub-lbl">∞ Лимит трафика</span><span class="sub-val">Безлимит</span></div>
         <div class="sub-row"><span class="sub-lbl">⚡ Скорость</span><span class="sub-val">До 15 Мбит/с</span></div>
         <div class="sub-row"><span class="sub-lbl">📅 Статус</span><span class="sub-val green">Активна</span></div>
+      </div>
+      <div class="about-block" id="devCard">
+        <div class="about-title">📱 Устройства <span id="devCount" style="float:right;color:var(--or2)">0 / 1</span></div>
+        <div class="about-body" id="devBody"></div>
       </div>
       <div class="about-block">
         <div class="about-body"><strong style="color:var(--or2)">🐇 KrolekVPNReborn</strong> — бесплатный VPN для обхода блокировок.<br><br>Подписка действует до <strong style="color:var(--or)">15 июля 2045 года</strong>. Продление не требуется.</div>
@@ -601,7 +620,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 
 /* ══ TABS ══ */
 const tabOrder=['vpn','sub','other'];
-function switchTab(t){
+function switchTab(t){SFX.tab();if(t==='sub')refreshDev();
   tabOrder.forEach(id=>{
     const el=document.getElementById('tab-'+id),ni=document.getElementById('ni-'+id),active=id===t;
     ni.classList.toggle('active',active);
@@ -614,26 +633,26 @@ document.getElementById('bnavInd').style.transform='translateX(0%)';
 
 /* ══ OTHER SUB-SCREENS ══ */
 let _otherCurrent=null;
-function openOther(id){
+function openOther(id){SFX.tap();
   document.getElementById('other-menu').style.display='none';
   document.getElementById('other-'+id).classList.add('active');
   _otherCurrent=id;
   if(id==='clicker') initClicker();
 }
-function closeOther(){
+function closeOther(){SFX.tap();
   if(_otherCurrent){document.getElementById('other-'+_otherCurrent).classList.remove('active');}
   document.getElementById('other-menu').style.display='block';
   _otherCurrent=null;
 }
-function toggleFaq(el){
+function toggleFaq(el){SFX.tap();
   const ans=el.nextElementSibling,arr=el.querySelector('.faq-arrow');
   ans.classList.toggle('open');arr.classList.toggle('open');
 }
 
 /* ══ DEVICE SHEET ══ */
 const overlay=document.getElementById('overlay'),sheet=document.getElementById('sheet');
-function openSheet(){showScreen('device');overlay.classList.add('open');sheet.classList.add('open');}
-function closeSheet(){overlay.classList.remove('open');sheet.classList.remove('open');}
+function openSheet(){SFX.open();showScreen('device');overlay.classList.add('open');sheet.classList.add('open');}
+function closeSheet(){SFX.close();overlay.classList.remove('open');sheet.classList.remove('open');}
 function showScreen(s){document.getElementById('screenDevice').style.display=s==='device'?'block':'none';document.getElementById('screenInstr').style.display=s==='instr'?'block':'none';}
 function goBack(){showScreen('device');}
 document.getElementById('mainConnectBtn').addEventListener('click',openSheet);
@@ -645,6 +664,29 @@ function openScheme(url){
   try{window.open(url,'_blank');}catch(e){}
   try{const f=document.createElement('iframe');f.style.cssText='position:fixed;width:1px;height:1px;opacity:0;top:-200px;left:-200px;';f.src=url;document.body.appendChild(f);setTimeout(()=>{try{document.body.removeChild(f);}catch(e){}},3000);}catch(e){}
 }
+
+/* ══ ЗВУКИ ══ */
+const SFX=(()=>{let ctx=null,on=localStorage.getItem('kv_sfx')!=='0';
+function ac(){if(!ctx){try{ctx=new(window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(ctx&&ctx.state==='suspended')ctx.resume();return ctx}
+function tone(f,d,type,v,to){const c=ac();if(!c||!on)return;const o=c.createOscillator(),g=c.createGain(),t=c.currentTime;o.type=type||'sine';o.frequency.setValueAtTime(f,t);if(to)o.frequency.exponentialRampToValueAtTime(to,t+d);g.gain.setValueAtTime(v||.05,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+d)}
+return{tab(){tone(900,.07,'sine',.05,620)},tap(){tone(520,.05,'triangle',.05)},open(){tone(400,.13,'sine',.05,820)},close(){tone(820,.13,'sine',.05,400)},ok(){tone(660,.1,'sine',.06);setTimeout(()=>tone(990,.15,'sine',.06),90)},err(){tone(220,.22,'sawtooth',.04,140)},crunch(){tone(300+Math.random()*200,.06,'square',.03,120)},toggle(){on=!on;localStorage.setItem('kv_sfx',on?'1':'0');return on},isOn(){return on}}})();
+document.querySelector('.header').insertAdjacentHTML('beforeend','<button id="sfxBtn" onclick="this.textContent=SFX.toggle()?\'🔊\':\'🔇\';SFX.tap()">'+(SFX.isOn()?'🔊':'🔇')+'</button>');
+document.addEventListener('click',e=>{if(e.target.closest('.dbtn,.back-btn,.do-btn,.connect-btn,.dl-btn,.other-menu-item,.sub-back,.dev-del'))SFX.tap()});
+function toast(m){let t=document.getElementById('toast2');if(!t){t=document.createElement('div');t.id='toast2';t.style.cssText='position:fixed;left:16px;right:16px;bottom:110px;z-index:900;padding:14px 16px;border-radius:22px;text-align:center;font-size:14px;color:#fff;background:rgba(40,24,22,.92);border:1px solid rgba(255,107,53,.5);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);transition:opacity .3s;opacity:0;pointer-events:none';document.body.appendChild(t)}t.textContent=m;t.style.opacity=1;clearTimeout(t._t);t._t=setTimeout(()=>t.style.opacity=0,3400)}
+
+/* ══ ЛИМИТ УСТРОЙСТВ: 1 подписка = 1 устройство ══ */
+const DEV_KEY='kv_device';
+const myDevId=(()=>{let i=localStorage.getItem('kv_devid');if(!i){i=Math.random().toString(36).slice(2,10);localStorage.setItem('kv_devid',i)}return i})();
+const _cs=()=>{const c=window.Telegram?.WebApp?.CloudStorage;return c&&c.getItem?c:null};
+function devRead(){return new Promise(r=>{const c=_cs();if(c)c.getItem(DEV_KEY,(e,v)=>r(e?null:(v||null)));else r(localStorage.getItem(DEV_KEY))})}
+function devWrite(v){const c=_cs();if(c){if(v)c.setItem(DEV_KEY,v);else c.removeItem(DEV_KEY)}else{if(v)localStorage.setItem(DEV_KEY,v);else localStorage.removeItem(DEV_KEY)}}
+let _dev=null;
+async function refreshDev(){try{const raw=await devRead();_dev=raw?JSON.parse(raw):null}catch(e){_dev=null}renderDevices()}
+function renderDevices(){const d=_dev;document.getElementById('devCount').textContent=(d?1:0)+' / 1';
+document.getElementById('devBody').innerHTML=d?'<div class="dev-row"><div class="dev-ic">'+(d.type==='apple'?'🍎':'🤖')+'</div><div style="flex:1"><div style="color:#fff;font-weight:600">'+d.name+(d.id===myDevId?' · это устройство':'')+'</div><div style="font-size:11px">Подключено '+new Date(d.ts).toLocaleDateString('ru-RU')+'</div></div><button class="dev-del" onclick="removeDevice()">Удалить</button></div><div style="font-size:11px;margin-top:10px">Лимит: 1 устройство на подписку. Чтобы подключить другое — удалите это.</div>':'Устройств нет. Нажмите «Подключиться» на вкладке VPN — устройство появится здесь.'}
+function registerDevice(type){if(_dev&&_dev.id!==myDevId)return false;if(!_dev||_dev.type!==type){_dev={id:myDevId,type:type,name:type==='apple'?'iPhone / iPad':'Android',ts:(_dev&&_dev.ts)||Date.now()};devWrite(JSON.stringify(_dev))}renderDevices();return true}
+function removeDevice(){_dev=null;devWrite(null);SFX.close();renderDevices()}
+refreshDev();
 
 /* ══ СКАЧАТЬ КЛИЕНТ ЧЕРЕЗ БОТА ══ */
 const BOT_CLIENT_LINK='https://t.me/KrolekVPNReborn_bot?start=client';
@@ -671,6 +713,8 @@ function goInstr(type){
 }
 document.getElementById('doBtn').addEventListener('click',()=>{
   if(navigator.vibrate)navigator.vibrate(40);closeSheet();
+  if(!registerDevice(_activeType)){SFX.err();toast('Лимит: 1 устройство на подписку. Удалите старое во вкладке «Подписка».');switchTab('sub');return;}
+  SFX.ok();
   if(_activeType==='apple'){openHappScreen();}
   else{openScheme(KROLEK_URL);setTimeout(()=>{navigator.clipboard?.writeText(KROLEK_URL).catch(()=>{});},2500);}
 });
@@ -789,7 +833,7 @@ function onRabbitClick(e){
   setLS('clicks_window', clicks);
   setLS('carrots', carrots);
 
-  if(navigator.vibrate) navigator.vibrate(8);
+  if(navigator.vibrate) navigator.vibrate(8);SFX.crunch();
 
   // rabbit eat animation
   const rb = document.getElementById('rabbitBtn');
@@ -870,7 +914,7 @@ function saveAdmin(){
     current: parseInt(document.getElementById('adminCurrent').value)||0,
     desc:    document.getElementById('adminDesc').value.trim()    || ADMIN_GOAL.desc,
   };
-  localStorage.setItem('kv_admin_goal', JSON.stringify(g));
+  localStorage.setItem('kv_admin_goal', JSON.stringify(g));SFX.ok();
   closeAdmin();
   updateGoal(getLS('carrots'));
   // flash confirmation

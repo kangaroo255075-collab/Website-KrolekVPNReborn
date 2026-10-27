@@ -793,9 +793,23 @@ function goBack(){showScreen('device');}
 document.getElementById('mainConnectBtn').addEventListener('click',openSheet);
 
 
+/* Страница-редирект https -> happ:// (залей redirect.html на свой HTTPS-хостинг и впиши адрес сюда) */
+const REDIRECT_URL='https://YOUR-DOMAIN/redirect.html';
+function inTg(){const tg=window.Telegram&&window.Telegram.WebApp;return !!(tg&&tg.initData)}
 function openScheme(url){
+  if(inTg()&&!/^https?:/i.test(url)){
+    /* Telegram WebView блокирует кастомные схемы — открываем через https-редирект во внешнем браузере */
+    const tg=window.Telegram.WebApp;
+    if(REDIRECT_URL.indexOf('YOUR-DOMAIN')<0){try{tg.openLink(REDIRECT_URL+'#'+encodeURIComponent(url));return}catch(e){}}
+    copyText(url);return;
+  }
   try{window.open(url,'_blank');}catch(e){}
   try{const f=document.createElement('iframe');f.style.cssText='position:fixed;width:1px;height:1px;opacity:0;top:-200px;left:-200px;';f.src=url;document.body.appendChild(f);setTimeout(()=>{try{document.body.removeChild(f);}catch(e){}},3000);}catch(e){}
+}
+function copyText(s){
+  const done=()=>{try{toast('Ссылка скопирована. В Happ: «+» → «Вставить из буфера»')}catch(e){}};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(s).then(done).catch(()=>fb())}else fb();
+  function fb(){const a=document.createElement('textarea');a.value=s;a.style.cssText='position:fixed;top:-200px;opacity:0';document.body.appendChild(a);a.select();try{document.execCommand('copy')}catch(e){}document.body.removeChild(a);done()}
 }
 
 /* ══ ЗВУКИ ══ */
@@ -1040,6 +1054,8 @@ const HAPP_WIN='https://r.stun.su/?to=https://github.com/Happ-proxy/happ-desktop
 const INCY_GH='https://github.com/INCY-DEV/incy-platforms';
 const PLAY='https://play.google.com/store/apps/details?id=com.happproxy';
 const ATV_STORE='https://apps.apple.com/us/app/happ-proxy-utility-for-tv/id6748297274';
+/* Статичная ссылка переноса подписки в Happ (без API) */
+const HAPP_LINK='happ://crypt5/fzvdPxfNqKj1jvIGodZOkV3722JXf30P9HLoaULwU9wawJzwwlaJzyZbxh2hFqz2MNNHcdr2Mb/puTVCj3USRnYblgDxSPk+rJ7MKKK+0ZZfl8FhIHo8/nkWAdq+rmBAvG6iMGdh3hkv5+ZTg3Tka8rmm9DqjPiw0x2+CIb87LiyP8R/KAvT/KrXJrjCHLFaWBL6AxVCnBiAj0z4Gn8FYP2z7MxSVAK5mJPW8DM1ZAuqpdZnXWErqu5ZFtI=0+RLZUm9lZIdDqf7c/q6fx8RoLj4h8CQLb6uDtFderQP4/Aq0xyPI3/XXgydb8N/V/0f3UxRhSGUDbIP0ULK4Apoz37Z3nSL5Bj3ibL2aJpn2GzsiHiKig+Q6sf6vsUVDmCt3q/8/ICNzD9uuXMwqkdBtexHwafw1aURufODZcOz3XjxAN7/VouyO97czW6JXctVY/6aQtfowilldj90Shk127yfAfqcCOtr/pCNo+7G6s4J61To0z3pGB2wT1QI4qXu3+ACpQgChyaKzG53qv14vn3IuClxzs+kLaARSSi+lZqxyWj5O1CjqOjpPMa9K22ijF58mBb4j+xtm2I0Caj1lI5JaHHkmpA3p8uPdhDWdR4qahfuNKkPsj9qmSQhQ1hLBZcYC3WOGextsss+wY9Sr9aPnt0mRt/a27npGemRNPWacIeLJzpVR+3t6weEesjw887WugyFEFLgCxvdd3TQeGl06vrUhyGrmqnBK8oKsp2HYnJlDM8AVk5dt4I8/78x2WhixSmH29cczdhcc1HY7UZZtMFiAigx3zFAdAn0he9XeX71+qa2ORsbM6muLc05Jp5iCuBhurqLNUzz7kMvvMfXzNa80ibI+rdpeAQKnhn3csgJZZreHIN9ty4Uly2u7sv715IPanQ0TLah79Jyd+V60vSMc8ovakYoDfos=ff';
 const DEV_ORDER=['android','iphone','windows','linux','androidtv','appletv'];
 const DEVICES={
 android:{name:'Android',sub:'Happ из Google Play',app:'Happ',dl:PLAY,steps:[
@@ -1071,6 +1087,7 @@ showScreen('instr')}
 async function transfer(kind){const d=DEVICES[kind];if(!d||d.soon)return;
 if(navigator.vibrate)navigator.vibrate(40);closeSheet();
 _link='';_connFail=false;openHappScreen(d.app,d.dl,kind);
+if(d.app==='Happ'){_link=HAPP_LINK;SFX.ok();return}
 const r=await api('connect',{type:kind,devId:myDevId});
 if(r.error||!r.url){_connFail=true;happScreen.classList.remove('open');clearInterval(progressTimer);
 if(r.error==='limit'){SFX.err();openDevLimit();refreshDev()}else{SFX.err();toast(r.error||'Нет связи с сервером')}return}

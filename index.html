@@ -349,6 +349,15 @@ body{font-family:-apple-system,'SF Pro Text','SF Pro Display',system-ui,sans-ser
 .cs-ic{font-size:30px;line-height:1.1}.cs-t{font-size:24px;font-weight:900;color:#ff5a4d;letter-spacing:.5px}
 .cs-s{font-size:14px;color:#ffd9d4;line-height:1.4;margin-top:4px}.cs-timer{margin-top:8px;font-size:12px;color:#ff9f94}
 @keyframes csShake{0%{transform:rotate(-3deg) scale(.6);opacity:0}40%{transform:rotate(4deg) scale(1.08);opacity:1}70%{transform:rotate(-5deg) scale(.97)}100%{transform:rotate(-3deg) scale(1)}}
+.dbtn .emo{font-size:26px;width:30px;text-align:center;display:inline-block;flex-shrink:0}
+.sbtns{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.sbtn{border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.07);color:#fff;border-radius:14px;padding:11px 14px;font-size:14px;font-weight:600;cursor:pointer;text-align:center}
+.sbtn.main{border:0;background:linear-gradient(135deg,var(--or),var(--or2));box-shadow:inset 0 1.5px 0 rgba(255,255,255,.4),0 6px 20px rgba(255,107,53,.4)}
+.soon{padding:22px 10px;text-align:center;color:var(--muted);font-size:14px}
+#instrTitle svg,#instrTitle .emo{vertical-align:-5px}
+.store-txt{font-size:14px;color:#ddd;line-height:1.55}.store-txt ul{margin:6px 0 10px 18px}.store-txt li{margin-bottom:4px}
+.st-h{font-weight:700;color:var(--or2);margin-top:10px}
+.st-box{background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:12px;font-family:ui-monospace,Menlo,monospace;font-size:13px;line-height:1.7}
 </style>
 </head>
 <body>
@@ -428,11 +437,6 @@ body{font-family:-apple-system,'SF Pro Text','SF Pro Display',system-ui,sans-ser
           <div class="omi-body"><div class="omi-title">Часто задаваемые вопросы</div><div class="omi-sub">Всё что ты хотел спросить</div></div>
           <div class="omi-arrow">›</div>
         </div>
-        <div class="other-menu-item" onclick="openOther('download')">
-          <div class="omi-icon">⬇️</div>
-          <div class="omi-body"><div class="omi-title">Скачать KrolekClient</div><div class="omi-sub">Клиент для Android</div></div>
-          <div class="omi-arrow">›</div>
-        </div>
         <div class="other-menu-item" onclick="openOther('clicker')">
           <div class="omi-icon">🥕</div>
           <div class="omi-body"><div class="omi-title">Покормить зайца</div><div class="omi-sub">Зайка голодный — помоги ему!</div></div>
@@ -454,7 +458,7 @@ body{font-family:-apple-system,'SF Pro Text','SF Pro Display',system-ui,sans-ser
         </div>
         <div class="faq-item">
           <div class="faq-q" onclick="toggleFaq(this)"><span>🤔 Как подключиться?</span><span class="faq-arrow">›</span></div>
-          <div class="faq-a">Перейдите на вкладку VPN, нажмите «Подключиться» и выберите устройство — Android или iPhone. На Android откроется KrolekClient, на iPhone — Happ. Подписка загружается автоматически, ничего вводить не нужно 🐇</div>
+          <div class="faq-a">Перейдите на вкладку VPN, нажмите «Подключиться» и выберите своё устройство и следуйте шагам: скачайте приложение (Happ для iPhone и Windows, INCY для Linux) и нажмите «Перенести подписку». Подписка загружается автоматически, ничего вводить не нужно 🐇</div>
         </div>
         <div class="faq-item">
           <div class="faq-q" onclick="toggleFaq(this)"><span>🪤 Бесплатный сыр только в мышеловке?</span><span class="faq-arrow">›</span></div>
@@ -485,12 +489,12 @@ body{font-family:-apple-system,'SF Pro Text','SF Pro Display',system-ui,sans-ser
           <div class="faq-a">Подписка бесплатна и действует до 15 июля 2045 года. Продление не требуется — просто пользуйся. Если конфигурация перестанет работать раньше, мы выдадим новую через <a href="https://t.me/KrolekVPNReborn_bot" target="_blank">бота</a> 🐇</div>
         </div>
         <div class="faq-item">
-          <div class="faq-q" onclick="toggleFaq(this)"><span>🔄 Как обновить клиент?</span><span class="faq-arrow">›</span></div>
-          <div class="faq-a">Следите за обновлениями в <a href="https://t.me/+JTSRgKb-tnRiMmFi" target="_blank">канале</a>. Когда выходит новая версия KrolekClient — скачайте .apk из закреплённого сообщения и установите поверх старой. Подписка при этом сохраняется.</div>
+          <div class="faq-q" onclick="toggleFaq(this)"><span>🌎 Как поменять регион App Store для Happ?</span><span class="faq-arrow">›</span></div>
+          <div class="faq-a">Нажмите «Подключиться» → iPhone → «Инструкция для App Store». Там по шагам: Настройки → Apple ID → Медиаматериалы и покупки → Страна/регион, дальше выбираете США. После смены региона Happ скачивается без проблем.</div>
         </div>
         <div class="faq-item">
-          <div class="faq-q" onclick="toggleFaq(this)"><span>📲 KrolekClient не устанавливается. Что делать?</span><span class="faq-arrow">›</span></div>
-          <div class="faq-a">Разрешите установку из неизвестных источников: Настройки → Безопасность → Установка неизвестных приложений. Если Android 13+ — разрешение даётся при первом запуске .apk. При повторных проблемах пишите в поддержку.</div>
+          <div class="faq-q" onclick="toggleFaq(this)"><span>🐧 Что такое INCY и когда он нужен?</span><span class="faq-arrow">›</span></div>
+          <div class="faq-a">INCY — приложение для Linux. Нажмите «Подключиться» → Linux, скачайте INCY с GitHub (шаг 1), затем нажмите «Перенести подписку в INCY» (шаг 2).</div>
         </div>
         <div class="faq-item">
           <div class="faq-q" onclick="toggleFaq(this)"><span>📶 Можно использовать несколько устройств?</span><span class="faq-arrow">›</span></div>
@@ -527,21 +531,6 @@ body{font-family:-apple-system,'SF Pro Text','SF Pro Display',system-ui,sans-ser
         <div class="faq-item">
           <div class="faq-q" onclick="toggleFaq(this)"><span>🥕 Что такое «Покормить зайца»?</span><span class="faq-arrow">›</span></div>
           <div class="faq-a">Это наш способ вовлечь сообщество в развитие проекта! Каждый клик = 2 морковки. Суммарные морковки всех пользователей двигают прогресс к цели — открытию нового сервера. Каждые 5 000 кликов — перерыв 10 минут, а после 10 000 — длинный перерыв (до часа), чтобы заяц не объелся 🐇</div>
-        </div>
-      </div>
-
-      <!-- DOWNLOAD -->
-      <div class="sub-screen" id="other-download">
-        <div class="sub-back" onclick="closeOther()"><span class="sub-back-icon">←</span> Другое</div>
-        <div class="dl-card">
-          <div class="dl-icon">📱</div>
-          <div class="dl-title">KrolekClient</div>
-          <div class="dl-desc">Официальный клиент для Android. Нажми кнопку — бот пришлёт актуальную версию прямо в чат.</div>
-          <button class="dl-btn" id="dlBtn" onclick="getClientFromBot()">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>
-            Получить в боте
-          </button>
-          <div class="dl-note">Файл придёт в чат с @KrolekVPNReborn_bot. Если бот попросит — нажми Start.<br>Не пришёл? Скачай из <a href="https://t.me/KrolekVPNReborn" target="_blank" style="color:var(--or2);text-decoration:none">канала</a>.</div>
         </div>
       </div>
 
@@ -619,22 +608,40 @@ body{font-family:-apple-system,'SF Pro Text','SF Pro Display',system-ui,sans-ser
 <div class="sheet" id="sheet">
   <div id="screenDevice">
     <div class="handle"></div>
-    <div class="sheet-title">Выберите устройство</div>
-    <button class="dbtn" onclick="goInstr('android')">
-      <svg viewBox="0 0 24 24" fill="#a4c639"><path d="M6.18 15.64a2.18 2.18 0 0 1-2.18-2.18V9.12a2.18 2.18 0 0 1 4.36 0v4.34a2.18 2.18 0 0 1-2.18 2.18M17.82 15.64a2.18 2.18 0 0 1-2.18-2.18V9.12a2.18 2.18 0 0 1 4.36 0v4.34a2.18 2.18 0 0 1-2.18 2.18M15.96 4.06l1.12-1.94a.23.23 0 0 0-.4 0l-1.14 1.96A7.28 7.28 0 0 0 12 3.16a7.28 7.28 0 0 0-3.54.68L7.32 1.88a.23.23 0 0 0-.4 0l1.12 1.94A6.96 6.96 0 0 0 5 9.68h14a6.96 6.96 0 0 0-3.04-5.62M9.5 7.5a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5m5 0a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5M5 18.5A1.5 1.5 0 0 0 6.5 20h1v3.5a1.5 1.5 0 0 0 3 0V20h3v3.5a1.5 1.5 0 0 0 3 0V20h1a1.5 1.5 0 0 0 1.5-1.5v-8.32H5V18.5z"/></svg>
-      <div><div class="dbtn-title">Android</div><div class="dbtn-sub">KrolekClient из канала</div></div>
-    </button>
-    <button class="dbtn" onclick="goInstr('apple')">
-      <svg viewBox="0 0 24 24" fill="#efefef"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-      <div><div class="dbtn-title">iPhone / iPad</div><div class="dbtn-sub">Happ из App Store</div></div>
-    </button>
+    <div class="sheet-title">Выберите устройство для подключения VPN:</div>
+    <div id="devList"></div>
   </div>
   <div id="screenInstr" style="display:none">
     <div class="handle"></div>
-    <div class="sheet-title" id="instrTitle">Инструкция</div>
+    <div class="sheet-title" id="instrTitle"></div>
     <div id="instrSteps"></div>
     <button class="back-btn" onclick="goBack()">← Назад</button>
-    <button class="do-btn" id="doBtn">🔌 &nbsp;Подключиться</button>
+  </div>
+  <div id="screenStore" style="display:none">
+    <div class="handle"></div>
+    <div class="sheet-title">Как поменять регион в App Store для установки Happ</div>
+    <div class="store-txt">
+      <p><b>Не переживайте — приложение по-прежнему можно скачать.</b> Просто смените регион вашего аккаунта App Store. После смены региона вы сможете установить Happ.</p>
+      <p class="st-h">Текстовая инструкция:</p>
+      <ul>
+        <li>Настройки → Apple ID</li>
+        <li>Медиаматериалы и покупки</li>
+        <li>Просмотреть учётную запись</li>
+        <li>Страна/регион</li>
+        <li>Изменить страну или регион</li>
+        <li>Выберите нужную страну и сохраните изменения (Например США)</li>
+        <li>Если появится запрос способа оплаты — выберите «Нет».</li>
+        <li>Укажите любое имя, адрес и телефон, эти данные формальны, они не проверяются. Можно указать такие:</li>
+      </ul>
+      <div class="st-box">Способ оплаты: None<br>Street: Нур-Султан<br>City/Town: Нур-Султан<br>Region: Pavlodar<br>Postcode: 101000<br>Phone: 9999999999</div>
+    </div>
+    <button class="back-btn" onclick="showScreen('instr')" style="margin-top:14px">← Назад</button>
+  </div>
+  <div id="screenTv" style="display:none">
+    <div class="handle"></div>
+    <div class="sheet-title">Подключение на Android TV</div>
+    <div class="soon">Подробная инструкция скоро появится 🐇</div>
+    <button class="back-btn" onclick="showScreen('instr')">← Назад</button>
   </div>
 </div>
 
@@ -643,7 +650,7 @@ body{font-family:-apple-system,'SF Pro Text','SF Pro Display',system-ui,sans-ser
   <div class="happ-center">
     <div class="happ-rabbit">🐇</div>
     <div class="ring-wrap"><div class="ring"></div><div class="ring2"></div>
-      <div class="ring-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="#efefef"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg></div>
+      <div class="ring-icon" id="happIcon"><svg width="28" height="28" viewBox="0 0 24 24" fill="#efefef"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg></div>
     </div>
     <div><div class="happ-status" id="happStatus">Открываем Happ...</div><div class="happ-sub" id="happSub">Загружаем зашифрованную подписку</div></div>
     <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
@@ -781,7 +788,7 @@ function toggleFaq(el){SFX.tap();
 const overlay=document.getElementById('overlay'),sheet=document.getElementById('sheet');
 function openSheet(){SFX.open();showScreen('device');overlay.classList.add('open');sheet.classList.add('open');}
 function closeSheet(){SFX.close();overlay.classList.remove('open');sheet.classList.remove('open');}
-function showScreen(s){document.getElementById('screenDevice').style.display=s==='device'?'block':'none';document.getElementById('screenInstr').style.display=s==='instr'?'block':'none';}
+function showScreen(s){['device','instr','store','tv'].forEach(x=>{const el=document.getElementById('screen'+x[0].toUpperCase()+x.slice(1));if(el)el.style.display=s===x?'block':'none'})}
 function goBack(){showScreen('device');}
 document.getElementById('mainConnectBtn').addEventListener('click',openSheet);
 
@@ -823,7 +830,7 @@ function devWrite(v){const c=_cs();if(c){if(v)c.setItem(DEV_KEY,v);else c.remove
 let _dev=null;
 function refreshDev(){return loadState()}
 function renderDevices(){const d=_dev;document.getElementById('devCount').textContent=(d?1:0)+' / 1';
-document.getElementById('devBody').innerHTML=d?'<div class="dev-row"><div class="dev-ic">'+(d.type==='apple'?'🍎':'🤖')+'</div><div style="flex:1"><div style="color:#fff;font-weight:600">'+d.name+(d.id===myDevId?' · это устройство':'')+'</div><div style="font-size:11px">Подключено '+new Date(d.ts).toLocaleDateString('ru-RU')+'</div></div><button class="dev-del" onclick="removeDevice()">Удалить</button></div><div style="font-size:11px;margin-top:10px">Лимит: 1 устройство на подписку. Чтобы подключить другое — удалите это.</div>':'Устройств нет. Нажмите «Подключиться» на вкладке VPN — устройство появится здесь.'}
+document.getElementById('devBody').innerHTML=d?'<div class="dev-row"><div class="dev-ic">'+devIcon(d.type,28)+'</div><div style="flex:1"><div style="color:#fff;font-weight:600">'+d.name+(d.id===myDevId?' · это устройство':'')+'</div><div style="font-size:11px">Подключено '+new Date(d.ts).toLocaleDateString('ru-RU')+'</div></div><button class="dev-del" onclick="removeDevice()">Удалить</button></div><div style="font-size:11px;margin-top:10px">Лимит: 1 устройство на подписку. Чтобы подключить другое — удалите это.</div>':'Устройств нет. Нажмите «Подключиться» на вкладке VPN — устройство появится здесь.'}
 function registerDevice(type){if(_dev&&_dev.id!==myDevId)return false;if(!_dev||_dev.type!==type){_dev={id:myDevId,type:type,name:type==='apple'?'iPhone / iPad':'Android',ts:(_dev&&_dev.ts)||Date.now()};devWrite(JSON.stringify(_dev))}renderDevices();return true}
 async function removeDevice(){SFX.close();const r=await api('device/delete',{});if(!r.error)applyState(r)}
 refreshDev();
@@ -1018,56 +1025,75 @@ flameEl.addEventListener('pointerup',()=>{flameEl.classList.remove('drag');if(mo
 addEventListener('resize',()=>place(parseFloat(flameEl.style.left),parseFloat(flameEl.style.top)))})();
 updateFlame();
 
-/* ══ СКАЧАТЬ КЛИЕНТ ЧЕРЕЗ БОТА ══ */
-const BOT_CLIENT_LINK='https://t.me/KrolekVPNReborn_bot?start=client';
-function getClientFromBot(){
-  if(navigator.vibrate)navigator.vibrate(30);
-  const tg=window.Telegram?.WebApp;
-  if(tg && typeof tg.openTelegramLink==='function'){tg.openTelegramLink(BOT_CLIENT_LINK);}
-  else{window.open(BOT_CLIENT_LINK,'_blank');}
-}
-
-let _activeType='android';
-const INSTR={
-  android:{title:'📲 Подключение — Android',label:'🤖 &nbsp;Подключиться через KrolekClient',
-    steps:['Скачайте <strong>KrolekClient</strong> из канала <a href="https://t.me/KrolekVPNReborn" target="_blank">@KrolekVPNReborn</a>','Нажмите кнопку ниже — вас телепортирует в клиент с подпиской']},
-  apple:{title:'🍎 Подключение — iPhone / iPad',label:'🍎 &nbsp;Подключиться через Happ',
-    steps:['Скачайте <strong>Happ</strong> из <a href="https://apps.apple.com/app/happ-proxy-utility/id6504287480" target="_blank">App Store</a>','Нажмите кнопку ниже — откроется экран и автоматически перенесёт вас в Happ']}
-};
-function goInstr(type){
-  _activeType=type;const d=INSTR[type];
-  document.getElementById('instrTitle').textContent=d.title;
-  document.getElementById('doBtn').innerHTML=d.label;
-  document.getElementById('instrSteps').innerHTML=d.steps.map((s,i)=>`<div class="step"><div class="stepnum">${i+1}</div><div class="steptxt">${s}</div></div>`).join('');
-  showScreen('instr');
-}
-document.getElementById('doBtn').addEventListener('click',async()=>{
-  if(navigator.vibrate)navigator.vibrate(40);closeSheet();
-  _link='';_connFail=false;
-  if(_activeType==='apple')openHappScreen();
-  const r=await api('connect',{type:_activeType,devId:myDevId});
-  if(r.error||!r.url){_connFail=true;happScreen.classList.remove('open');clearInterval(progressTimer);
-    if(r.error==='limit'){SFX.err();openDevLimit();refreshDev()}else{SFX.err();toast(r.error||'Нет связи с сервером')}return}
-  _link=r.url;refreshDev();SFX.ok();
-  if(_activeType!=='apple')openScheme(_link);
-});
+/* ══ УСТРОЙСТВА И ИНСТРУКЦИИ ══ */
+const IC={
+android:'<svg viewBox="0 0 24 24" fill="#a4c639"><path d="M6.18 15.64a2.18 2.18 0 0 1-2.18-2.18V9.12a2.18 2.18 0 0 1 4.36 0v4.34a2.18 2.18 0 0 1-2.18 2.18M17.82 15.64a2.18 2.18 0 0 1-2.18-2.18V9.12a2.18 2.18 0 0 1 4.36 0v4.34a2.18 2.18 0 0 1-2.18 2.18M15.96 4.06l1.12-1.94a.23.23 0 0 0-.4 0l-1.14 1.96A7.28 7.28 0 0 0 12 3.16a7.28 7.28 0 0 0-3.54.68L7.32 1.88a.23.23 0 0 0-.4 0l1.12 1.94A6.96 6.96 0 0 0 5 9.68h14a6.96 6.96 0 0 0-3.04-5.62M9.5 7.5a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5m5 0a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5M5 18.5A1.5 1.5 0 0 0 6.5 20h1v3.5a1.5 1.5 0 0 0 3 0V20h3v3.5a1.5 1.5 0 0 0 3 0V20h1a1.5 1.5 0 0 0 1.5-1.5v-8.32H5V18.5z"/></svg>',
+apple:'<svg viewBox="0 0 24 24" fill="#efefef"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>',
+windows:'<svg viewBox="0 0 24 24" fill="#00a4ef"><path d="M3 5.5l7.5-1v7H3zM11.5 4.3L21 3v8.5h-9.5zM3 12.5h7.5v7L3 18.5zM11.5 12.5H21V21l-9.5-1.3z"/></svg>',
+androidtv:'<svg viewBox="0 0 24 24" fill="none" stroke="#a4c639" stroke-width="1.6"><rect x="2" y="4" width="20" height="13" rx="2.5"/><path d="M8 21h8" stroke-linecap="round"/><path d="M8.5 12.5a3.5 3.5 0 0 1 7 0z" fill="#a4c639" stroke="none"/><path d="M9.6 8.8l-.9-1.4M14.4 8.8l.9-1.4" stroke-linecap="round"/></svg>',
+appletv:'<svg viewBox="0 0 30 24"><g transform="translate(-1,0) scale(.85)" fill="#efefef"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></g><text x="15.5" y="17" font-size="10" font-weight="700" fill="#efefef" font-family="-apple-system,Helvetica,Arial,sans-serif">tv</text></svg>',
+linux:'<span class="emo">🐧</span>'};
+const ICON_OF={android:'android',iphone:'apple',apple:'apple',windows:'windows',linux:'linux',androidtv:'androidtv',appletv:'appletv'};
+function devIcon(kind,size){const h=IC[ICON_OF[kind]||'android'];return size?h.replace('<svg ','<svg width="'+size+'" height="'+size+'" ').replace('class="emo"','class="emo" style="font-size:'+Math.round(size*.9)+'px"'):h}
+const APPSTORE='https://apps.apple.com/us/app/happ-proxy-utility/id6504287215?l=ru';
+const HAPP_WIN='https://r.stun.su/?to=https://github.com/Happ-proxy/happ-desktop/releases/latest/download/setup-Happ.x64.exe';
+const INCY_GH='https://github.com/INCY-DEV/incy-platforms';
+const PLAY='https://play.google.com/store/apps/details?id=com.happproxy';
+const ATV_STORE='https://apps.apple.com/us/app/happ-proxy-utility-for-tv/id6748297274';
+const DEV_ORDER=['android','iphone','windows','linux','androidtv','appletv'];
+const DEVICES={
+android:{name:'Android',sub:'Happ из Google Play',app:'Happ',dl:PLAY,steps:[
+ {text:'Скачайте <b>Happ</b> из Google Play',btns:[{t:'Скачать Happ из Google Play',url:PLAY}]},
+ {text:'Перенесите подписку в Happ',btns:[{t:'Перенести подписку в Happ',main:1}]}]},
+iphone:{name:'iPhone',sub:'Happ из App Store',app:'Happ',dl:APPSTORE,steps:[
+ {text:'Скачайте <b>Happ</b> из App Store',btns:[{t:'Скачать Happ без РФ',url:APPSTORE},{t:'Инструкция для App Store',go:'store'}]},
+ {text:'Перенесите подписку в Happ',btns:[{t:'Перенести подписку в Happ',main:1}]}]},
+windows:{name:'Windows',sub:'Happ с GitHub',app:'Happ',dl:HAPP_WIN,steps:[
+ {text:'Скачайте <b>Happ</b> из GitHub:',btns:[{t:'Скачать Happ',url:HAPP_WIN}]},
+ {text:'Перенесите подписку в Happ',btns:[{t:'Перенести подписку в Happ',main:1}]}]},
+linux:{name:'Linux',sub:'INCY с GitHub',app:'INCY',dl:INCY_GH,steps:[
+ {text:'Скачайте <b>INCY</b> из GitHub',btns:[{t:'Скачать INCY',url:INCY_GH}]},
+ {text:'Перенесите подписку в INCY',btns:[{t:'Перенести подписку в INCY',main:1}]}]},
+androidtv:{name:'Android TV',sub:'Happ для телевизора',app:'Happ',dl:PLAY,steps:[
+ {text:'Установите приложение <b>Happ</b> на свой телевизор',btns:[{t:'Скачать Happ для телевизора',url:PLAY}]},
+ {text:'Прочитайте подробную инструкцию на этом сайте',btns:[{t:'Инструкция по подключению',go:'tv'}]},
+ {text:'Перенесите подписку на Android TV',btns:[{t:'Перенести подписку в Android TV',main:1}]}]},
+appletv:{name:'Apple TV',sub:'Happ из App Store',app:'Happ',dl:ATV_STORE,steps:[
+ {text:'Смените регион своего аккаунта в App Store',btns:[{t:'Инструкция по смене региона',go:'store'}]},
+ {text:'Скачайте <b>Happ</b> из App Store:',btns:[{t:'Скачать Happ из App Store',url:ATV_STORE}]},
+ {text:'Перенесите подписку в Happ',btns:[{t:'Перенести подписку в Happ',main:1}]}]}};
+document.getElementById('devList').innerHTML=DEV_ORDER.map(k=>{const d=DEVICES[k];return '<button class="dbtn" onclick="goInstr(\''+k+'\')">'+devIcon(k)+'<div><div class="dbtn-title">'+d.name+'</div><div class="dbtn-sub">'+(d.soon?'Инструкция скоро':d.sub)+'</div></div></button>'}).join('');
+function openExt(url){const tg=window.Telegram&&window.Telegram.WebApp;if(tg&&typeof tg.openLink==='function')tg.openLink(url);else window.open(url,'_blank')}
+function goInstr(kind){const d=DEVICES[kind];
+document.getElementById('instrTitle').innerHTML=devIcon(kind,26)+' '+d.name;
+document.getElementById('instrSteps').innerHTML=d.soon?'<div class="soon">Инструкция для этого устройства скоро появится 🐇</div>':d.steps.map((st,i)=>'<div class="step"><div class="stepnum">'+(i+1)+'</div><div class="steptxt">'+st.text+'<div class="sbtns">'+st.btns.map(b=>'<button class="sbtn'+(b.main?' main':'')+'" onclick="'+(b.url?"openExt('"+b.url+"')":b.go?"showScreen('"+b.go+"')":"transfer('"+kind+"')")+'">'+b.t+'</button>').join('')+'</div></div></div>').join('');
+showScreen('instr')}
+async function transfer(kind){const d=DEVICES[kind];if(!d||d.soon)return;
+if(navigator.vibrate)navigator.vibrate(40);closeSheet();
+_link='';_connFail=false;openHappScreen(d.app,d.dl,kind);
+const r=await api('connect',{type:kind,devId:myDevId});
+if(r.error||!r.url){_connFail=true;happScreen.classList.remove('open');clearInterval(progressTimer);
+if(r.error==='limit'){SFX.err();openDevLimit();refreshDev()}else{SFX.err();toast(r.error||'Нет связи с сервером')}return}
+_link=r.url;refreshDev();SFX.ok()}
 
 /* ══ HAPP SCREEN ══ */
 const happScreen=document.getElementById('happScreen'),progressBar=document.getElementById('progressBar');
 const happStatus=document.getElementById('happStatus'),happSub=document.getElementById('happSub');
 const happManual=document.getElementById('happManual'),happStore=document.getElementById('happStore');
-let progressTimer=null;
-function openHappScreen(){
-  happScreen.classList.add('open');progressBar.style.width='0%';
-  happStatus.textContent='Открываем Happ...';happSub.textContent='Загружаем зашифрованную подписку';
+let progressTimer=null,_app={name:'Happ',dl:''};
+function openHappScreen(app,dl,kind){
+  _app={name:app||'Happ',dl:dl||''};happScreen.classList.add('open');progressBar.style.width='0%';
+  document.getElementById('happIcon').innerHTML=devIcon(kind||'iphone',28);
+  happStatus.textContent='Открываем '+_app.name+'...';happSub.textContent='Загружаем зашифрованную подписку';
+  happStore.innerHTML='Нет '+_app.name+'? <a href="'+_app.dl+'" target="_blank">Скачать</a>';
   happManual.classList.remove('show');happStore.classList.remove('show');
   let pct=0;clearInterval(progressTimer);
   progressTimer=setInterval(()=>{pct=Math.min(pct+3.33,100);progressBar.style.width=pct+'%';if(pct>=100){clearInterval(progressTimer);fireHapp();}},40);
 }
 function fireHapp(){if(_connFail)return;if(!_link){setTimeout(fireHapp,250);return}
-  happStatus.textContent='Переходим в Happ 🐇';happSub.textContent='Подписка загружается автоматически';
+  happStatus.textContent='Переходим в '+_app.name+' 🐇';happSub.textContent='Подписка загружается автоматически';
   if(navigator.vibrate)navigator.vibrate([40,60,40]);openScheme(_link);
-  setTimeout(()=>{happStatus.textContent='Happ не открылся?';happSub.textContent='Убедитесь, что Happ установлен';happManual.classList.add('show');happStore.classList.add('show');},2500);
+  setTimeout(()=>{happStatus.textContent=_app.name+' не открылся?';happSub.textContent='Убедитесь, что '+_app.name+' установлен';happManual.classList.add('show');happStore.classList.add('show');},2500);
 }
 happManual.addEventListener('click',()=>{openScheme(_link);happSub.textContent='Пробуем ещё раз…';});
 

@@ -580,7 +580,6 @@ body{font-family:-apple-system,'SF Pro Text','SF Pro Display',system-ui,sans-ser
             <div class="goal-desc" id="goalDesc">Как наберём — добавим новый сервер! Каждая морковка на счету 🐇</div>
           </div>
 
-
         </div>
       </div>
 
@@ -794,23 +793,9 @@ function goBack(){showScreen('device');}
 document.getElementById('mainConnectBtn').addEventListener('click',openSheet);
 
 
-/* Страница-редирект https -> happ:// (залей redirect.html на свой HTTPS-хостинг и впиши адрес сюда) */
-const REDIRECT_URL='https://YOUR-DOMAIN/redirect.html';
-function inTg(){const tg=window.Telegram&&window.Telegram.WebApp;return !!(tg&&tg.initData)}
 function openScheme(url){
-  if(inTg()&&!/^https?:/i.test(url)){
-    /* Telegram WebView блокирует кастомные схемы — открываем через https-редирект во внешнем браузере */
-    const tg=window.Telegram.WebApp;
-    if(REDIRECT_URL.indexOf('YOUR-DOMAIN')<0){try{tg.openLink(REDIRECT_URL+'#'+encodeURIComponent(url));return}catch(e){}}
-    copyText(url);return;
-  }
   try{window.open(url,'_blank');}catch(e){}
   try{const f=document.createElement('iframe');f.style.cssText='position:fixed;width:1px;height:1px;opacity:0;top:-200px;left:-200px;';f.src=url;document.body.appendChild(f);setTimeout(()=>{try{document.body.removeChild(f);}catch(e){}},3000);}catch(e){}
-}
-function copyText(s){
-  const done=()=>{try{toast('Ссылка скопирована. В Happ: «+» → «Вставить из буфера»')}catch(e){}};
-  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(s).then(done).catch(()=>fb())}else fb();
-  function fb(){const a=document.createElement('textarea');a.value=s;a.style.cssText='position:fixed;top:-200px;opacity:0';document.body.appendChild(a);a.select();try{document.execCommand('copy')}catch(e){}document.body.removeChild(a);done()}
 }
 
 /* ══ ЗВУКИ ══ */
@@ -843,11 +828,11 @@ const _cs=()=>{const c=window.Telegram?.WebApp?.CloudStorage;return c&&c.getItem
 function devRead(){return new Promise(r=>{const c=_cs();if(c)c.getItem(DEV_KEY,(e,v)=>r(e?null:(v||null)));else r(localStorage.getItem(DEV_KEY))})}
 function devWrite(v){const c=_cs();if(c){if(v)c.setItem(DEV_KEY,v);else c.removeItem(DEV_KEY)}else{if(v)localStorage.setItem(DEV_KEY,v);else localStorage.removeItem(DEV_KEY)}}
 let _dev=null;
-function refreshDev(){return loadState()}
+async function refreshDev(){if(API_BASE)return loadState();try{const raw=await devRead();_dev=raw?JSON.parse(raw):null}catch(e){_dev=null}renderDevices()}
 function renderDevices(){const d=_dev;document.getElementById('devCount').textContent=(d?1:0)+' / 1';
 document.getElementById('devBody').innerHTML=d?'<div class="dev-row"><div class="dev-ic">'+devIcon(d.type,28)+'</div><div style="flex:1"><div style="color:#fff;font-weight:600">'+d.name+(d.id===myDevId?' · это устройство':'')+'</div><div style="font-size:11px">Подключено '+new Date(d.ts).toLocaleDateString('ru-RU')+'</div></div><button class="dev-del" onclick="removeDevice()">Удалить</button></div><div style="font-size:11px;margin-top:10px">Лимит: 1 устройство на подписку. Чтобы подключить другое — удалите это.</div>':'Устройств нет. Нажмите «Подключиться» на вкладке VPN — устройство появится здесь.'}
-function registerDevice(type){if(_dev&&_dev.id!==myDevId)return false;if(!_dev||_dev.type!==type){_dev={id:myDevId,type:type,name:type==='apple'?'iPhone / iPad':'Android',ts:(_dev&&_dev.ts)||Date.now()};devWrite(JSON.stringify(_dev))}renderDevices();return true}
-async function removeDevice(){SFX.close();const r=await api('device/delete',{});if(!r.error)applyState(r)}
+function registerDevice(type){if(_dev&&_dev.id!==myDevId)return false;if(!_dev||_dev.type!==type){_dev={id:myDevId,type:type,name:(typeof DEVICES!=='undefined'&&DEVICES[type]?DEVICES[type].name:type),ts:(_dev&&_dev.ts)||Date.now()};devWrite(JSON.stringify(_dev))}renderDevices();return true}
+async function removeDevice(){SFX.close();if(API_BASE){const r=await api('device/delete',{});if(!r.error)applyState(r);return}_dev=null;devWrite(null);renderDevices()}
 refreshDev();
 
 /* ══ DEVICE LIMIT MODAL ══ */
@@ -959,6 +944,7 @@ const SKINS=[
 {id:'gamer',name:'Кролик-Геймер',per:3,cut:20,price:24000,ramp:0.6,note:'+0,6 🥕 к клику после каждого клика подряд'},
 {id:'ghost',name:'Кролик-призрак',per:2,cut:0,price:40000,combo:{n:10,bonus:300},note:'каждые 10 кликов подряд +300 🥕'},
 {id:'king',name:'Кролик-Король',per:10,cut:0,price:80000,combo:{n:30,bonus:5000},note:'каждые 30 кликов подряд +5 000 🥕'}];
+const PACKS=[{n:5000},{n:10000},{n:100000}];
 const nowD=()=>window.KV_NOW?new Date(window.KV_NOW):new Date();
 function isWinter(){const d=nowD(),m=d.getMonth(),x=d.getDate();return(m===11&&x>=21)||(m===0&&x<=9)}
 function ownedSkins(){let o=[];try{o=JSON.parse(localStorage.getItem('kv_skins'))||[]}catch(e){}return['regular','orange'].concat(o.filter(x=>x!=='regular'&&x!=='orange'))}
@@ -982,6 +968,7 @@ if(API_BASE){el.innerHTML='<div class="shop-t">🛒 Магазин</div><div cla
 const pcb=document.getElementById('pcBox');if(pcb)pcb.textContent='×'+perClick();
 let h='<div class="shop-t">🛒 Магазин<span>'+fmtNum(getLS('carrots'))+' 🥕</span></div><div class="shop-h">Скины кролика</div>';
 h+=SKINS.map(s=>{const st=skinState(s);return '<div class="shop-r"><div class="sk">'+(SKIN_IMG[s.id]?'<img src="'+SKIN_IMG[s.id]+'">':'<span>🔒</span>')+'</div><div class="sx"><b>'+s.name+'</b><span>'+s.per+' 🥕 за клик'+(s.cut?' · перерыв −'+s.cut+' мин':'')+(s.candy?' · 🍬 за клик':'')+(s.note?' · '+s.note:'')+'</span></div><button class="'+(st.on?'on':st.off?'off':'')+'"'+(st.fn?' onclick="'+st.fn+'"':' disabled')+'>'+st.t+'</button></div>'}).join('');
+h+='<div class="shop-h">Накрутка морковок</div>'+PACKS.map(p=>'<div class="shop-r"><div class="sk"><span>🥕</span></div><div class="sx"><b>+'+fmtNum(p.n)+' 🥕</b><span>идут в общую цель, спишутся с баланса (он может уйти в минус)</span></div><button onclick="buyPack('+p.n+')">−'+fmtNum(p.n)+' 🥕</button></div>').join('');
 if(getLS('candies'))h+='<div class="shop-note" style="margin-top:10px">🍬 Конфет собрано: '+fmtNum(getLS('candies'))+'</div>';
 el.innerHTML=h}
 function shopRefresh(){renderClicker();renderShop();applySkin()}
@@ -992,6 +979,9 @@ setLS('carrots',c-s.price);localStorage.setItem('kv_skins',JSON.stringify(ownedS
 function equipSkin(id){const s=SKINS.find(x=>x.id===id);if(!s||s.soon||!ownedSkins().includes(id))return;
 if(s.winter&&!isWinter()){toast('Новогодний кролик активируется только зимой');return}
 localStorage.setItem('kv_skin',id);SFX.tap();shopRefresh()}
+function buyPack(n){const p=PACKS.find(x=>x.n===n),c=getLS('carrots');if(!p)return;
+
+setLS('carrots',c-p.n);setLS('earned',getLS('earned')+p.n);SFX.ok();shopRefresh()}
 (function(){if(localStorage.getItem('kv_earned')==null)setLS('earned',getLS('carrots'));
 const g=document.querySelector('.goal-card');if(!g)return;const d=document.createElement('div');d.id='shopCard';d.className='goal-card';d.style.marginTop='14px';g.insertAdjacentElement('afterend',d);renderShop();applySkin()})();
 
@@ -1045,47 +1035,24 @@ appletv:'<svg viewBox="0 0 30 24"><g transform="translate(-1,0) scale(.85)" fill
 linux:'<span class="emo">🐧</span>'};
 const ICON_OF={android:'android',iphone:'apple',apple:'apple',windows:'windows',linux:'linux',androidtv:'androidtv',appletv:'appletv'};
 function devIcon(kind,size){const h=IC[ICON_OF[kind]||'android'];return size?h.replace('<svg ','<svg width="'+size+'" height="'+size+'" ').replace('class="emo"','class="emo" style="font-size:'+Math.round(size*.9)+'px"'):h}
+const HAPP_LINK='happ://crypt5/fzvdNvlXxbXzx9BK6sGdoUYu22XBU00r6yxB8Yiug7BN74vD7BqzGaOoEeEYPmjF7/UIlNe0I5EfOiJBuWzOsH0YYulRr7Bb2PNQwWjlMcZ/bFCuk2xxyRJjQ67fbGO8gW5mVU7iGdprUgTkZ9GZ93bYj1eSIzcm4SBldIl1izg5vUJhdwt0jD+m9TtVNUt1NT5v/BqxzN5WocWUkNBKVIbi7lWdnJ61PCGxXQD8BzwGWzfhGoEtLuEyhQs=8tQRYFjbGetTCCXPeRSsdlE9Shjr034WaxEcNRYf9KTqww4LtUx0cjRvQr5Vn7IRUOoqqXVyRV6kq9EeHYsC23AxaeDwgO/Sld5/7McJHR6o//H/SL7XuDcbLd7svRD5GbPS+LADW0R1fW03wf8NSzgSplkV+JTFOmHeVF7xvF+lP5ZfCVG93vU9zdY3YvSeC25lxIvigP5bk76baqWoXCfTnWnKHnNRloOYlm6CzXJov3Z8Lozy/aBgtef7zSmLJAgXAOgTEtcvvKVTbIeZbivoCPetFAekZEX5CIZPNM6ypwnO/aH8Lb1aFE+R9Q9qVkwmIaqqIG/Ubm1UlkdS1sn1tcHPslOPWj0KWKghn2Me1jBjhnq8eAbCAosIEMqIJh7w7VA16KOPqfRC3Soabvfidv/Ok8pxSv0skwQ8E7/VdorhdYz7krrAAwZx/GazA5ZZyc57s69hei0MyLpT2olPZp43WX343uQHTBcfiFHaN9MnpGR9aztofyeJGaJ9y9BZGnrcbwVb42/+JIB1KWvnsI7B4hIxQBeQad30zNrr/WdvwKYtrV322ruzGYRrpNRx7TA73WxMSz5HdwAGWVGXUAliJZykkqvaTZDrUhMT8Ll3JZjBSjgPZF5bO16quyuwsLjeRj2xvL51Y8PWoHXhB4LnWFDpRnEpqgXqfow=ff';
+const INCY_LINK=''; // ссылка подписки для INCY (Linux) — вставь сюда
 const APPSTORE='https://apps.apple.com/us/app/happ-proxy-utility/id6504287215?l=ru';
 const HAPP_WIN='https://r.stun.su/?to=https://github.com/Happ-proxy/happ-desktop/releases/latest/download/setup-Happ.x64.exe';
 const INCY_GH='https://github.com/INCY-DEV/incy-platforms';
 const PLAY='https://play.google.com/store/apps/details?id=com.happproxy';
 const ATV_STORE='https://apps.apple.com/us/app/happ-proxy-utility-for-tv/id6748297274';
-/* Статичная ссылка переноса подписки в Happ (без API) */
-const HAPP_LINK='happ://crypt5/fzvdNvlXxbXzx9BK6sGdoUYu22XBU00r6yxB8Yiug7BN74vD7BqzGaOoEeEYPmjF7/UIlNe0I5EfOiJBuWzOsH0YYulRr7Bb2PNQwWjlMcZ/bFCuk2xxyRJjQ67fbGO8gW5mVU7iGdprUgTkZ9GZ93bYj1eSIzcm4SBldIl1izg5vUJhdwt0jD+m9TtVNUt1NT5v/BqxzN5WocWUkNBKVIbi7lWdnJ61PCGxXQD8BzwGWzfhGoEtLuEyhQs=8tQRYFjbGetTCCXPeRSsdlE9Shjr034WaxEcNRYf9KTqww4LtUx0cjRvQr5Vn7IRUOoqqXVyRV6kq9EeHYsC23AxaeDwgO/Sld5/7McJHR6o//H/SL7XuDcbLd7svRD5GbPS+LADW0R1fW03wf8NSzgSplkV+JTFOmHeVF7xvF+lP5ZfCVG93vU9zdY3YvSeC25lxIvigP5bk76baqWoXCfTnWnKHnNRloOYlm6CzXJov3Z8Lozy/aBgtef7zSmLJAgXAOgTEtcvvKVTbIeZbivoCPetFAekZEX5CIZPNM6ypwnO/aH8Lb1aFE+R9Q9qVkwmIaqqIG/Ubm1UlkdS1sn1tcHPslOPWj0KWKghn2Me1jBjhnq8eAbCAosIEMqIJh7w7VA16KOPqfRC3Soabvfidv/Ok8pxSv0skwQ8E7/VdorhdYz7krrAAwZx/GazA5ZZyc57s69hei0MyLpT2olPZp43WX343uQHTBcfiFHaN9MnpGR9aztofyeJGaJ9y9BZGnrcbwVb42/+JIB1KWvnsI7B4hIxQBeQad30zNrr/WdvwKYtrV322ruzGYRrpNRx7TA73WxMSz5HdwAGWVGXUAliJZykkqvaTZDrUhMT8Ll3JZjBSjgPZF5bO16quyuwsLjeRj2xvL51Y8PWoHXhB4LnWFDpRnEpqgXqfow=ff';
-/* Маршрутизация Happ: РФ-сайты, Госуслуги и банки идут НАПРЯМУЮ (мимо VPN), остальное — через VPN */
-const HAPP_ROUTING={
-  Name:'KrolekVPN · РФ напрямую',GlobalProxy:'true',RemoteDns:'',DomesticDns:'',Geoipurl:'',Geositeurl:'',DnsHosts:{},
-  DirectSites:['domain:ru','domain:su','domain:xn--p1ai','domain:gosuslugi.ru','domain:mos.ru','domain:nalog.gov.ru',
-    'domain:vtb.ru','domain:sberbank.ru','domain:sber.ru','domain:sberbank.com','domain:tbank.ru','domain:tinkoff.ru','domain:tinkoff.com',
-    'domain:alfabank.ru','domain:gazprombank.ru','domain:raiffeisen.ru','domain:psbank.ru','domain:pochtabank.ru','domain:open.ru','domain:rshb.ru',
-    'domain:yoomoney.ru','domain:nspk.ru','domain:mironline.ru','domain:qiwi.com','domain:sbp.nspk.ru',
-    'domain:yandex.com','domain:yandex.net','domain:yastatic.net','domain:ya.ru','domain:vk.com','domain:userapi.com','domain:mail.ru','domain:ok.ru',
-    'domain:2gis.com','domain:ozon.ru','domain:wbstatic.net','domain:avito.st'],
-  DirectIp:['geoip:private','geoip:ru'],
-  ProxySites:[],ProxyIp:[],BlockSites:[],BlockIp:[],
-  DomainStrategy:'IPIfNonMatch',FakeDNS:'false',LastUpdated:''
-};
-const ROUTING_LINK='happ://routing/onadd/'+btoa(unescape(encodeURIComponent(JSON.stringify(HAPP_ROUTING))));
-let _routing=false;
-function routeHapp(kind){const d=DEVICES[kind];if(!d)return;
-if(navigator.vibrate)navigator.vibrate(40);
-_routing=true;_link='';_connFail=false;openHappScreen(d.app,d.dl,kind);
-happStatus.textContent='Открываем '+d.app+'...';happSub.textContent='Добавляем правила маршрутизации';
-_link=ROUTING_LINK;SFX.ok()}
 const DEV_ORDER=['android','iphone','windows','linux','androidtv','appletv'];
 const DEVICES={
 android:{name:'Android',sub:'Happ из Google Play',app:'Happ',dl:PLAY,steps:[
  {text:'Скачайте <b>Happ</b> из Google Play',btns:[{t:'Скачать Happ из Google Play',url:PLAY}]},
- {text:'Перенесите подписку в Happ',btns:[{t:'Перенести подписку в Happ',main:1}]},
- {text:'Включите маршрутизацию: Госуслуги и банки РФ будут открываться напрямую, без VPN',btns:[{t:'Включить маршрутизацию в Happ',route:1}]}]},
+ {text:'Перенесите подписку в Happ',btns:[{t:'Перенести подписку в Happ',main:1}]}]},
 iphone:{name:'iPhone',sub:'Happ из App Store',app:'Happ',dl:APPSTORE,steps:[
  {text:'Скачайте <b>Happ</b> из App Store',btns:[{t:'Скачать Happ без РФ',url:APPSTORE},{t:'Инструкция для App Store',go:'store'}]},
- {text:'Перенесите подписку в Happ',btns:[{t:'Перенести подписку в Happ',main:1}]},
- {text:'Включите маршрутизацию: Госуслуги и банки РФ будут открываться напрямую, без VPN',btns:[{t:'Включить маршрутизацию в Happ',route:1}]}]},
+ {text:'Перенесите подписку в Happ',btns:[{t:'Перенести подписку в Happ',main:1}]}]},
 windows:{name:'Windows',sub:'Happ с GitHub',app:'Happ',dl:HAPP_WIN,steps:[
  {text:'Скачайте <b>Happ</b> из GitHub:',btns:[{t:'Скачать Happ',url:HAPP_WIN}]},
- {text:'Перенесите подписку в Happ',btns:[{t:'Перенести подписку в Happ',main:1}]},
- {text:'Включите маршрутизацию: Госуслуги и банки РФ будут открываться напрямую, без VPN',btns:[{t:'Включить маршрутизацию в Happ',route:1}]}]},
+ {text:'Перенесите подписку в Happ',btns:[{t:'Перенести подписку в Happ',main:1}]}]},
 linux:{name:'Linux',sub:'INCY с GitHub',app:'INCY',dl:INCY_GH,steps:[
  {text:'Скачайте <b>INCY</b> из GitHub',btns:[{t:'Скачать INCY',url:INCY_GH}]},
  {text:'Перенесите подписку в INCY',btns:[{t:'Перенести подписку в INCY',main:1}]}]},
@@ -1101,12 +1068,22 @@ document.getElementById('devList').innerHTML=DEV_ORDER.map(k=>{const d=DEVICES[k
 function openExt(url){const tg=window.Telegram&&window.Telegram.WebApp;if(tg&&typeof tg.openLink==='function')tg.openLink(url);else window.open(url,'_blank')}
 function goInstr(kind){const d=DEVICES[kind];
 document.getElementById('instrTitle').innerHTML=devIcon(kind,26)+' '+d.name;
-document.getElementById('instrSteps').innerHTML=d.soon?'<div class="soon">Инструкция для этого устройства скоро появится 🐇</div>':d.steps.map((st,i)=>'<div class="step"><div class="stepnum">'+(i+1)+'</div><div class="steptxt">'+st.text+'<div class="sbtns">'+st.btns.map(b=>'<button class="sbtn'+(b.main?' main':'')+'" onclick="'+(b.url?"openExt('"+b.url+"')":b.go?"showScreen('"+b.go+"')":b.route?"routeHapp('"+kind+"')":"transfer('"+kind+"')")+'">'+b.t+'</button>').join('')+'</div></div></div>').join('');
+document.getElementById('instrSteps').innerHTML=d.soon?'<div class="soon">Инструкция для этого устройства скоро появится 🐇</div>':d.steps.map((st,i)=>'<div class="step"><div class="stepnum">'+(i+1)+'</div><div class="steptxt">'+st.text+'<div class="sbtns">'+st.btns.map(b=>'<button class="sbtn'+(b.main?' main':'')+'" onclick="'+(b.url?"openExt('"+b.url+"')":b.go?"showScreen('"+b.go+"')":"transfer('"+kind+"')")+'">'+b.t+'</button>').join('')+'</div></div></div>').join('');
 showScreen('instr')}
-async function transfer(kind){const d=DEVICES[kind];if(!d||d.soon)return;
+let _try=0;
+function openSchemeN(url){_try++;if(_try===1){openScheme(url);return}
+const tg=window.Telegram&&window.Telegram.WebApp;if(_try===2&&tg&&typeof tg.openLink==='function'){tg.openLink(url);return}
+window.location.href=url}
+function transfer(kind){const d=DEVICES[kind];if(!d||d.soon)return;
+if(API_BASE)return transferApi(kind);
+const url=kind==='linux'?INCY_LINK:HAPP_LINK;
+if(!url){toast('Ссылка для '+d.app+' пока не добавлена');return}
 if(navigator.vibrate)navigator.vibrate(40);closeSheet();
-_routing=false;_link='';_connFail=false;openHappScreen(d.app,d.dl,kind);
-if(d.app==='Happ'){_link=HAPP_LINK;SFX.ok();return}
+if(!registerDevice(kind)){SFX.err();openDevLimit();return}
+_link=url;_connFail=false;SFX.ok();openHappScreen(d.app,d.dl,kind)}
+async function transferApi(kind){const d=DEVICES[kind];if(!d||d.soon)return;
+if(navigator.vibrate)navigator.vibrate(40);closeSheet();
+_link='';_connFail=false;openHappScreen(d.app,d.dl,kind);
 const r=await api('connect',{type:kind,devId:myDevId});
 if(r.error||!r.url){_connFail=true;happScreen.classList.remove('open');clearInterval(progressTimer);
 if(r.error==='limit'){SFX.err();openDevLimit();refreshDev()}else{SFX.err();toast(r.error||'Нет связи с сервером')}return}
@@ -1127,11 +1104,11 @@ function openHappScreen(app,dl,kind){
   progressTimer=setInterval(()=>{pct=Math.min(pct+3.33,100);progressBar.style.width=pct+'%';if(pct>=100){clearInterval(progressTimer);fireHapp();}},40);
 }
 function fireHapp(){if(_connFail)return;if(!_link){setTimeout(fireHapp,250);return}
-  happStatus.textContent='Переходим в '+_app.name+' 🐇';happSub.textContent=_routing?'Правила маршрутизации добавляются':'Подписка загружается автоматически';
-  if(navigator.vibrate)navigator.vibrate([40,60,40]);openScheme(_link);
+  happStatus.textContent='Переходим в '+_app.name+' 🐇';happSub.textContent='Подписка загружается автоматически';
+  if(navigator.vibrate)navigator.vibrate([40,60,40]);_try=0;openSchemeN(_link);
   setTimeout(()=>{happStatus.textContent=_app.name+' не открылся?';happSub.textContent='Убедитесь, что '+_app.name+' установлен';happManual.classList.add('show');happStore.classList.add('show');},2500);
 }
-happManual.addEventListener('click',()=>{openScheme(_link);happSub.textContent='Пробуем ещё раз…';});
+happManual.addEventListener('click',()=>{openSchemeN(_link);happSub.textContent='Пробуем ещё раз…';});
 
 /* ══════════════════════════════
    CLICKER — ПОКОРМИТЬ ЗАЙЦА
@@ -1344,4 +1321,4 @@ function spawnCombo(x,y,text){
 }
 </script>
 </body>
-  </html>
+            </html>

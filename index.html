@@ -794,29 +794,15 @@ function goBack(){showScreen('device');}
 document.getElementById('mainConnectBtn').addEventListener('click',openSheet);
 
 
-function inTg(){const tg=window.Telegram&&window.Telegram.WebApp;return !!(tg&&tg.initData)}
-/* Telegram WebView не открывает happ:// напрямую. Поэтому открываем эту же страницу во внешнем браузере
-   с меткой #kvgo=sub|route (сама ссылка в адрес НЕ попадает), а там страница сама переходит в Happ. */
 function openScheme(url){
-  if(inTg()&&!/^https?:/i.test(url)){
-    const tg=window.Telegram.WebApp,kind=(url===ROUTING_LINK)?'route':'sub';
-    try{tg.openLink(location.origin+location.pathname+'#kvgo='+kind);return}catch(e){}
-    try{location.href=url}catch(e){}
-    return;
-  }
   try{window.open(url,'_blank');}catch(e){}
   try{const f=document.createElement('iframe');f.style.cssText='position:fixed;width:1px;height:1px;opacity:0;top:-200px;left:-200px;';f.src=url;document.body.appendChild(f);setTimeout(()=>{try{document.body.removeChild(f);}catch(e){}},3000);}catch(e){}
 }
-(function(){
-  const m=/kvgo=(sub|route)/.exec(location.hash||'');if(!m||inTg())return;
-  const target=m[1]==='route'?ROUTING_LINK:HAPP_LINK;
-  const o=document.createElement('div');
-  o.style.cssText='position:fixed;inset:0;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:#14100f;color:#fff;font-family:system-ui,sans-serif;text-align:center;padding:24px';
-  o.innerHTML='<div style="font-size:64px">🐇</div><div style="font-size:20px;font-weight:700">Открываем Happ…</div><button id="kvGoBtn" style="background:linear-gradient(135deg,#ff6b35,#ff9f4a);border:0;border-radius:50px;padding:14px 32px;font-size:16px;font-weight:700;color:#fff">Открыть Happ</button><div style="color:#999;font-size:13px">Если ничего не произошло — нажми кнопку</div>';
-  document.body.appendChild(o);
-  const go=()=>{location.href=target};
-  document.getElementById('kvGoBtn').onclick=go;setTimeout(go,300);
-})();
+/* попытки открыть happ:// в WebApp: 1) window.open+iframe, 2) Telegram openLink, 3) прямой переход */
+let _try=0;
+function openSchemeN(url){_try++;if(_try===1){openScheme(url);return}
+const tg=window.Telegram&&window.Telegram.WebApp;if(_try===2&&tg&&typeof tg.openLink==='function'){try{tg.openLink(url);return}catch(e){}}
+window.location.href=url}
 
 /* ══ ЗВУКИ ══ */
 const SFX=(()=>{let ctx=null,on=localStorage.getItem('kv_sfx')!=='0';
@@ -1149,10 +1135,10 @@ function openHappScreen(app,dl,kind){
 }
 function fireHapp(){if(_connFail)return;if(!_link){setTimeout(fireHapp,250);return}
   happStatus.textContent='Переходим в '+_app.name+' 🐇';happSub.textContent=_routing?'Правила маршрутизации добавляются':'Подписка загружается автоматически';
-  if(navigator.vibrate)navigator.vibrate([40,60,40]);openScheme(_link);
+  if(navigator.vibrate)navigator.vibrate([40,60,40]);_try=0;openSchemeN(_link);
   setTimeout(()=>{happStatus.textContent=_app.name+' не открылся?';happSub.textContent='Убедитесь, что '+_app.name+' установлен';happManual.classList.add('show');happStore.classList.add('show');},2500);
 }
-happManual.addEventListener('click',()=>{openScheme(_link);happSub.textContent='Пробуем ещё раз…';});
+happManual.addEventListener('click',()=>{openSchemeN(_link);happSub.textContent='Пробуем ещё раз…';});
 
 /* ══════════════════════════════
    CLICKER — ПОКОРМИТЬ ЗАЙЦА
@@ -1365,4 +1351,4 @@ function spawnCombo(x,y,text){
 }
 </script>
 </body>
-  </html>
+                  </html>

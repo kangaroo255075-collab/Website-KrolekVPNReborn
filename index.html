@@ -88,7 +88,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .faq-arrow{font-size:16px;color:var(--or2);transition:transform .25s;display:inline-block}
 .faq-arrow.open{transform:rotate(90deg)}
 .faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s ease;font-size:13px;color:var(--muted);line-height:1.6;padding:0 16px;}
-.faq-a.open{max-height:200px;padding:0 16px 14px}
+.faq-a.open{max-height:260px;padding:0 16px 14px}
 .faq-a a{color:var(--or2);text-decoration:none}
 
 /* Download */
@@ -466,7 +466,7 @@ body{font-family:-apple-system,'SF Pro Text','SF Pro Display',system-ui,sans-ser
         </div>
         <div class="faq-item">
           <div class="faq-q" onclick="toggleFaq(this)"><span>🌍 Сколько всего серверов будет?</span><span class="faq-arrow">›</span></div>
-          <div class="faq-a">Только 3 сервера (Польша)<br><br>Польша 🇵🇱 | Игровой<br>Польша 🇵🇱 | Wi-Fi<br>Польша 🇵🇱 | YouTube</div>
+          <div class="faq-a">Финляндия 🇫🇮 | Игровой<br>Эстония 🇪🇪 | Игровой<br>Швеция 🇸🇪 | Игровой<br>Германия 🇩🇪 | Быстрый<br>Латвия 🇱🇻 | Wi-Fi<br>Нидерланды 🇳🇱 | Быстрый<br>Франция 🇫🇷 | Wi-Fi</div>
         </div>
         <div class="faq-item">
           <div class="faq-q" onclick="toggleFaq(this)"><span>📱 Работает на iPhone?</span><span class="faq-arrow">›</span></div>
@@ -932,9 +932,15 @@ const _origInitClicker = initClicker;
 
 /* ══ ФЛАГИ, МАГАЗИН, ОГОНЁК ══ */
 const FLAGS={
-PL:'<rect width="30" height="11" fill="#fff"/><rect y="11" width="30" height="11" fill="#DC143C"/>'};
+FI:'<rect width="30" height="22" fill="#fff"/><rect x="8" width="5" height="22" fill="#003580"/><rect y="8.5" width="30" height="5" fill="#003580"/>',
+EE:'<rect width="30" height="7.4" fill="#0072CE"/><rect y="7.3" width="30" height="7.4" fill="#000"/><rect y="14.6" width="30" height="7.4" fill="#fff"/>',
+SE:'<rect width="30" height="22" fill="#006AA7"/><rect x="8" width="5" height="22" fill="#FECC02"/><rect y="8.5" width="30" height="5" fill="#FECC02"/>',
+DE:'<rect width="30" height="7.4" fill="#000"/><rect y="7.3" width="30" height="7.4" fill="#DD0000"/><rect y="14.6" width="30" height="7.4" fill="#FFCE00"/>',
+LV:'<rect width="30" height="22" fill="#9E3039"/><rect y="8.8" width="30" height="4.4" fill="#fff"/>',
+NL:'<rect width="30" height="7.4" fill="#AE1C28"/><rect y="7.3" width="30" height="7.4" fill="#fff"/><rect y="14.6" width="30" height="7.4" fill="#21468B"/>',
+FR:'<rect width="10.1" height="22" fill="#0055A4"/><rect x="10" width="10.1" height="22" fill="#fff"/><rect x="20" width="10" height="22" fill="#EF4135"/>'};
 function flag(c,w){w=w||30;return '<svg class="flag" viewBox="0 0 30 22" width="'+w+'" height="'+Math.round(w*22/30)+'"><defs><clipPath id="fc"><rect width="30" height="22" rx="4"/></clipPath><linearGradient id="fg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".4"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".22"/></linearGradient></defs><g clip-path="url(#fc)">'+FLAGS[c]+'<rect width="30" height="22" fill="url(#fg)"/></g><rect x=".5" y=".5" width="29" height="21" rx="3.5" fill="none" stroke="rgba(0,0,0,.28)"/></svg>'}
-document.getElementById('srvFlags').innerHTML=flag('PL',32);
+(function(){const b=document.getElementById('srvFlags');b.style.flexWrap='wrap';b.innerHTML=['FI','EE','SE','DE','LV','NL','FR'].map(c=>flag(c,28)).join('')})();
 
 /* ══ МАГАЗИН (без сервера, всё хранится на устройстве) ══ */
 let _st=0,_stT=0;const COMBO_GAP=400;
@@ -1334,4 +1340,4 @@ function spawnCombo(x,y,text){
 }
 </script>
 </body>
-              </html>
+            </html>

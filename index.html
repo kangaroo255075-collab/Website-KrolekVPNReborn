@@ -466,7 +466,7 @@ body{font-family:-apple-system,'SF Pro Text','SF Pro Display',system-ui,sans-ser
         </div>
         <div class="faq-item">
           <div class="faq-q" onclick="toggleFaq(this)"><span>🌍 Сколько всего серверов будет?</span><span class="faq-arrow">›</span></div>
-          <div class="faq-a">Только 3 сервера (Польша)<br><br>Польша 🇵🇱 | Игровой<br>Польша 🇵🇱 | Wi-Fi<br>Польша 🇵🇱 | YouTube</div>
+          <div class="faq-a">Только 2 сервера:<br><br>Германия 🇩🇪<br>Израиль 🇮🇱 | Антиглушилка</div>
         </div>
         <div class="faq-item">
           <div class="faq-q" onclick="toggleFaq(this)"><span>📱 Работает на iPhone?</span><span class="faq-arrow">›</span></div>
@@ -798,8 +798,7 @@ function openScheme(url){
   try{window.open(url,'_blank');}catch(e){}
   try{const f=document.createElement('iframe');f.style.cssText='position:fixed;width:1px;height:1px;opacity:0;top:-200px;left:-200px;';f.src=url;document.body.appendChild(f);setTimeout(()=>{try{document.body.removeChild(f);}catch(e){}},3000);}catch(e){}
 }
-/* Попытки открыть happ:// внутри WebApp (каждое нажатие «Попробовать снова» — следующий способ):
-   1) window.open + iframe  2) Telegram openLink  3) клик по ссылке-якорю  4) прямой переход */
+
 let _try=0;
 function openSchemeN(url){_try++;if(_try===1){openScheme(url);return}
 const tg=window.Telegram&&window.Telegram.WebApp;
@@ -932,17 +931,17 @@ const _origInitClicker = initClicker;
 
 /* ══ ФЛАГИ, МАГАЗИН, ОГОНЁК ══ */
 const FLAGS={
-PL:'<rect width="30" height="11" fill="#fff"/><rect y="11" width="30" height="11" fill="#DC143C"/>',
-WH:'<rect width="30" height="22" fill="#fff"/>'};
+DE:'<rect width="30" height="7.4" fill="#000"/><rect y="7.3" width="30" height="7.4" fill="#DD0000"/><rect y="14.6" width="30" height="7.4" fill="#FFCE00"/>',
+IL:'<rect width="30" height="22" fill="#fff"/><rect y="3" width="30" height="3.5" fill="#0038B8"/><rect y="15.5" width="30" height="3.5" fill="#0038B8"/><polygon points="15,7 11.5,13 18.5,13" fill="none" stroke="#0038B8" stroke-width="1"/><polygon points="15,15 11.5,9 18.5,9" fill="none" stroke="#0038B8" stroke-width="1"/>',
+};
 function flag(c,w){w=w||30;return '<svg class="flag" viewBox="0 0 30 22" width="'+w+'" height="'+Math.round(w*22/30)+'"><defs><clipPath id="fc"><rect width="30" height="22" rx="4"/></clipPath><linearGradient id="fg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".4"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".22"/></linearGradient></defs><g clip-path="url(#fc)">'+FLAGS[c]+'<rect width="30" height="22" fill="url(#fg)"/></g><rect x=".5" y=".5" width="29" height="21" rx="3.5" fill="none" stroke="rgba(0,0,0,.28)"/></svg>'}
-document.getElementById('srvFlags').innerHTML=flag('PL',32);
-/* Белый флаг = антиглушилки, по тапу — подсказка */
+document.getElementById('srvFlags').innerHTML=['DE'].map(c=>flag(c,32)).join('');
 (function(){const box=document.getElementById('srvFlags');if(!box)return;
-const w=document.createElement('span');w.style.cssText='display:inline-block;cursor:pointer;line-height:0';w.innerHTML=flag('WH',32);box.appendChild(w);
+const w=document.createElement('span');w.style.cssText='display:inline-block;cursor:pointer;line-height:0';w.innerHTML=flag('IL',32);box.appendChild(w);
 let tip=null,tm=null;
 function hide(){if(tip){tip.remove();tip=null}clearTimeout(tm)}
 w.addEventListener('click',e=>{e.stopPropagation();if(tip){hide();return}
-tip=document.createElement('div');tip.textContent='Белый флаг обозначает Антиглушилки';
+tip=document.createElement('div');tip.textContent='Израиль — сервер-антиглушилка';
 tip.style.cssText='position:fixed;z-index:950;max-width:240px;padding:6px 10px;border-radius:10px;font-size:11px;line-height:1.3;color:#fff;background:rgba(40,24,22,.95);border:1px solid rgba(255,107,53,.5);pointer-events:none;opacity:0;transition:opacity .15s';
 document.body.appendChild(tip);
 const r=w.getBoundingClientRect(),tw=tip.offsetWidth,th=tip.offsetHeight;
@@ -1056,9 +1055,8 @@ const HAPP_WIN='https://r.stun.su/?to=https://github.com/Happ-proxy/happ-desktop
 const INCY_GH='https://github.com/INCY-DEV/incy-platforms';
 const PLAY='https://play.google.com/store/apps/details?id=com.happproxy';
 const ATV_STORE='https://apps.apple.com/us/app/happ-proxy-utility-for-tv/id6748297274';
-/* Статичная ссылка переноса подписки в Happ (без API) */
-const HAPP_LINK='happ://crypt5/fzvdNvlXxbXzx9BK6sGdoUYu22XBU00r6yxB8Yiug7BN74vD7BqzGaOoEeEYPmjF7/UIlNe0I5EfOiJBuWzOsH0YYulRr7Bb2PNQwWjlMcZ/bFCuk2xxyRJjQ67fbGO8gW5mVU7iGdprUgTkZ9GZ93bYj1eSIzcm4SBldIl1izg5vUJhdwt0jD+m9TtVNUt1NT5v/BqxzN5WocWUkNBKVIbi7lWdnJ61PCGxXQD8BzwGWzfhGoEtLuEyhQs=8tQRYFjbGetTCCXPeRSsdlE9Shjr034WaxEcNRYf9KTqww4LtUx0cjRvQr5Vn7IRUOoqqXVyRV6kq9EeHYsC23AxaeDwgO/Sld5/7McJHR6o//H/SL7XuDcbLd7svRD5GbPS+LADW0R1fW03wf8NSzgSplkV+JTFOmHeVF7xvF+lP5ZfCVG93vU9zdY3YvSeC25lxIvigP5bk76baqWoXCfTnWnKHnNRloOYlm6CzXJov3Z8Lozy/aBgtef7zSmLJAgXAOgTEtcvvKVTbIeZbivoCPetFAekZEX5CIZPNM6ypwnO/aH8Lb1aFE+R9Q9qVkwmIaqqIG/Ubm1UlkdS1sn1tcHPslOPWj0KWKghn2Me1jBjhnq8eAbCAosIEMqIJh7w7VA16KOPqfRC3Soabvfidv/Ok8pxSv0skwQ8E7/VdorhdYz7krrAAwZx/GazA5ZZyc57s69hei0MyLpT2olPZp43WX343uQHTBcfiFHaN9MnpGR9aztofyeJGaJ9y9BZGnrcbwVb42/+JIB1KWvnsI7B4hIxQBeQad30zNrr/WdvwKYtrV322ruzGYRrpNRx7TA73WxMSz5HdwAGWVGXUAliJZykkqvaTZDrUhMT8Ll3JZjBSjgPZF5bO16quyuwsLjeRj2xvL51Y8PWoHXhB4LnWFDpRnEpqgXqfow=ff';
-/* Маршрутизация Happ: РФ-сайты, Госуслуги и банки идут НАПРЯМУЮ (мимо VPN), остальное — через VPN */
+const _ka='aGFwcDovL2NyeXB0NS9menZkTnZsWHhiWHp4OUJLNnNHZG9VWXUyMlhCVTAwcjZ5eEI4WWl1ZzdCTjc0dkQ3QnF6R2FPb0VlRVlQbWpGNy9VSWxOZTBJNUVmT2lKQnVXek9zSDBZWXVsUnI3QmIyUE5Rd1dqbE1jWi9iRkN1azJ4eHlSSmpRNjdmYkdPOGdXNW1WVTdpR2RwclVnVGtaOUdaOTNiWWoxZVNJemNtNFNCbGRJbDFpemc1dlVKaGR3dDBqRCttOVR0Vk5VdDFOVDV2L0JxeHpONVdvY1dVa05CS1ZJYmk3bFdkbko2MVBDR3hYUUQ4Qnp3R1d6ZmhHb0V0THVFeWhRcz04dFFSWUZqYkdldFRDQ1hQZVJTc2RsRTlTaGpyMDM0V2F4RWNOUllmOUtUcXd3NEx0VXgwY2pSdlFyNVZuN0lSVU9vcXFYVnlSVjZrcTlFZUhZc0MyM0F4YWVEd2dPL1NsZDUvN01jSkhSNm8vL0gvU0w3WHVEY2JMZDdzdlJENUdiUFMrTEFEVzBSMWZXMDN3ZjhOU3pnU3Bsa1YrSlRGT21IZVZGN3h2RitsUDVaZkNWRzkzdlU5emRZM1l2U2VDMjVseEl2aWdQNWJrNzZiYXFX',_kb='b1hDZlRuV25LSG5OUmxvT1lsbTZDelhKb3YzWjhMb3p5L2FCZ3RlZjd6U21MSkFnWEFPZ1RFdGN2dktWVGJJZVpiaXZvQ1BldEZBZWtaRVg1Q0laUE5NNnlwd25PL2FIOExiMWFGRStSOVE5cVZrd21JYXFxSUcvVWJtMVVsa2RTMXNuMXRjSFBzbE9QV2owS1dLZ2huMk1lMWpCamhucThlQWJDQW9zSUVNcUlKaDd3N1ZBMTZLT1BxZlJDM1NvYWJ2Zmlkdi9PazhweFN2MHNrd1E4RTcvVmRvcmhkWXo3a3JyQUF3WngvR2F6QTVaWnljNTdzNjloZWkwTXlMcFQyb2xQWnA0M1dYMzQzdVFIVEJjZmlGSGFOOU1ucEdSOWF6dG9meWVKR2FKOXk5QlpHbnJjYndWYjQyLytKSUIxS1d2bnNJN0I0aEl4UUJlUWFkMzB6TnJyL1dkdndLWXRyVjMyMnJ1ekdZUnJwTlJ4N1RBNzNXeE1TejVIZHdBR1dWR1hVQWxpSlp5a2txdmFUWkRyVWhNVDhMbDNKWmpCU2pnUFpGNWJPMTZxdXl1d3NMamVSajJ4dkw1MVk4UFdvSFhoQjRMbldGRHBSbkVwcWdYcWZvdz1mZg==';const HAPP_LINK=atob(_ka+_kb);
+
 const HAPP_ROUTING={
   Name:'KrolekVPN · РФ напрямую',GlobalProxy:'true',RemoteDns:'',DomesticDns:'',Geoipurl:'',Geositeurl:'',DnsHosts:{},
   DirectSites:['domain:ru','domain:su','domain:xn--p1ai','domain:gosuslugi.ru','domain:mos.ru','domain:nalog.gov.ru',
@@ -1071,7 +1069,7 @@ const HAPP_ROUTING={
   ProxySites:[],ProxyIp:[],BlockSites:[],BlockIp:[],
   DomainStrategy:'IPIfNonMatch',FakeDNS:'false',LastUpdated:''
 };
-const ROUTING_LINK='happ://routing/onadd/'+btoa(unescape(encodeURIComponent(JSON.stringify(HAPP_ROUTING))));
+const ROUTING_LINK=atob('aGFwcDovL3JvdXRpbmcvb25hZGQv')+btoa(unescape(encodeURIComponent(JSON.stringify(HAPP_ROUTING))));
 let _routing=false;
 function routeHapp(kind){const d=DEVICES[kind];if(!d)return;
 if(navigator.vibrate)navigator.vibrate(40);
@@ -1350,4 +1348,4 @@ function spawnCombo(x,y,text){
 }
 </script>
 </body>
-  </html>
+              </html>
